@@ -1,1 +1,0 @@
-from src.youqu3.__main__ import YouQu
