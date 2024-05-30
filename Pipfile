@@ -4,6 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pytest = "*"
+pytest-timeout = "*"
+pytest-rerunfailures = "*"
+pyscreeze = "==0.1.28"
+pyautogui = "==0.9.53"
+allure-pytest = "*"
+funnylog = "*"
 pdocr-rpc = "*"
 image-center = "*"
 

@@ -1,19 +1,23 @@
 [project]
 name = "youqu3"
-version = "0.1.0"
-description = ""
+description = "YouQu-Next"
 authors = [
     { name = "mikigo", email = "huangmingqiang@uniontech.com" },
 ]
 dependencies = [
-    "funnylog",
-    "image-center",
-    "pdocr-rpc",
+]
+dynamic = [
+  "version",
 ]
 requires-python = ">=3.7"
 readme = "README.md"
 license = { text = "GPL2.0" }
 
 [build-system]
-requires = ["setuptools>=61", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.hatch]
+version = { path = "youqu3/__version__.py" }
+
