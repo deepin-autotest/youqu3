@@ -4,20 +4,28 @@
 from funnylog import log
 from funnylog import logger
 
+import_error_log = lambda x: f"{x} not installed, try: pip install {x}"
+
 try:
     from image_center import ImageCenter as ImageCenter
 except ImportError:
-    raise ImportError("image-center not installed, try: pip install image-center")
+    raise ImportError(import_error_log("image_center"))
+
 try:
     from pdocr_rpc import OCR as OCR
 except ImportError:
-    raise ImportError("pdocr-rpc not installed, try: pip install pdocr-rpc")
+    raise ImportError(import_error_log("pdocr-rpc"))
+
 try:
     from youqu_dogtail import DogtailUtils
 except ImportError:
-    raise ImportError("youqu-dogtail not installed, try: pip install youqu-dogtail")
+    raise ImportError(import_error_log("youqu-dogtail"))
 
-from youqu3.mousekey import MouseKey as MouseKey
+try:
+    from youqu_mousekey import MouseKey as MouseKey
+except ImportError:
+    raise ImportError(import_error_log("youqu-mousekey"))
+
 from youqu3.setting import setting
 
 __all__ = [
