@@ -2,7 +2,7 @@
 
 YouQu3 是 YouQu 的一个重构项目（下一代有趣），整体架构重新设计，全新的插件化及模块化改造，带来全新的使用效果。
 
-[YouQu3架构设计](https://github.com/funny-dream/youqu3/main/docs/YouQu3架构设计.md)
+[YouQu3架构设计](docs/YouQu3架构设计.md)
 
 ## 特性
 
