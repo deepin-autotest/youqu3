@@ -12,6 +12,12 @@ YouQu3 是 YouQu 的一个重构项目（下一代有趣），整体架构重新
 - 可视化配置
 - 支持非开发者下运行
 
+## [安装]()
+
+```shell
+pip install youqu3
+```
+
 ## [YouQu3 插件]()
 
 - [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail)
