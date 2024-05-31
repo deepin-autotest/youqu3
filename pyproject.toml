@@ -5,6 +5,11 @@ authors = [
     { name = "mikigo", email = "huangmingqiang@uniontech.com" },
 ]
 dependencies = [
+    "pytest",
+    "pytest-timeout",
+    "pytest-rerunfailures",
+    "allure-pytest",
+    "funnylog",
 ]
 dynamic = [
   "version",
@@ -20,4 +25,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch]
 version = { path = "youqu3/__version__.py" }
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "/youqu3",
+]
 

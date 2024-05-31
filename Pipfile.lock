@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "77ba243f8c1a5376c260999c9aa9c3fa7286a1df2dc40d296b8364fdf30ea778"
+            "sha256": "96b6d01ac340dda33b0219b98c4d906b0910d2456bc190d15f39fd827ae88ead"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -318,6 +318,15 @@
             ],
             "markers": "python_version < '3.8'",
             "version": "==4.7.1"
+        },
+        "youqu-dogtail": {
+            "hashes": [
+                "sha256:0973ed92f1932c2dab2cf4d2ae0bc0785c068c6149cc897fccd6c2a4c2fc2b39",
+                "sha256:236760ba80f58afcecd7f9d820fde9fd06aebc5c572e00ac126ab2ccf1f4f550"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==0.1.0"
         },
         "zipp": {
             "hashes": [

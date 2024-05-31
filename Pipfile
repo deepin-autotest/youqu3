@@ -13,6 +13,7 @@ allure-pytest = "*"
 funnylog = "*"
 pdocr-rpc = "*"
 image-center = "*"
+youqu-dogtail = "*"
 
 [dev-packages]
 
