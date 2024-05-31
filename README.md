@@ -14,6 +14,6 @@ YouQu3 插件：
 
 - [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail)
 - [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey)
+- [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc)
 - [funnylog](https://linuxdeepin.github.io/funnylog/)
-- [image-center](https://linuxdeepin.github.io/image-center/)
 - [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)
