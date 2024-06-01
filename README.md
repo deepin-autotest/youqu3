@@ -1,6 +1,6 @@
 # [YouQu3]() 🐉
 
-YouQu3 是 YouQu 的一个重构项目（下一代有趣），整体架构重新设计，全新的插件化及模块化改造，带来全新的使用效果。
+YouQu3 是下一代 Linux 自动化测试框架，整体架构重新设计，全新的插件化及模块化功能，带来全新的使用效果。
 
 [YouQu3架构设计](docs/YouQu3架构设计.md)
 
@@ -18,12 +18,12 @@ YouQu3 是 YouQu 的一个重构项目（下一代有趣），整体架构重新
 pip install youqu3
 ```
 
-## [YouQu3 插件]()
+## [YouQu3 插件生态]()
 
 | YouQu3 插件名称                                              | 说明                                 |
 | ------------------------------------------------------------ | ------------------------------------ |
 | [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail) | 属性定位插件                         |
-| [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc) | 完全基于 RPC 服务的图像识别插件      |
+| [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc) | 基于 RPC 服务的图像识别插件      |
 | [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey) | 键鼠操作插件                         |
 | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 |
 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       |
