@@ -20,8 +20,12 @@ pip install youqu3
 
 ## [YouQu3 插件]()
 
-- [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail)
-- [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey)
-- [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc)
-- [funnylog](https://linuxdeepin.github.io/funnylog/)
-- [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)
+| YouQu3 插件名称                                              | 说明                                 |
+| ------------------------------------------------------------ | ------------------------------------ |
+| [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail) | 属性定位插件                         |
+| [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc) | 完全基于 RPC 服务的图像识别插件      |
+| [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey) | 键鼠操作插件                         |
+| [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 |
+| [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       |
+| [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         |
+
