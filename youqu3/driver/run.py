@@ -54,16 +54,6 @@ class Run:
         if self.tags:
             self.set_recursion_limit(self.tags)
             cmd.extend(["-m", f"'{self.tags}'"])
-
-        cmd.extend(
-            [
-                f"--max_fail={setting.MAX_FAIL}",
-                f"--reruns={setting.RERUNS}",
-                f"--record_failed_case={setting.RECORD_FAILED_CASE}",
-                f"--log_level={setting.LOG_LEVEL}",
-                f"--timeout={setting.TIMEOUT}",
-            ]
-        )
         return cmd
 
     @staticmethod
