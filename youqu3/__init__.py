@@ -4,44 +4,64 @@
 from funnylog import log
 from funnylog import logger
 
-import_error_log = lambda x: f"{x} not installed, try: pip install {x}"
+from youqu3._setting import setting as setting
 
 try:
-    from image_center import ImageCenter as ImageCenter
+    from youqu_imagecenter_rpc import ImageCenter as ImageCenter
+
+    HAS_IMAGECENTER = False
 except ImportError:
-    raise ImportError(import_error_log("image_center"))
+    HAS_IMAGECENTER = False
 
 try:
     from pdocr_rpc import OCR as OCR
+
+    HAS_OCR = True
 except ImportError:
-    raise ImportError(import_error_log("pdocr-rpc"))
+    HAS_OCR = False
 
 try:
-    from youqu_dogtail import DogtailUtils
+    from youqu_dogtail import DogtailUtils as Dogtail
+
+    HAS_DOGTAIL = True
 except ImportError:
-    raise ImportError(import_error_log("youqu-dogtail"))
+    HAS_DOGTAIL = False
 
 try:
     from youqu_mousekey import MouseKey as MouseKey
-except ImportError:
-    raise ImportError(import_error_log("youqu-mousekey"))
 
-from youqu3.setting import setting
+    HAS_MOUSEKEY = True
+except ImportError:
+    HAS_MOUSEKEY = False
 
 __all__ = [
     "YouQu",
     "ImageCenter",
     "OCR",
-    "DogtailUtils",
+    "Dogtail",
     "setting",
     "log",
     "logger",
 ]
 
-
-class YouQu(
-    ImageCenter,
-    OCR,
-    MouseKey,
-):
-    ...
+if HAS_IMAGECENTER and HAS_OCR and HAS_MOUSEKEY:
+    class YouQu(ImageCenter, OCR, MouseKey):
+        ...
+elif HAS_IMAGECENTER and HAS_OCR:
+    class YouQu(ImageCenter, OCR):
+        ...
+elif HAS_IMAGECENTER and HAS_MOUSEKEY:
+    class YouQu(ImageCenter, MouseKey):
+        ...
+elif HAS_OCR and HAS_MOUSEKEY:
+    class YouQu(OCR, MouseKey):
+        ...
+elif HAS_IMAGECENTER:
+    class YouQu(ImageCenter):
+        ...
+elif HAS_OCR:
+    class YouQu(OCR):
+        ...
+elif HAS_MOUSEKEY:
+    class YouQu(MouseKey):
+        ...

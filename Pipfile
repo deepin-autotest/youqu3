@@ -9,6 +9,9 @@ pytest-timeout = "*"
 pytest-rerunfailures = "*"
 allure-pytest = "*"
 funnylog = "*"
+youqu-imagecenter-rpc = "*"
+click = "*"
+rich = "*"
 
 [dev-packages]
 
