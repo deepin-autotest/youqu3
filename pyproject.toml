@@ -10,6 +10,8 @@ dependencies = [
     "pytest-rerunfailures",
     "allure-pytest",
     "funnylog",
+    "click",
+    "rich",
 ]
 dynamic = [
     "version",
