@@ -1,4 +1,6 @@
-# YouQu3 [](docs/assets/logo.png)
+# YouQu3
+
+![](docs/assets/logo.png)
 
 YouQu3 是下一代 Linux 自动化测试框架，整体架构重新设计，全新的插件化及模块化功能，带来全新的使用效果。
 
