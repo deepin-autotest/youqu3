@@ -18,7 +18,7 @@ class DisplayServer:
 
 
 class _DynamicSetting:
-    ARCH = platform.machine().lower()
+    SYS_ARCH = platform.machine().lower()
     HOME = str(pathlib.Path.home())
     USERNAME = getpass.getuser()
 
