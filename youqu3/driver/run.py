@@ -64,7 +64,6 @@ class Run:
 
     def run(self):
         run_test_cmd_list = self.generate_pytest_cmd()
-
         pytest.main([i.strip("'") for i in run_test_cmd_list[1:]])
 
 

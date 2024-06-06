@@ -7,7 +7,7 @@ console = Console()
 @click.group()
 def cli():
     console.print(
-        "YouQu3:dragon:",
+        "YouQu3 :dragon:",
         style="blue",
     )
 
@@ -20,14 +20,13 @@ def run(
         tags,
 ):
     """RUN模式"""
-    console.print("youqu3 run", style="blue")
     args = {
         "keywords": keywords,
         "tags": tags,
     }
-    console.print(args)
+    # console.print(args)
     from youqu3.driver.run import Run
-    Run(*args).run()
+    Run(**args).run()
 
 
 @cli.command()

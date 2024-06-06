@@ -5,3 +5,5 @@ from funnylog import log as log
 from funnylog import logger as logger
 
 from youqu3._setting import setting as setting
+
+__all__ = ['setting', 'log', 'logger']
