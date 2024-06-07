@@ -5,7 +5,7 @@
 :Date  :${DATE} ${TIME}
 """
 ##from case import BaseCase
-##from method import ${AppName}Widget
+##from method import ${AppName}Method
 
 ##class TestMyCase(BaseCase):
 
