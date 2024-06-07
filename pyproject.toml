@@ -18,6 +18,10 @@ dynamic = [
     "version",
 ]
 
+requires-python = ">=3.7"
+readme = "README.md"
+license = { text = "GPL2.0" }
+
 [project.optional-dependencies]
 desktop-ui = [
     "youqu-dogtail",
@@ -29,10 +33,6 @@ desktop-ui = [
 webui = [
     "pytest-youqu-playwright",
 ]
-
-requires-python = ">=3.7"
-readme = "README.md"
-license = { text = "GPL2.0" }
 
 [project.scripts]
 youqu3 = "youqu3.driver.cli:cli"
