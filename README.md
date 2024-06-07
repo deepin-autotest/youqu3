@@ -4,11 +4,10 @@
   </a>
 </p>
 <p align="center">
-    <em>YouQu3，下一代 Linux 自动化测试框架。</em>
+    <em>YouQu3, Next generation Linux automation testing framework.</em>
 </p>
 
-
-# [YouQu3]()
+--------------
 
 YouQu3 是下一代 Linux 自动化测试框架，整体架构重新设计，全新的插件化及模块化功能，带来全新的使用效果。
 

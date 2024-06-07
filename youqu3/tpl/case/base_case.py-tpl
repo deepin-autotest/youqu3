@@ -4,7 +4,7 @@
 :Author:${USER}
 :Date  :${DATE} ${TIME}
 """
-##from apps.${APP_NAME}.${app_name}_assert import ${AppName}Assert
+##from .${app_name}_assert import ${AppName}Assert
 
 
 ##class BaseCase(${AppName}Assert):

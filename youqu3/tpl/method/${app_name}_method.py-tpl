@@ -5,12 +5,12 @@
 :Date  :${DATE} ${TIME}
 """
 
-##from widget.base_widget import BaseWidget
+##from method.base_method import BaseMethod
 ##from youqu3 import log
 
 
 ##@log
-##class ${AppName}Widget(BaseWidget):
+##class ${AppName}Method(BaseMethod):
 ##    """应用方法主类"""
 
 ##    def click_xxx_by_attr(self):
