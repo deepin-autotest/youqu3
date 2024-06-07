@@ -8,6 +8,7 @@ dependencies = [
     "pytest",
     "pytest-timeout",
     "pytest-rerunfailures",
+    "pytest-mark-manage",
     "allure-pytest",
     "funnylog",
     "click",
@@ -15,6 +16,18 @@ dependencies = [
 ]
 dynamic = [
     "version",
+]
+
+[project.optional-dependencies]
+desktop-ui = [
+    "youqu-dogtail",
+    "youqu-imagecenter-rpc",
+    "youqu-mousekey",
+    "pdocr-rpc",
+    # "wdotool",
+]
+webui = [
+    "pytest-youqu-playwright",
 ]
 
 requires-python = ">=3.7"
