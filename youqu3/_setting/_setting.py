@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+import dataclasses
+import enum
 
 from youqu3._setting._dynamic import _DynamicSetting
 
@@ -20,13 +21,20 @@ class _Setting(_DynamicSetting):
     OCR_PORT = 8890
     OCR_SERVER_HOST = "10.8.13.7/10.8.13.66/10.8.13.55/10.8.13.100"
 
-    @dataclass
+    @dataclasses.dataclass
     class Sleepx:
         x86_64: [float, int] = 1
         aarch64: [float, int] = 1.5
         loongarch64: [float, int] = 2
         mips64: [float, int] = 2.5
         sw64: [float, int] = 2.5
+
+    @enum.unique
+    class FixedCsvTitle(enum.Enum):
+        case_id = "脚本ID"
+        skip_reason = "跳过原因"
+        fixed = "确认修复"
+        removed = "废弃用例"
 
 
 setting = _Setting()

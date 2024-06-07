@@ -22,6 +22,8 @@ class _DynamicSetting:
     HOME = str(pathlib.Path.home())
     USERNAME = getpass.getuser()
 
+    TPL_PATH = pathlib.Path(__file__).parent.parent / "tpl"
+
     DISPLAY_SERVER = (
                          os.popen("cat ~/.xsession-errors | grep XDG_SESSION_TYPE | head -n 1")
                          .read()

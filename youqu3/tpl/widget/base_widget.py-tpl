@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+# _*_ coding:utf-8 _*_
+"""
+:Author:${USER}
+:Date  :${DATE} ${TIME}
+"""
+##from config import config
+##from youqu3.dogtail import Dogtail
+##from youqu3 import logger
+
+
+##class BaseWidget:
+##    """应用的方法基类"""
+
+##    APP_NAME = "${APP-NAME}"
+

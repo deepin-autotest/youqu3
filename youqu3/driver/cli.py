@@ -34,6 +34,11 @@ def remote():
     """REMOTE模式"""
     console.print("Remote Running YouQu3")
 
+@cli.command()
+def startapp():
+    """创建APP工程"""
+    console.print("startapp")
+
 
 if __name__ == '__main__':
     cli()
