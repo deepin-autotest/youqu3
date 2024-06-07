@@ -5,7 +5,7 @@
 :Date  :${DATE} ${TIME}
 """
 ##from case import BaseCase
-##from widget import ${AppName}Widget
+##from widget import ${AppName}Method
 ##from youqu3 import sleep
 
 ##class TestMyCase(BaseCase):
