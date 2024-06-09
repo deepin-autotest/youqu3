@@ -11,7 +11,7 @@ from youqu3.exception import ElementNotFound, ElementExpressionError
 
 
 @log
-class AssertCommon:
+class Assert:
     """
     自定义断言类
     """

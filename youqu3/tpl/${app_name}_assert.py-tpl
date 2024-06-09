@@ -5,8 +5,8 @@
 :Date  :${DATE} ${TIME}
 """
 
-##from src.assert_common import AssertCommon
+##from src.assert import Assert
 
 
-##class ${AppName}Assert(AssertCommon):
+##class ${AppName}Assert(Assert):
 ##    """${AppName}Assert"""

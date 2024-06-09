@@ -13,6 +13,7 @@ click = "*"
 rich = "*"
 requests = "*"
 youqu-dogtail = "*"
+pytest-mark-manage = "*"
 
 [dev-packages]
 

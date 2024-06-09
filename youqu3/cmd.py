@@ -2,6 +2,7 @@ from typing import Union
 from typing import List
 
 import easyprocess
+
 from youqu3 import logger
 from youqu3 import setting
 

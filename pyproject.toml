@@ -13,6 +13,8 @@ dependencies = [
     "funnylog",
     "click",
     "rich",
+    "easyprocess",
+    "allure-custom",
 ]
 dynamic = [
     "version",
@@ -32,6 +34,12 @@ desktop-ui = [
 ]
 webui = [
     "pytest-youqu-playwright",
+]
+http = [
+    "requests",
+]
+dbus = [
+    "youqu-dbus",
 ]
 
 [project.scripts]

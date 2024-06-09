@@ -9,11 +9,10 @@
 ##from os.path import abspath
 
 ##from src import logger
-##from setting.globalconfig import _GlobalConfig
-##from setting.globalconfig import GetCfg
+##from setting._setting._setting import _Setting
 
 
-##class _Config(_GlobalConfig):
+##class _Config(_Setting):
 ##    """
 ##    Application library configuration
 ##    """

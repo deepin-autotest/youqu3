@@ -18,12 +18,13 @@
 - 支持离线部署
 - 极致轻量化、可定制化依赖
 - 功能可插拔
-- 可视化配置
+- 可视化驱动配置
 - 支持非开发者下运行
+- 命令行友好
 
 ## [安装]()
 
-安装基础环境：
+命令行自动化测试：
 
 ```shell
 pip install youqu3
@@ -39,6 +40,18 @@ Web UI 自动化测试：
 
 ```shell
 pip install youqu3[webui]
+```
+
+D-Bus 接口自动化测试：
+
+```shell
+pip install youqu3[dbus]
+```
+
+HTTP 接口自动化测试：
+
+```shell
+pip install youqu3[http]
 ```
 
 ## [YouQu3 插件生态]()
