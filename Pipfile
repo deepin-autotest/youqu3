@@ -11,6 +11,8 @@ allure-pytest = "*"
 funnylog = "*"
 click = "*"
 rich = "*"
+requests = "*"
+youqu-dogtail = "*"
 
 [dev-packages]
 

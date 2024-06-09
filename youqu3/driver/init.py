@@ -6,33 +6,30 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # pylint: disable=C0114,C0115,C0116,R1722,W1514,C0103,W1514,C0103,R1721,R0912,W0612
 import os
+import pathlib
 import re
 import shutil
 from time import strftime
 from youqu3 import setting
+from rich.tree import Tree
 
 
 class StartApp:
-    def __init__(self, app_name: str):
-        self.app_name = app_name.strip("/")
 
     def copy_template_to_apps(self):
-        if os.path.exists(self.app_name) and os.listdir(self.app_name):
-            if input(
-                f"{self.app_name}目录存在且里面存在文件，请确认是否清空（Y/N）："
-            ) in ("y", "Y"):
-                os.system(f"rm -rf {self.app_name}/*")
+        if os.listdir("."):
+            if input("当前目录存在且里面存在文件，请确认是否清空（Y/N）：") in ("y", "Y"):
+                os.system(f"rm -rf ./*")
             else:
                 exit(0)
-        if not os.path.exists(self.app_name):
-            os.makedirs(self.app_name)
-        os.system(f"cp -r {setting.TPL_PATH}/* {self.app_name}/")
-        os.system(f"cp {setting.TPL_PATH}/.gitignore-tpl  {self.app_name}/")
+        os.system(f"cp -r {setting.TPL_PATH}/* .")
+        os.system(f"cp {setting.TPL_PATH}/.gitignore-tpl  .")
 
     def rewrite(self):
-        for root, dirs, files in os.walk(self.app_name):
+        dirname = pathlib.Path(__file__).parent.name
+        for root, dirs, files in os.walk("."):
             for file in files:
-                app_name = self.app_name
+                app_name = dirname
 
                 if file.endswith("-tpl"):
                     shutil.move(f"{root}/{file}", f"{root}/{file[:-4]}")
@@ -40,7 +37,7 @@ class StartApp:
 
                 if "${app_name}" in file:
                     new_file = re.sub(
-                        r"\${app_name}", app_name if app_name else self.app_name, file
+                        r"\${app_name}", app_name, file
                     )
                     shutil.move(f"{root}/{file}", f"{root}/{new_file}")
                     file = new_file
@@ -53,7 +50,7 @@ class StartApp:
                         if "##" in code:
                             code = code.replace("##", "")
                         if "${APP_NAME}" in code:
-                            code = re.sub(r"\${APP_NAME}", self.app_name, code)
+                            code = re.sub(r"\${APP_NAME}", app_name, code)
                         if "${app_name}" in code:
                             code = re.sub(r"\${app_name}", app_name, code)
                         if "${APP-NAME}" in code:
@@ -76,5 +73,5 @@ class StartApp:
                     with open(f"{root}/{file}", "w") as f:
                         f.writelines([i for i in new_codes])
 
-
-        print(f"{self.app_name} 创建成功,请查看 {self.app_name}")
+        print(f"创建成功,请查看")
+        
