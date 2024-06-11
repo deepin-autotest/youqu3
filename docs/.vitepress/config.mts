@@ -44,7 +44,7 @@ export default withMermaid(
                         collapsed: false,
                         items: [
                             {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
-                            {text: "APP工程设计方案", link: "/设计/APP工程设计方案"},
+                            {text: "用例工程设计方案", link: "/设计/用例工程设计方案"},
                         ]
                     },
                 ],
