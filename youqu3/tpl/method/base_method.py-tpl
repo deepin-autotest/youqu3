@@ -12,5 +12,5 @@
 ##class BaseMethod:
 ##    """应用的方法基类"""
 
-##    APP_NAME = "${APP-NAME}"
+##    APP_NAME = ""
 

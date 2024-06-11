@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 # _*_ coding:utf-8 _*_
-
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
-
 # SPDX-License-Identifier: GPL-2.0-only
-# pylint: disable=C0114
-# pylint: disable=E0401,C0413,R0902,R0913,R0914,W0613,C0301,C0415,C0103
 import json
 import os
 import re
@@ -24,30 +20,22 @@ from youqu3 import setting
 class RemoteRunner:
     """
     远程执行器：控制多台测试机远程执行用例。
-    在 setting/remote.ini 里面配置要执行的测试机信息。
     """
 
-    __author__ = "Mikigo <huangmingqiang@uniontech.com>"
+    __author__ = "mikigo <huangmingqiang@uniontech.com>"
 
     def __init__(
             self,
             remote_kwargs: dict = None,
             local_kwargs: dict = None,
     ):
+        logger("INFO")
         self.remote_kwargs = remote_kwargs
         self.local_kwargs = local_kwargs
-        logger("INFO")
-        self.parallel = conf.PARALLEL
-        self.clean_server_report_dir = conf.CLEAN_SERVER_REPORT_DIR
-        self.clean_client_report_dir = conf.CLEAN_CLIENT_REPORT_DIR
-        self.send_code = conf.SEND_CODE
-        self.scan = int(conf.SCAN)
-        self.client_env = conf.BUILD_ENV
-        self.client_password = remote_kwargs.get("client_password") or conf.CLIENT_PASSWORD
-
+        self.client_password = remote_kwargs.get("client_password") or setting.CLIENT_PASSWORD
 
         client_dict = {}
-        _client = remote_kwargs.get("clients") or conf.CLIENTS
+        _client = remote_kwargs.get("clients")
         if _client:
             clients = _client.split("/")
             for index, client in enumerate(clients):
@@ -59,24 +47,14 @@ class RemoteRunner:
                     client_dict[f"client{index + 1}"] = _c
 
         else:
-            raise ValueError(
-                "未获取到测试机信息,请检查 setting/globalconfig.ini 中 CLIENT LIST 是否配置，"
-                "或通过命令行 remote -c user@ip:password 传入。"
-            )
+            raise ValueError("--clients user@ip")
 
-        self.default = {
-            Args.app_name.value: transform_app_name(
-                local_kwargs.get("app_name") or GlobalConfig.APP_NAME
-            ),
-            Args.clients.value: client_dict,
-            Args.send_code.value: remote_kwargs.get("send_code") or self.send_code,
-            Args.build_env.value: remote_kwargs.get("build_env") or self.client_env,
-            Args.parallel.value: remote_kwargs.get("parallel") or self.parallel,
-            Args.json_backfill_base_url.value: remote_kwargs.get("json_backfill_base_url"),
-            Args.json_backfill_task_id.value: remote_kwargs.get("json_backfill_task_id"),
-            Args.json_backfill_user.value: remote_kwargs.get("json_backfill_user"),
-            Args.json_backfill_password.value: remote_kwargs.get("json_backfill_password"),
-        }
+        self.clients= client_dict
+        self.send_code= remote_kwargs.get("send_code") or setting.SEND_CODE
+        self.build_env= remote_kwargs.get("build_env") or setting.BUILD_ENV
+        self.parallel= remote_kwargs.get("parallel") or setting.PARALLEL
+        self.scan = int(setting.SCAN)
+
         # 客户端地址
         if "/home/" not in GlobalConfig.ROOT_DIR:
             raise EnvironmentError

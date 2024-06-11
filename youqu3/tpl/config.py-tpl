@@ -4,12 +4,8 @@
 :Author:${USER}
 :Date  :${DATE} ${TIME}
 """
-##from os.path import join
-##from os.path import dirname
-##from os.path import abspath
 
-##from src import logger
-##from setting._setting._setting import _Setting
+##from youqu3.setting._setting._setting import _Setting
 
 
 ##class _Config(_Setting):

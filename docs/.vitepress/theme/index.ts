@@ -52,10 +52,10 @@ export default {
     // giscus配置
     giscusTalk(
         {
-          repo: 'linuxdeepin/youqu', //仓库
-          repoId: 'R_kgDOKDOpHg', //仓库ID
+          repo: 'funny-dream/youqu3', //仓库
+          repoId: 'R_kgDOMBemKg', //仓库ID
           category: 'Announcements', // 讨论分类
-          categoryId: 'DIC_kwDOKDOpHs4CcRPx', //讨论分类ID
+          categoryId: 'DIC_kwDOMBemKs4CgATm', //讨论分类ID
           mapping: 'pathname',
           inputPosition: 'top',
           lang: 'zh-CN',
