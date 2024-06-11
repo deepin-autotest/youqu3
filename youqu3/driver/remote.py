@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 import json
 import os
+import pathlib
 import re
 import sys
 import time
@@ -14,6 +15,7 @@ from itertools import cycle
 
 from youqu3 import logger
 from youqu3 import setting
+from youqu3.cmd import Cmd
 
 
 
@@ -55,32 +57,16 @@ class RemoteRunner:
         self.parallel= remote_kwargs.get("parallel") or setting.PARALLEL
         self.scan = int(setting.SCAN)
 
-        # 客户端地址
-        if "/home/" not in GlobalConfig.ROOT_DIR:
-            raise EnvironmentError
-        self.server_project_path = "/".join(GlobalConfig.ROOT_DIR.split("/")[3:])
-        self.client_report_path = lambda x: f"/home/{x}/{self.server_project_path}/report"
-        self.client_allure_report_path = (
-            lambda
-                x: f"/home/{x}/{self.server_project_path}/{GlobalConfig.report_cfg.get('ALLURE_REPORT_PATH', default='report')}/allure".replace(
-                "//", "/"
-            )
-        )
-        self.client_pms_json_report_path = (
-            lambda x, y: f"/home/{x}/{self.server_project_path}/report/pms_{y}"
-        )
-        self.client_json_report_path = (
-            lambda x: f"/home/{x}/{self.server_project_path}/report/json"
-        )
-        self.strf_time = strftime("%m%d%p%I%M%S")
-        self.server_detail_json_path = f"{GlobalConfig.REPORT_PATH}/json/{self.strf_time}_remote"
-        self.client_xml_report_path = (
-            lambda
-                x: f"/home/{x}/{self.server_project_path}/{GlobalConfig.report_cfg.get('XML_REPORT_PATH', default='report')}/xml".replace(
-                "//", "/"
-            )
-        )
-        self.client_list = list(self.default.get(Args.clients.value).keys())
+        self.server_project_path = "."
+        self.dirname = pathlib.Path(".").parent.name
+
+        self.client_report_path = lambda x: f"/home/{x}/{self.dirname}/report"
+        self.client_allure_report_path = lambda x: f"{self.client_report_path(x)}/allure"
+        self.client_json_report_path = lambda x: f"{self.client_report_path(x)}/json"
+        self.client_xml_report_path = lambda x: f"{self.client_report_path(x)}/xml"
+
+        self.strf_time = time.strftime("%m%d%p%I%M%S")
+        self.client_list = list(self.clients.keys())
         _pty = "t"
         if len(self.client_list) >= 2:
             _pty = "T"
@@ -93,25 +79,38 @@ class RemoteRunner:
         self.server_json_dir_id = None
         self.pms_user = None
         self.pms_password = None
+        
+    def pre_env(self):
+        # rm hosts
+        Cmd.run_cmd(f"rm -rf ~/.ssh/known_hosts {self.empty}")
+        # rm client report
+        if not self.send_code:
+            for client in self.clients:
+                user, _ip, password = self.clients.get(client)
+                Cmd.run_cmd(
+                    f"""{self.ssh % password} {user}@{_ip} "rm -rf {self.client_report_path(user)}/*" {self.empty}"""
+                )
+        # delete ssh ask
+        sudo = f"echo '{setting.PASSWORD}' | sudo -S"
+        if "StrictHostKeyChecking no" not in Cmd.run_cmd("cat /etc/ssh/ssh_config").stdout:
+            Cmd.run_cmd(
+                f"""{sudo} sed -i "s/#   StrictHostKeyChecking ask/ StrictHostKeyChecking no/g" /etc/ssh/ssh_config {self.empty}"""
+            )
+        # install sshpass
+        if "(C)" not in Cmd.run_cmd("sshpass -V").stdout:
+            Cmd.run_cmd(f"{sudo} apt update {self.empty}")
+            Cmd.run_cmd(f"{sudo} apt install sshpass {self.empty}")
 
     def send_code_to_client(self, user, _ip, password):
-        """
-         发送代码到测试机
-        :param user: 用户名
-        :param _ip: 测试机IP
-        :param password: 测试机密码
-        :return:
-        """
         logger.info(f"发送代码到测试机 - < {user}@{_ip} >")
-        system(
+        Cmd.run_cmd(
             f"{self.ssh % password} {user}@{_ip} "
             f""""echo '{password}' | sudo -S rm -rf ~/{self.server_project_path}" {self.empty}"""
         )
-        system(
+        Cmd.run_cmd(
             f'{self.ssh % password} {user}@{_ip} "mkdir -p ~/{self.server_project_path}" {self.empty}'
         )
         # 过滤目录
-        app_name: str = self.default.get(Args.app_name.value)
         exclude = ""
         for i in [
             "__pycache__",
@@ -120,86 +119,30 @@ class RemoteRunner:
             ".idea",
             ".git",
             ".github",
-            ".reuse",
-            "docs",
-            "node_modules",
             "report",
             ".gitignore",
-            "CONTRIBUTING.md",
-            "LICENSE",
-            "package.json",
-            "Pipfile",
-            "Pipfile.lock",
-            "pnpm-lock.yaml",
-            "publish.sh",
-            "pyproject.toml",
-            "README.md",
-            "RELEASE.md",
-            "ruff.toml",
         ]:
             exclude += f"--exclude='{i}' "
-        if app_name:
-            for i in listdir(GlobalConfig.APPS_PATH):
-                if i == "__init__.py":
-                    continue
-                if app_name.replace("-", "_") != i:
-                    exclude += f"--exclude='{i}' "
-        system(
-            f"{self.rsync % (password,)} {exclude} {GlobalConfig.ROOT_DIR}/* "
-            f"{user}@{_ip}:~/{self.server_project_path}/ {self.empty}"
+        Cmd.run_cmd(
+            f"{self.rsync % (password,)} {exclude} ./* {user}@{_ip}:~/{self.dirname}/ {self.empty}"
         )
-        system(
-            f"{self.rsync % (password,)} {exclude} {GlobalConfig.ROOT_DIR}/.env "
-            f"{user}@{_ip}:~/{self.server_project_path}/ {self.empty}"
+        Cmd.run_cmd(
+            f"{self.rsync % (password,)} {exclude} ./.env {user}@{_ip}:~/{self.dirname}/ {self.empty}"
         )
         logger.info(f"代码发送成功 - < {user}@{_ip} >")
 
     def build_client_env(self, user, _ip, password):
-        """
-         测试机环境安装
-        :param user: 用户名
-        :param _ip: 测试机IP
-        :param password: 测试机密码
-        :return:
-        """
         logger.info(f"安装环境 - < {user}@{_ip} >")
-        system(
-            f"{self.ssh % password} {user}@{_ip} "
-            f'''"rm -rf ~/.local/share/virtualenvs/{self.server_project_path.split('/')[-1]}*"'''
-        )
-        system(
+        # TODO
+        Cmd.run_cmd(
             f"{self.ssh % password} {user}@{_ip} "
             f'"cd ~/{self.server_project_path}/ && bash env.sh"'
         )
         logger.info(f"环境安装完成 - < {user}@{_ip} >")
 
     def send_code_and_env(self, user, _ip, password):
-        """
-         发送代码到测试机并且安装环境
-        :param user: 用户名
-        :param _ip: 测试机IP
-        :param password: 测试机密码
-        :return:
-        """
         self.send_code_to_client(user, _ip, password)
         self.build_client_env(user, _ip, password)
-
-    def install_deb(self, user, _ip, password):
-        """
-         安装 deb 包
-        :param user:
-        :param _ip:
-        :param password:
-        :return:
-        """
-        logger.info(f"安装deb包 - < {user}@{_ip} >")
-        system(
-            f"{self.scp % password} {self.default.get(Args.deb_path.value)}/*.deb {user}@{_ip}:{self.default.get(Args.deb_path.value)}/"
-        )
-        system(
-            f'''{self.ssh % password} {user}@{_ip} "cd {self.default.get(Args.deb_path.value)}/ && echo {password} | sudo -S dpkg -i *.deb"'''
-        )
-        logger.info(f"deb包安装完成 - < {user}@{_ip} >")
 
     def mul_do(self, func_obj, client_list):
         """
@@ -212,44 +155,28 @@ class RemoteRunner:
             executor = ThreadPoolExecutor()
             _ps = []
             for client in client_list[:-1]:
-                user, _ip, password = self.default.get(Args.clients.value).get(client)
+                user, _ip, password = self.clients.get(client)
                 _p1 = executor.submit(func_obj, user, _ip, password)
                 _ps.append(_p1)
-            user, _ip, password = self.default.get(Args.clients.value).get(client_list[-1])
+            user, _ip, password = self.clients.get(client_list[-1])
             func_obj(user, _ip, password)
             wait(_ps, return_when=ALL_COMPLETED)
         else:
-            user, _ip, password = self.default.get(Args.clients.value).get(client_list[0])
+            user, _ip, password = self.clients.get(client_list[0])
             func_obj(user, _ip, password)
 
     def get_client_test_status(self, user, _ip, password):
-        """
-         获取测试机是否有用例执行
-        :param user: 用户名
-        :param _ip: 测试机IP
-        :param password: 测试机密码
-        :return:
-        """
-        status_test = popen(
+        status_test = Cmd.run_cmd(
             f'{self.ssh % password} {user}@{_ip} "ps -aux | grep pytest | grep -v grep"'
-        ).read()
+        ).stdout
         return bool(status_test)
 
     @staticmethod
-    def make_dir(dirs):
-        """make_dir"""
-        if not exists(dirs):
-            makedirs(dirs)
+    def makedirs(dirs):
+        if not os.path.exists(dirs):
+            os.makedirs(dirs)
 
     def run_pytest_cmd(self, user, _ip, password):
-        """
-         创建 Pytest 命令行参数
-        :param user: 用户名
-        :param _ip: 测试机IP
-        :param password: 测试机密码
-        :return:
-        """
-        # pylint: disable=too-many-branches
         cmd = [
             self.ssh % password,
             f"{user}@{_ip}",
@@ -266,11 +193,6 @@ class RemoteRunner:
             i = list(i)
             i[0] = f"--{i[0]}"
             i[1] = f"'{i[1]}'"
-            if i[0] == "--app_name":
-                real_app_name = f"apps/{self.default.get(Args.app_name.value)}"
-                if self.default.get(Args.app_name.value) is None:
-                    real_app_name = ""
-                continue
 
             _tmp_args.extend(i)
         cmd.extend(
@@ -281,124 +203,32 @@ class RemoteRunner:
                 "run",
             ]
         )
-        from src.rtk.local_runner import LocalRunner
+        from youqu3.driver.run import Run
 
-        lr = LocalRunner(debug=True)
+        lr = Run(debug=True)
         lr_args = {k: v for k, v in lr.export_default.items() if v}
         rr_args = {k: v for k, v in self.local_kwargs.items() if v}
         lr_args.update(rr_args)
-        if all(
-                [
-                    lr_args.get(Args.task_id.value),
-                    lr_args.get(Args.pms_user.value),
-                    lr_args.get(Args.pms_password.value),
-                    lr_args.get(Args.send_pms.value) == "finish",
-                ]
-        ):
-            lr_args[Args.trigger.value] = "hand"
-            self.collection_json = True
-            self.pms_user = lr_args.get(Args.pms_user.value)
-            self.pms_password = lr_args.get(Args.pms_password.value)
-            self.server_json_dir_id = lr_args.get(Args.task_id.value)
-        pytest_cmd = lr.create_pytest_cmd(
-            real_app_name.replace("apps/", ""),
-            default=lr_args,
-            proj_path=f"/home/{user}/{self.server_project_path}",
-        )
+        pytest_cmd = lr.generate_pytest_cmd()
 
         cmd.extend(pytest_cmd)
         cmd.append('"')
         cmd_str = " ".join(cmd)
         logger.info(f"\n{cmd_str}\n")
-        if self.default.get(Args.debug.value):
-            logger.info("DEBUG 模式不执行用例!")
-        else:
-            system(cmd_str)
-
-    def pytest_co_cmd(self):
-        """
-         创建收集用例的命令行参数
-        :return:
-        """
-        app_dir = (
-            self.default.get(Args.app_name.value) if self.default.get(Args.app_name.value) else ""
-        )
-        cmd = [
-            "pytest",
-            f"{GlobalConfig.APPS_PATH}/{app_dir}",
-        ]
-        if self.default.get(Args.keywords.value):
-            cmd.extend(["-k", f"'{self.default.get(Args.keywords.value)}'"])
-        if self.default.get(Args.tags.value):
-            cmd.extend(["-m", f"'{self.default.get(Args.tags.value)}'"])
-        if self.default.get(Args.noskip.value):
-            cmd.extend(["--noskip", self.default.get(Args.noskip.value)])
-        if self.default.get(Args.ifixed.value):
-            cmd.extend(["--ifixed", self.default.get(Args.ifixed.value)])
-        if self.default.get(Args.send_pms.value):
-            cmd.extend(["--send_pms", self.default.get(Args.send_pms.value)])
-        if self.default.get(Args.task_id.value):
-            cmd.extend(["--task_id", self.default.get(Args.task_id.value)])
-        if self.default.get(Args.trigger.value):
-            cmd.extend(["--trigger", "auto"])
-        cmd.append("--co")
-        collect_only_cmd = " ".join(cmd)
-        logger.info(f"Collecting: \n{collect_only_cmd}")
-        collect_only_log = CmdCtl.run_cmd(collect_only_cmd)
-        re_expr = compile(r"<Module (.*?\.py)>")
-        cases = re.findall(re_expr, collect_only_log)
-        if not cases:
-            logger.error("未收集到用例")
-            sys.exit(0)
-        return cases
-
-    def pre_env(self):
-        """
-         前置环境处理
-        :return:
-        """
-        # rm hosts
-        system(f"rm -rf ~/.ssh/known_hosts {self.empty}")
-        # rm server report
-        if self.clean_server_report_dir:
-            system(f"rm -rf {GlobalConfig.REPORT_PATH}/* {self.empty}")
-        # rm client report
-        if not self.default.get(Args.send_code.value) and self.clean_client_report_dir:
-            for client in self.default.get(Args.clients.value):
-                user, _ip, password = self.default.get(Args.clients.value).get(client)
-                system(
-                    f"""{self.ssh % password} {user}@{_ip} "rm -rf {self.client_report_path(user)}/*" {self.empty}"""
-                )
-        # delete ssh ask
-        sudo = f"echo '{GlobalConfig.PASSWORD}' | sudo -S"
-        if "StrictHostKeyChecking no" not in popen("cat /etc/ssh/ssh_config").read():
-            system(
-                f"""{sudo} sed -i "s/#   StrictHostKeyChecking ask/ StrictHostKeyChecking no/g" /etc/ssh/ssh_config {self.empty}"""
-            )
-        # install sshpass
-        if "(C)" not in popen("sshpass -V").read():
-            system(f"{sudo} apt update {self.empty}")
-            system(f"{sudo} apt install sshpass {self.empty}")
+        Cmd.run_cmd(cmd_str)
 
     def scp_report(self, user, _ip, password):
-        """
-         远程复制报告
-        :param user:
-        :param _ip:
-        :param password:
-        :return:
-        """
-        html_dir_endswith = f"_{self.default.get(Args.app_name.value)}" if self.default.get(Args.app_name.value) else ""
-        if not self.default.get(Args.parallel.value):
-            self.nginx_server_allure_path = f"{GlobalConfig.REPORT_PATH}/allure/{self.strf_time}{html_dir_endswith}"
-            self.make_dir(self.nginx_server_allure_path)
-            system(
+        html_dir_endswith = f"_{self.dirname}"
+        if not self.parallel:
+            self.nginx_server_allure_path = f"./report/allure/{self.strf_time}{html_dir_endswith}"
+            self.makedirs(self.nginx_server_allure_path)
+            Cmd.run_cmd(
                 f"{self.scp % password} {user}@{_ip}:{self.client_allure_report_path(user)}/* {self.nginx_server_allure_path}/ {self.empty}"
             )
         else:
-            server_allure_path = f"{GlobalConfig.REPORT_PATH}/allure/{self.strf_time}_ip{_ip}{html_dir_endswith}"
-            self.make_dir(server_allure_path)
-            system(
+            server_allure_path = f"./report/allure/{self.strf_time}_ip{_ip}{html_dir_endswith}"
+            self.makedirs(server_allure_path)
+            Cmd.run_cmd(
                 f"{self.scp % password} {user}@{_ip}:{self.client_allure_report_path(user)}/* {server_allure_path}/ {self.empty}"
             )
             generate_allure_html = f"{server_allure_path}/html"
@@ -406,21 +236,21 @@ class RemoteRunner:
 
         if self.collection_json:
             server_json_path = f"{GlobalConfig.REPORT_PATH}/pms_{self.server_json_dir_id}/{self.strf_time}_ip{_ip}_{self.default.get(Args.app_name.value)}"
-            self.make_dir(server_json_path)
-            system(
+            self.makedirs(server_json_path)
+            Cmd.run_cmd(
                 f"{self.scp % password} {user}@{_ip}:{self.client_pms_json_report_path(user, self.server_json_dir_id)}/* {server_json_path}/ {self.empty}"
             )
-        self.make_dir(self.server_detail_json_path)
-        system(
+        self.makedirs(self.server_detail_json_path)
+        Cmd.run_cmd(
             f"{self.scp % password} {user}@{_ip}:{self.client_json_report_path(user)}/detail_report.json {self.server_detail_json_path}/detail_report_{_ip}.json"
         )
-        system(
+        Cmd.run_cmd(
             f"{self.scp % password} {user}@{_ip}:{self.client_json_report_path(user)}/summarize.json {self.server_detail_json_path}/summarize_{_ip}.json"
         )
 
     def remote_finish_send_to_pms(self):
         json_path = f"{GlobalConfig.REPORT_PATH}/pms_{self.server_json_dir_id}"
-        self.make_dir(json_path)
+        self.makedirs(json_path)
         res = {}
         for root, dirs, files in os.walk(json_path):
             for file in files:
@@ -449,19 +279,19 @@ class RemoteRunner:
         :return:
         """
         # mul get report
-        if len(self.default.get(Args.clients.value)) >= 2:
+        if len(self.clients) >= 2:
             _ps = []
             executor = ThreadPoolExecutor()
             for client in client_list[:-1]:
-                user, _ip, password = self.default.get(Args.clients.value).get(client)
+                user, _ip, password = self.clients.get(client)
                 _p4 = executor.submit(self.scp_report, user, _ip, password)
                 _ps.append(_p4)
                 sleep(2)
-            user, _ip, password = self.default.get(Args.clients.value).get(client_list[-1])
+            user, _ip, password = self.clients.get(client_list[-1])
             self.scp_report(user, _ip, password)
             wait(_ps, return_when=ALL_COMPLETED)
         else:
-            user, _ip, password = self.default.get(Args.clients.value).get(client_list[0])
+            user, _ip, password = self.clients.get(client_list[0])
             self.scp_report(user, _ip, password)
 
         if self.collection_json:
@@ -479,7 +309,7 @@ class RemoteRunner:
                 password=self.default.get(Args.json_backfill_password.value),
             ).remote_backfill(self.server_detail_json_path, self.default.get(Args.json_backfill_task_id.value))
         # 分布式执行的情况下需要汇总结果
-        if not self.default.get(Args.parallel.value):
+        if not self.parallel:
             summarize = {
                 "total": 0,
                 "pass": 0,
@@ -507,11 +337,11 @@ class RemoteRunner:
         _ps = []
         executor = ThreadPoolExecutor()
         for client in client_list[:-1]:
-            user, _ip, password = self.default.get(Args.clients.value).get(client)
+            user, _ip, password = self.clients.get(client)
             _p3 = executor.submit(self.run_pytest_cmd, user, _ip, password)
             _ps.append(_p3)
             time.sleep(1)
-        user, _ip, password = self.default.get(Args.clients.value).get(client_list[-1])
+        user, _ip, password = self.clients.get(client_list[-1])
         self.run_pytest_cmd(
             user,
             _ip,
@@ -538,7 +368,7 @@ class RemoteRunner:
             try:
                 # pylint: disable=unsubscriptable-object
                 for client in cycle(client_list)[::-1]:
-                    user, _ip, password = self.default.get(Args.clients.value).get(client)
+                    user, _ip, password = self.clients.get(client)
                     if not self.get_client_test_status(user, _ip, password):
                         _p2 = executor.submit(
                             self.run_pytest_cmd,
@@ -574,20 +404,20 @@ class RemoteRunner:
          远程执行主函数
         :return:
         """
-        client_list = list(self.default.get(Args.clients.value).keys())
+        client_list = list(self.clients.keys())
         self.pre_env()
         logger.info(
             "\n测试机列表:\n"
-            + "\n".join([str(i) for i in self.default.get(Args.clients.value).items()])
+            + "\n".join([str(i) for i in self.clients.items()])
         )
         if self.default.get(Args.build_env.value):
             self.mul_do(self.send_code_and_env, client_list)
         else:
-            if self.default.get(Args.send_code.value):
+            if self.send_code:
                 self.mul_do(self.send_code_to_client, client_list)
         if self.default.get(Args.deb_path.value):
             self.mul_do(self.install_deb, client_list)
-        if self.default.get(Args.parallel.value):
+        if self.parallel:
             self.parallel_run(client_list)
         else:
             self.nginx_run(client_list)
