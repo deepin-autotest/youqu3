@@ -9,7 +9,7 @@
 
 --------------
 
-文档：
+文档：https://funny-dream.github.io/youqu3/
 
 --------------
 
