@@ -38,6 +38,8 @@ def remote():
 def init():
     """初始化APP工程"""
     console.print("init")
+    from youqu3.driver.init import Init
+    Init().init()
 
 
 if __name__ == '__main__':

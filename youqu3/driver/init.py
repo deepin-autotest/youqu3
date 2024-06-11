@@ -14,7 +14,7 @@ from youqu3 import setting
 from rich.tree import Tree
 
 
-class StartApp:
+class Init:
 
     def copy_template_to_apps(self):
         if os.listdir("."):
@@ -25,7 +25,7 @@ class StartApp:
         os.system(f"cp -r {setting.TPL_PATH}/* .")
         os.system(f"cp {setting.TPL_PATH}/.gitignore-tpl  .")
 
-    def rewrite(self):
+    def init(self):
         dirname = pathlib.Path(__file__).parent.name
         for root, dirs, files in os.walk("."):
             for file in files:
