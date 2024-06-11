@@ -9,9 +9,11 @@
 
 --------------
 
-**[YouQu3]()** 旨在成为下一代 Linux 自动化测试框架，全新的插件化及模块化功能，带来全新的使用效果。
+文档：
 
-[YouQu3架构设计.md](docs/YouQu3架构设计.md)
+--------------
+
+**[YouQu3]()** 旨在成为下一代 Linux 自动化测试框架，全新的插件化及模块化功能，带来全新的使用效果。
 
 ## [特性]()
 
@@ -56,14 +58,14 @@ pip install youqu3[http]
 
 ## [YouQu3 插件生态]()
 
-| **序号**                                        | YouQu3 插件名称                                              | 说明                                 |
+| 序号（是否可用）                                  | YouQu3 插件名称                                              | 说明                                 |
 | :----------------------------------------------------------: | ------------------------------------ | ------------------------------------ |
-| 1 | [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail) | 属性定位插件                         |
-| 2 | [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc) | 基于 RPC 服务的图像识别插件      |
-| 3 | [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey) | 键鼠操作插件                         |
-| 4 | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 |
-| 5         | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       |
-| 6       | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         |
-| 7 | [pytest-mark-manage](https://github.com/funny-dream/pytest-mark-manage) | 用例标签化管理插件 |
-| 8 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland下完美的键鼠工具 |
+| 1 &#9745; | [youqu-dogtail](https://github.com/funny-dream/youqu-dogtail) | 属性定位插件                         |
+| 2 &#9744; | [youqu-imagecenter-rpc](https://github.com/funny-dream/youqu-imagecenter-rpc) | 基于 RPC 服务的图像识别插件      |
+| 3 &#9745; | [youqu-mousekey](https://github.com/funny-dream/youqu-mousekey) | 键鼠操作插件                         |
+| 4 &#9744; | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 |
+| 5 &#9745; | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       |
+| 6 &#9745; | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         |
+| 7 &#9745; | [pytest-mark-manage](https://github.com/funny-dream/pytest-mark-manage) | 用例标签化管理插件 |
+| 8 &#9744; | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 |
 
