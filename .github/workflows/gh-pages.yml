@@ -16,7 +16,7 @@ jobs:
       - run: cd docs/;bash docs_env.sh
 
       - name: Build
-        run: export VITE_BASE="/youqu/";pnpm run build
+        run: export VITE_BASE="/youqu3/";pnpm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
