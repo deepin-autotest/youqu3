@@ -28,26 +28,21 @@ export default withMermaid(
             siteTitle: "YouQu3",
             nav: [
                 {text: '首页', link: '/index'},
+                {text: '简介', link: '/快速开始'},
                 {text: '设计', link: '/设计/YouQu3架构设计规划'},
-                {
-                    text: '插件', items: [
-                        {text: "日志系统 | funnylog", link: "https://linuxdeepin.github.io/funnylog/"},
-                        {text: "文字识别 | pdocr-rpc", link: "https://linuxdeepin.github.io/pdocr-rpc/"},
-                    ]
-                },
             ],
 
-            sidebar: {
-                "/设计/": [
-                    {
-                        text: "框架设计",
-                        collapsed: false,
-                        items: [
-                            {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
-                        ]
-                    },
-                ],
-            },
+            // sidebar: {
+            //     "/设计/": [
+            //         {
+            //             text: "框架设计",
+            //             collapsed: false,
+            //             items: [
+            //                 {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
+            //             ]
+            //         },
+            //     ],
+            // },
             search: {
                 provider: 'local'
             },

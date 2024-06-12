@@ -6,7 +6,6 @@ import json
 import os
 import pathlib
 import re
-import sys
 import time
 from concurrent.futures import ALL_COMPLETED
 from concurrent.futures import ThreadPoolExecutor
@@ -16,6 +15,9 @@ from itertools import cycle
 from youqu3 import logger
 from youqu3 import setting
 from youqu3.cmd import Cmd
+from youqu3 import sleep
+
+from allure_custom import AllureCustom
 
 
 
@@ -232,52 +234,11 @@ class RemoteRunner:
                 f"{self.scp % password} {user}@{_ip}:{self.client_allure_report_path(user)}/* {server_allure_path}/ {self.empty}"
             )
             generate_allure_html = f"{server_allure_path}/html"
+
             AllureCustom.gen(server_allure_path, generate_allure_html)
 
-        if self.collection_json:
-            server_json_path = f"{GlobalConfig.REPORT_PATH}/pms_{self.server_json_dir_id}/{self.strf_time}_ip{_ip}_{self.default.get(Args.app_name.value)}"
-            self.makedirs(server_json_path)
-            Cmd.run_cmd(
-                f"{self.scp % password} {user}@{_ip}:{self.client_pms_json_report_path(user, self.server_json_dir_id)}/* {server_json_path}/ {self.empty}"
-            )
-        self.makedirs(self.server_detail_json_path)
-        Cmd.run_cmd(
-            f"{self.scp % password} {user}@{_ip}:{self.client_json_report_path(user)}/detail_report.json {self.server_detail_json_path}/detail_report_{_ip}.json"
-        )
-        Cmd.run_cmd(
-            f"{self.scp % password} {user}@{_ip}:{self.client_json_report_path(user)}/summarize.json {self.server_detail_json_path}/summarize_{_ip}.json"
-        )
-
-    def remote_finish_send_to_pms(self):
-        json_path = f"{GlobalConfig.REPORT_PATH}/pms_{self.server_json_dir_id}"
-        self.makedirs(json_path)
-        res = {}
-        for root, dirs, files in os.walk(json_path):
-            for file in files:
-                if file.endswith(".json") and file != "total.json":
-                    case_name = os.path.splitext(file)[0]
-                    file_path = f"{root}/{file}"
-
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        _client_res = json.load(f)
-                    if not res.get(case_name):
-                        res[case_name] = _client_res
-                    else:
-                        if res.get(case_name).get("result") != "fail":
-                            res[case_name] = _client_res
-        with open(f"{json_path}/total.json", "w+", encoding="utf-8") as f:
-            f.write(json.dumps(res, indent=2, ensure_ascii=False))
-        Send2Pms(
-            user=self.pms_user,
-            password=self.pms_password,
-        ).remote_finish_push(res)
 
     def get_report(self, client_list):
-        """
-         回传测试报告
-        :param client_list: 客户端列表
-        :return:
-        """
         # mul get report
         if len(self.clients) >= 2:
             _ps = []
@@ -294,20 +255,6 @@ class RemoteRunner:
             user, _ip, password = self.clients.get(client_list[0])
             self.scp_report(user, _ip, password)
 
-        if self.collection_json:
-            self.remote_finish_send_to_pms()
-        if all([
-            self.default.get(Args.json_backfill_base_url.value),
-            self.default.get(Args.json_backfill_task_id.value),
-            self.default.get(Args.json_backfill_user.value),
-            self.default.get(Args.json_backfill_password.value)
-        ]):
-            from src.rtk.json_backfill import JsonBackfill
-            JsonBackfill(
-                base_url=self.default.get(Args.json_backfill_base_url.value),
-                username=self.default.get(Args.json_backfill_user.value),
-                password=self.default.get(Args.json_backfill_password.value),
-            ).remote_backfill(self.server_detail_json_path, self.default.get(Args.json_backfill_task_id.value))
         # 分布式执行的情况下需要汇总结果
         if not self.parallel:
             summarize = {
@@ -375,8 +322,8 @@ class RemoteRunner:
                             user,
                             _ip,
                             password,
-                            f"{os.path.splitext(case)[0]} and ({self.default.get(Args.keywords.value)})",
-                            self.default.get(Args.tags.value),
+                            f"{os.path.splitext(case)[0]} and ({self.keywords})",
+                            self.tags,
                         )
                         _ps.append(_p2)
                         # relax and wait for pytest start
@@ -410,13 +357,11 @@ class RemoteRunner:
             "\n测试机列表:\n"
             + "\n".join([str(i) for i in self.clients.items()])
         )
-        if self.default.get(Args.build_env.value):
+        if self.build_env:
             self.mul_do(self.send_code_and_env, client_list)
         else:
             if self.send_code:
                 self.mul_do(self.send_code_to_client, client_list)
-        if self.default.get(Args.deb_path.value):
-            self.mul_do(self.install_deb, client_list)
         if self.parallel:
             self.parallel_run(client_list)
         else:
