@@ -10,6 +10,7 @@ dependencies = [
     "pytest-rerunfailures",
     "pytest-mark-manage",
     "allure-pytest",
+    "pytest-json-report",
     "funnylog",
     "click",
     "rich",

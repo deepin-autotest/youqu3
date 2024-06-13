@@ -1,4 +1,5 @@
 import os
+import time
 import getpass
 import pathlib
 import platform
@@ -33,3 +34,5 @@ class _DynamicSetting:
 
     IS_X11: bool = DISPLAY_SERVER == DisplayServer.x11
     IS_WAYLAND: bool = DISPLAY_SERVER == DisplayServer.wayland
+
+    TIME_STRING = time.strftime("%Y%m%d%H%M%S")
