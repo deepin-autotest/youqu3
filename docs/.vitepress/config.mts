@@ -32,17 +32,18 @@ export default withMermaid(
                 {text: '设计', link: '/设计/YouQu3架构设计规划'},
             ],
 
-            // sidebar: {
-            //     "/设计/": [
-            //         {
-            //             text: "框架设计",
-            //             collapsed: false,
-            //             items: [
-            //                 {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
-            //             ]
-            //         },
-            //     ],
-            // },
+            sidebar: {
+                "/设计/": [
+                    {
+                        text: "框架设计",
+                        collapsed: false,
+                        items: [
+                            {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
+                            {text: "UOS系统测试套件", link: "/设计/UOS系统测试套件"},
+                        ]
+                    },
+                ],
+            },
             search: {
                 provider: 'local'
             },

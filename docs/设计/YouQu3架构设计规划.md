@@ -117,10 +117,10 @@ autotest-my-case    # 用例工程名称
 │   ├── image_res     # 图像识别方法所需要的资源
 │   ├── base_method.py       # 方法基类
 │   ├── my_case_method.py    # 方法唯一出口类
+│   ├── assert_method.py     # 断言方法类
 │   ├── other_method.py      # 其他方法类
 │   ├── other.ini  # 其他应用的基于相对位移元素定位方案的配置文件
 │   └── ui.ini     # 相对位移元素定位方案的配置文件
-├── my_case_assert.py    # 断言方法类
 ├── config.py    # 配置模块，提供可调用的配置对象config
 ├── conftest.py    # Pytest Fixture 插件库
 ├── mycase.csv     # 用例标签管理文件
