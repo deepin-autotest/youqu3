@@ -59,3 +59,17 @@ packages = [
     "/youqu3",
 ]
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/.venv",
+  "/.env",
+  "/.gitignore",
+  "/dist",
+  "/docs",
+  "/node_modules",
+  "/tests",
+  "/package.json",
+  "/Pipfile",
+  "/publish.sh",
+]
