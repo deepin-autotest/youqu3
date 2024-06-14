@@ -5,12 +5,11 @@ console = Console()
 
 
 @click.group()
-@click.option("-v", "--version")
-def cli():
-    console.print(
-        "YouQu3 :dragon:",
-        style="blue",
-    )
+@click.option("-v", "--version", is_flag=True, default=False, help="veesion")
+def cli(version):
+    if version:
+        from youqu3.__version__ import __version__
+        print(__version__)
 
 
 @cli.command()
