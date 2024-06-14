@@ -77,6 +77,6 @@ pip install youqu3[http]
 | 14 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
 | 15 | UTMK （[uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)） | UOS系统自动化测试方法套件 | 🔥 |
 
-## [用例 Demo]()
+## [用例示例]()
 
-https://github.com/funny-dream/youqu3-testcase-demo
+https://github.com/funny-dream/youqu3-testcase
