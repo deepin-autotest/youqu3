@@ -31,6 +31,11 @@ class _Setting(_DynamicSetting):
     IMAGE_PORT = 8889
     IMAGE_SERVER_HOST = "10.8.11.139"
 
+    # REMOTE
+    PARALLEL = True
+    BUILD_ENV = True
+    SEND_CODE = True
+
     @dataclasses.dataclass
     class Sleepx:
         x86_64: [float, int] = 1

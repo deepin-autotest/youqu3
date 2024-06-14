@@ -44,7 +44,7 @@ class Run:
         if len_tags >= 999:
             sys.setrecursionlimit(len_tags + 100)
 
-    def generate_pytest_cmd(self):
+    def generate_cmd(self):
         cmd = ["pytest"]
 
         if self.keywords:
@@ -68,8 +68,9 @@ class Run:
         return cmd
 
     def run(self):
-        run_test_cmd_list = self.generate_pytest_cmd()
-        pytest.main([i.strip("'") for i in run_test_cmd_list[1:]])
+        pytest.main(
+            [i.strip("'") for i in self.generate_cmd()[1:]]
+        )
 
         from allure_custom import AllureCustom
         AllureCustom.gen(str(self.allure_path), str(self.allure_html_path))

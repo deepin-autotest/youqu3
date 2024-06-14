@@ -12,13 +12,12 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 from itertools import cycle
 
-from youqu3 import logger
-from youqu3 import setting
-from youqu3.cmd import Cmd
-from youqu3 import sleep
-
 from allure_custom import AllureCustom
 
+from youqu3 import logger
+from youqu3 import setting
+from youqu3 import sleep
+from youqu3.cmd import Cmd
 
 
 class RemoteRunner:
@@ -53,19 +52,19 @@ class RemoteRunner:
         else:
             raise ValueError("--clients user@ip")
 
-        self.clients= client_dict
-        self.send_code= remote_kwargs.get("send_code") or setting.SEND_CODE
-        self.build_env= remote_kwargs.get("build_env") or setting.BUILD_ENV
-        self.parallel= remote_kwargs.get("parallel") or setting.PARALLEL
+        self.clients = client_dict
+        self.send_code = remote_kwargs.get("send_code") or setting.SEND_CODE
+        self.build_env = remote_kwargs.get("build_env") or setting.BUILD_ENV
+        self.parallel = remote_kwargs.get("parallel") or setting.PARALLEL
         self.scan = int(setting.SCAN)
 
-        self.server_project_path = "."
+        self.server_project_path = pathlib.Path(".").absolute()
         self.dirname = pathlib.Path(".").parent.name
 
-        self.client_report_path = lambda x: f"/home/{x}/{self.dirname}/report"
+        self.client_project_path = lambda x: f"/home/{x}/{self.dirname}"
+        self.client_report_path = lambda x: f"{self.client_project_path(x)}/report"
         self.client_allure_report_path = lambda x: f"{self.client_report_path(x)}/allure"
         self.client_json_report_path = lambda x: f"{self.client_report_path(x)}/json"
-        self.client_xml_report_path = lambda x: f"{self.client_report_path(x)}/xml"
 
         self.strf_time = time.strftime("%m%d%p%I%M%S")
         self.client_list = list(self.clients.keys())
@@ -81,7 +80,7 @@ class RemoteRunner:
         self.server_json_dir_id = None
         self.pms_user = None
         self.pms_password = None
-        
+
     def pre_env(self):
         # rm hosts
         Cmd.run_cmd(f"rm -rf ~/.ssh/known_hosts {self.empty}")
@@ -104,7 +103,7 @@ class RemoteRunner:
             Cmd.run_cmd(f"{sudo} apt install sshpass {self.empty}")
 
     def send_code_to_client(self, user, _ip, password):
-        logger.info(f"发送代码到测试机 - < {user}@{_ip} >")
+        logger.info(f"开始发送代码到测试机 - < {user}@{_ip} >")
         Cmd.run_cmd(
             f"{self.ssh % password} {user}@{_ip} "
             f""""echo '{password}' | sudo -S rm -rf ~/{self.server_project_path}" {self.empty}"""
@@ -125,34 +124,33 @@ class RemoteRunner:
             ".gitignore",
         ]:
             exclude += f"--exclude='{i}' "
-        Cmd.run_cmd(
-            f"{self.rsync % (password,)} {exclude} ./* {user}@{_ip}:~/{self.dirname}/ {self.empty}"
+        _, return_code = Cmd.run_cmd(
+            f"{self.rsync % (password,)} {exclude} ./* {user}@{_ip}:~/{self.dirname}/ {self.empty}",
+            return_code=True
         )
-        Cmd.run_cmd(
-            f"{self.rsync % (password,)} {exclude} ./.env {user}@{_ip}:~/{self.dirname}/ {self.empty}"
+        _, return_code = Cmd.run_cmd(
+            f"{self.rsync % (password,)} {exclude} ./.env {user}@{_ip}:~/{self.dirname}/ {self.empty}",
+            return_code=True
         )
-        logger.info(f"代码发送成功 - < {user}@{_ip} >")
+        logger.info(f"代码发送{'成功' if return_code == 0 else '失败'} - < {user}@{_ip} >")
 
     def build_client_env(self, user, _ip, password):
-        logger.info(f"安装环境 - < {user}@{_ip} >")
+        logger.info(f"开始安装环境 - < {user}@{_ip} >")
         # TODO
-        Cmd.run_cmd(
-            f"{self.ssh % password} {user}@{_ip} "
-            f'"cd ~/{self.server_project_path}/ && bash env.sh"'
+        _, return_code = Cmd.run_cmd(
+            cmd=(
+                f"{self.ssh % password} {user}@{_ip} "
+                f'"cd ~/{self.server_project_path}/ && bash env.sh"'
+            ),
+            return_code=True
         )
-        logger.info(f"环境安装完成 - < {user}@{_ip} >")
+        logger.info(f"环境安装{'成功' if return_code == 0 else '失败'} - < {user}@{_ip} >")
 
     def send_code_and_env(self, user, _ip, password):
         self.send_code_to_client(user, _ip, password)
         self.build_client_env(user, _ip, password)
 
     def mul_do(self, func_obj, client_list):
-        """
-         异步发送代码
-        :param func_obj: 函数对象
-        :param client_list: 测试机列表
-        :return:
-        """
         if len(client_list) >= 2:
             executor = ThreadPoolExecutor()
             _ps = []
@@ -170,15 +168,14 @@ class RemoteRunner:
     def get_client_test_status(self, user, _ip, password):
         status_test = Cmd.run_cmd(
             f'{self.ssh % password} {user}@{_ip} "ps -aux | grep pytest | grep -v grep"'
-        ).stdout
+        )
         return bool(status_test)
 
     @staticmethod
     def makedirs(dirs):
-        if not os.path.exists(dirs):
-            os.makedirs(dirs)
+        pathlib.Path(dirs).mkdir(parents=True, exist_ok=True)
 
-    def run_pytest_cmd(self, user, _ip, password):
+    def generate_cmd(self, user, _ip, password):
         cmd = [
             self.ssh % password,
             f"{user}@{_ip}",
@@ -211,7 +208,7 @@ class RemoteRunner:
         lr_args = {k: v for k, v in lr.export_default.items() if v}
         rr_args = {k: v for k, v in self.local_kwargs.items() if v}
         lr_args.update(rr_args)
-        pytest_cmd = lr.generate_pytest_cmd()
+        pytest_cmd = lr.generate_cmd()
 
         cmd.extend(pytest_cmd)
         cmd.append('"')
@@ -236,7 +233,6 @@ class RemoteRunner:
             generate_allure_html = f"{server_allure_path}/html"
 
             AllureCustom.gen(server_allure_path, generate_allure_html)
-
 
     def get_report(self, client_list):
         # mul get report
