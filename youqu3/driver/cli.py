@@ -5,6 +5,7 @@ console = Console()
 
 
 @click.group()
+@click.option("-v", "--version")
 def cli():
     console.print(
         "YouQu3 :dragon:",
