@@ -76,6 +76,7 @@ pip install youqu3[http]
 | 13 | [allure-custom](https://github.com/funny-dream/allure-custom) | 基于 Allure 定制的测试报告 | ✔️ |
 | 14 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
 | 15 | UTMK （[uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)） | UOS系统自动化测试方法套件 | 🔥 |
+| 16 | [youqu3-boom](https://github.com/funny-dream/youqu3-boom) | 安装 YouQu3 虚拟环境 | ✔️ |
 
 ## [用例示例]()
 

@@ -9,6 +9,9 @@ try:
 except ImportError:
     HAS_OCR = False
 
+if HAS_OCR is False:
+    raise ImportError("pdocr-rpc module is required, try 'pip install pdocr-rpc'")
+
 
 class OCR:
 

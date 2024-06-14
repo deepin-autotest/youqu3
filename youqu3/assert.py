@@ -6,8 +6,10 @@ import os
 from time import sleep
 from typing import Union
 
-from youqu3 import log, logger
-from youqu3.exception import ElementNotFound, ElementExpressionError
+from youqu3 import exception
+from youqu3 import log, logger, setting
+from youqu3.cmd import Cmd
+from youqu3.file import File
 
 
 @log
@@ -33,9 +35,9 @@ class Assert:
         :param rate: 匹配相似度
         """
         logger.info(f"屏幕上匹配图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >")
-        from youqu3.image import ImageUtils
+        from youqu_imagecenter_rpc import ImageCenter
         try:
-            ImageUtils.find_image(
+            ImageCenter.find_image(
                 widget,
                 rate=rate,
                 multiple=multiple,
@@ -45,10 +47,10 @@ class Assert:
                 timeout=timeout,
                 max_match_number=match_number,
             )
-        except TemplateElementNotFound as exc:
-            raise AssertionError(exc) from TemplateElementNotFound
+        except exception.TemplateElementNotFound as exc:
+            raise AssertionError(exc) from exception.TemplateElementNotFound
         except Exception as exc:
-            raise AssertOptionError(exc) from Exception
+            raise exception.AssertOptionError(exc) from Exception
 
     @classmethod
     def assert_image_exist_during_time(
@@ -67,13 +69,13 @@ class Assert:
         :param pause: 截取屏幕图片的间隔时间，默认不间隔；
         """
         logger.info(f"屏幕上匹配图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >")
-        from youqu3.image import ImageUtils
+        from youqu_imagecenter_rpc import ImageCenter
         try:
-            ImageUtils.get_during(widget, screen_time, rate, pause)
-        except TemplateElementNotFound as exc:
-            raise AssertionError(exc) from TemplateElementNotFound
+            ImageCenter.get_during(widget, screen_time, rate, pause)
+        except exception.TemplateElementNotFound as exc:
+            raise AssertionError(exc) from exception.TemplateElementNotFound
         except Exception as exc:
-            raise AssertOptionError(exc) from Exception
+            raise exception.AssertOptionError(exc) from Exception
 
     @staticmethod
     def assert_image_not_exist(
@@ -106,13 +108,13 @@ class Assert:
                 timeout=timeout,
                 max_match_number=match_number,
             )
-            raise TemplateElementFound(widget)
-        except TemplateElementNotFound:
+            raise exception.TemplateElementFound(widget)
+        except exception.TemplateElementNotFound:
             pass
-        except TemplateElementFound as exc:
-            raise AssertionError(exc) from TemplateElementFound
+        except exception.TemplateElementFound as exc:
+            raise AssertionError(exc) from exception.TemplateElementFound
         except Exception as exc:
-            raise AssertOptionError(exc) from Exception
+            raise exception.AssertOptionError(exc) from Exception
 
     @staticmethod
     def assert_file_exist(widget, file=None, recursive=False):
@@ -191,7 +193,7 @@ class Assert:
         try:
             Dogtail().find_element_by_attr(expr)
             raise AssertionError(f"元素不应存在！！！expr= <{expr}>")
-        except ElementNotFound:
+        except exception.ElementNotFound:
             pass
 
     @staticmethod
@@ -205,7 +207,7 @@ class Assert:
         from youqu3.dogtail import Dogtail
         result = Dogtail().find_elements_by_attr(expr)
         if isinstance(result, bool):
-            raise ElementExpressionError(expr)
+            raise exception.ElementExpressionError(expr)
         if len(result) != number:
             raise AssertionError(f"元素个数{len(result)} 与期望个数 {number} 不符!")
 
@@ -228,7 +230,7 @@ class Assert:
         :param app: 应用名字
         """
         logger.info(f"断言应用进程状态{app}与期望{expect}是否相同")
-        if expect != CmdCtl.get_process_status(app):
+        if expect != Cmd.get_process_status(app):
             raise AssertionError(f"断言应用进程状态{app}与期望{expect}不相同")
 
     @staticmethod
@@ -239,20 +241,8 @@ class Assert:
         :param app: 应用名字
         """
         logger.info(f"断言 {app} 应用进程数量是否为 {num}")
-        if num != CmdCtl.get_daemon_process_num(app):
+        if num != Cmd.get_daemon_process_num(app):
             raise AssertionError(f"断言 {app} 应用进程数量与期望{num}不相同")
-
-    @staticmethod
-    def assert_window_amount(app, expect):
-        """
-         断言应用窗口数量
-        :param expect: 应用窗口数量
-        :param app: 应用名字
-        """
-        logger.info(f"断言应用窗口数量{app}与期望{expect}是否相同")
-        number = ButtonCenter(app_name=app, config_path="xxx").get_windows_number(app)
-        if expect != number:
-            raise AssertionError(f"断言应用窗口数量{app}为{number}与期望{expect}不相同")
 
     @staticmethod
     def assert_share_folder(filename):
@@ -260,11 +250,8 @@ class Assert:
          断言存在共享文件夹 filename
         :param filename: 共享文件夹名称
         """
-        share_folder = CmdCtl.run_cmd(
+        share_folder = Cmd.run_cmd(
             "net usershare list",
-            interrupt=False,
-            out_debug_flag=False,
-            command_log=False,
         )
         if share_folder:
             share_folder = share_folder.split("\n")
@@ -278,40 +265,14 @@ class Assert:
          断言不存在共享文件夹 filename
         :param filename: 共享文件夹名称
         """
-        share_folder = CmdCtl.run_cmd(
+        share_folder = Cmd.run_cmd(
             "net usershare list",
-            interrupt=False,
-            out_debug_flag=False,
-            command_log=False,
         )
         if share_folder:
             share_folder = share_folder.split("\n")
         logger.info(f"断言共享目录中是否存在{filename}文件夹")
         if filename in share_folder:
             raise AssertionError(f"断言共享目录中存在{filename}文件夹")
-
-    @staticmethod
-    def assert_theme(expect):
-        """
-         断言主题, 图片中颜色大于50%, 为断言主题准确性，建议最大化窗口
-        :param expect: 期望的主题 浅色/深色
-        """
-        logger.info(f"断言主题是否为<{expect}>主题")
-        config = {"浅色": (248, 248, 248), "深色": (37, 37, 37)}
-        exp_color = config[expect]
-        # 在data/pic_res这个目录下生成一张临时的图，每次生成会被覆盖
-        if GlobalConfig.IS_X11:
-            pyscreenshot.grab().save(GlobalConfig.SCREEN_CACHE)
-        else:
-            GlobalConfig.SCREEN_CACHE = (
-                os.popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen").read().strip("\n")
-            )
-        color_list = ImageUtils.find_image_color(GlobalConfig.SCREEN_CACHE)
-        proportion = round(color_list.count(exp_color) / len(color_list), 2)
-        if proportion < 0.6:
-            raise AssertionError(
-                f"{expect}主题颜色占屏幕总体颜色占比低于60%，实际占比{proportion * 100}%，初步断言主题失败"
-            )
 
     @staticmethod
     def assert_equal(expect, actual):
@@ -360,7 +321,8 @@ class Assert:
         :param file: 结果
         :param size: 期望尺寸 例如（120, 400）
         """
-        really = ImageUtils.get_pic_px(file)
+        from youqu_imagecenter_rpc import ImageCenter
+        really = ImageCenter.get_pic_px(file)
         if size != really:
             raise AssertionError(f"实际尺寸<{really}>与期望尺寸<{size}>不符")
 
@@ -371,7 +333,7 @@ class Assert:
         :param path: 路径
         :param endwith: 文件后缀， txt，rar 等
         """
-        if not FileCtl.find_files(path, endwith=endwith):
+        if not File.find_files(path, endwith=endwith):
             raise AssertionError(f"路径 {path} 下，不存在以 {endwith} 结尾的文件")
 
     @staticmethod
@@ -405,6 +367,9 @@ class Assert:
         pic = None
         if picture_abspath is not None:
             pic = picture_abspath + ".png"
+
+        from youqu3.ocr import OCR
+
         res = OCR.ocr(
             *args,
             picture_abspath=pic,
@@ -418,7 +383,7 @@ class Assert:
         )
         if res is False:
             raise AssertionError(
-                (f"通过OCR未识别到：{args}", f"{pic if pic else GlobalConfig.SCREEN_CACHE}")
+                (f"通过OCR未识别到：{args}", f"{pic if pic else setting.SCREEN_CACHE}")
             )
         if isinstance(res, tuple):
             pass
@@ -429,14 +394,14 @@ class Assert:
                 raise AssertionError(
                     (
                         f"通过OCR未识别到：{dict(res)}",
-                        f"{pic if pic else GlobalConfig.SCREEN_CACHE}",
+                        f"{pic if pic else setting.SCREEN_CACHE}",
                     )
                 )
             elif mode == "any" and len(res) == list(res.values()).count(False):
                 raise AssertionError(
                     (
                         f"通过OCR未识别到：{args}中的任意一个",
-                        f"{pic if pic else GlobalConfig.SCREEN_CACHE}",
+                        f"{pic if pic else setting.SCREEN_CACHE}",
                     )
                 )
 
@@ -456,6 +421,8 @@ class Assert:
         pic = None
         if picture_abspath is not None:
             pic = picture_abspath + ".png"
+        from youqu3.ocr import OCR
+
         res = OCR.ocr(
             *args,
             picture_abspath=pic,
@@ -473,7 +440,7 @@ class Assert:
             raise AssertionError(
                 (
                     f"通过ocr识别到不应存在的文案 {res}",
-                    f"{pic if pic else GlobalConfig.SCREEN_CACHE}",
+                    f"{pic if pic else setting.SCREEN_CACHE}",
                 )
             )
         elif isinstance(res, dict) and True in res.values():
@@ -481,6 +448,6 @@ class Assert:
             raise AssertionError(
                 (
                     f"通过OCR识别到不应存在的文案：{dict(res)}",
-                    f"{pic if pic else GlobalConfig.SCREEN_CACHE}",
+                    f"{pic if pic else setting.SCREEN_CACHE}",
                 )
             )

@@ -9,6 +9,9 @@ try:
 except ImportError:
     HAS_IMAGECENTER = False
 
+if HAS_IMAGECENTER is False:
+    raise ImportError("youqu-imagecenter-rpc module is required, try 'pip install youqu-imagecenter-rpc'")
+
 
 class ImageCenter:
     image_setting.NETWORK_RETRY = int(setting.IMAGE_NETWORK_RETRY)

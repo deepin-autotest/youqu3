@@ -5,6 +5,9 @@ try:
 except ImportError:
     HAS_MOUSEKEY = False
 
+if HAS_MOUSEKEY is False:
+    raise ImportError("youqu-mousekey module is required, try 'pip install youqu-mousekey'")
+
 
 class MouseKeyChainMixin:
 

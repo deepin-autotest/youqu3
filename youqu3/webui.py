@@ -16,7 +16,7 @@ try:
     from playwright.sync_api import PageAssertions
     from playwright.sync_api import APIResponseAssertions
 except ImportError:
-    print("Please install playwright")
+    raise ImportError("playwright module is required, try 'pip install playwright'")
 
 
 class WebUI:

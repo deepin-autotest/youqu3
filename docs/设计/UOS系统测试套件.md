@@ -18,6 +18,7 @@ UOS 系统测试套件（全称：UOS 系统自动化测试操作方法套件，
 uos-method-toolkit
 ├── LICENSE
 ├── README.md
+├── tests
 └── umtk
     ├── dde_file_manager
     │   ├── dde_file_manager_method.py
@@ -79,7 +80,9 @@ uos-method-toolkit
 
 套件里面保存元素的操作方法，在操作方法多了之后，维护方法的稳定性有效性将成为一个问题。
 
-因此，我们需要建立对套件的自动化测试，专门针对元素操作方法函数进行测试。
+因此，我们需要建立对套件的自动化测试，专门针对元素操作方法函数进行测试，类似于单元测试。
+
+适配厂商可以直接使用这些单元测试进行适配测试。
 
 ## 6. UMTK 和 YouQu2 的公共方法库（public）有何区别、能否沿用
 

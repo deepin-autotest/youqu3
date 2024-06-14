@@ -1,16 +1,7 @@
 #!/usr/bin/env python3
 # _*_ coding:utf-8 _*_
-
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
-
 # SPDX-License-Identifier: GPL-2.0-only
-# pylint: disable=C0114
-# pylint: disable=W0707,W0611
-try:
-    from image_center import TemplateElementNotFound
-    from image_center import TemplatePictureNotExist
-except ImportError:
-    raise ModuleNotFoundError
 
 from funnylog import logger
 
@@ -55,17 +46,17 @@ class ElementNotFound(BaseException):
         BaseException.__init__(self, err)
 
 
-# class TemplateElementNotFound(BaseException):
-#     """通过模板资源未匹配到对应元素"""
-#
-#     def __init__(self, *name):
-#         """
-#         通过模板资源未匹配到对应元素
-#         :param name: 命令
-#         """
-#         err = "通过图片资源, 未在屏幕上匹配到元素"
-#         template = [f"{i}.png" for i in name]
-#         BaseException.__init__(self, err, *template)
+class TemplateElementNotFound(BaseException):
+    """通过模板资源未匹配到对应元素"""
+
+    def __init__(self, *name):
+        """
+        通过模板资源未匹配到对应元素
+        :param name: 命令
+        """
+        err = "通过图片资源, 未在屏幕上匹配到元素"
+        template = [f"{i}.png" for i in name]
+        BaseException.__init__(self, err, *template)
 
 
 class TemplateElementFound(BaseException):
@@ -81,17 +72,17 @@ class TemplateElementFound(BaseException):
         BaseException.__init__(self, err, *template)
 
 
-# class TemplatePictureNotExist(BaseException):
-#     """图片资源，文件不存在"""
-#
-#     def __init__(self, name):
-#         """
-#         文件不存在
-#         :param name: 命令
-#         """
-#         err = f"图片资源：{name} 文件不存在!"
-#         logger.error(err)
-#         BaseException.__init__(self, err)
+class TemplatePictureNotExist(BaseException):
+    """图片资源，文件不存在"""
+
+    def __init__(self, name):
+        """
+        文件不存在
+        :param name: 命令
+        """
+        err = f"图片资源：{name} 文件不存在!"
+        logger.error(err)
+        BaseException.__init__(self, err)
 
 
 class AssertOptionError(AssertionError):
