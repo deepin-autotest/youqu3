@@ -50,11 +50,11 @@ class Init:
 
     @staticmethod
     def copy_template_to_apps():
-        if os.listdir("."):
-            if input("当前目录存在且里面存在文件，请确认是否清空（Y/N）：") in ("y", "Y"):
-                os.system(f"rm -rf ./*")
-            else:
-                exit(0)
+        # if os.listdir("."):
+        #     if input("当前目录存在且里面存在文件，请确认是否清空（Y/N）：") in ("y", "Y"):
+        #         os.system(f"rm -rf ./*")
+        #     else:
+        #         exit(0)
         os.system(f"cp -r {setting.TPL_PATH}/* .")
         os.system(f"cp {setting.TPL_PATH}/.gitignore-tpl  .")
 
