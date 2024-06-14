@@ -260,15 +260,15 @@ class File:
                 return None
         return files
 
-    @staticmethod
-    def file_name_and_format(position, _format=None):
+    @classmethod
+    def file_name_and_format(cls, position, _format=None):
         """
          获取文件的名称和格式, 返回名称和格式组成的tuple
         :param position: 路径
         :param _format: 以 xx 结尾
         :return: 名称和格式
         """
-        files = FileCtl.find_files(path=position, endwith=_format)
+        files = cls.find_files(path=position, endwith=_format)
         for file in files:
             name_pic = file.split(".")[0]
             format_pic = file.split(".")[1]
