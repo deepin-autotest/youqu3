@@ -15,6 +15,7 @@ dependencies = [
     "click",
     "rich",
     "easyprocess",
+    "pexpect",
     "allure-custom",
 ]
 dynamic = [
@@ -30,6 +31,7 @@ desktop-ui = [
     "youqu-dogtail",
     "youqu-imagecenter-rpc",
     "youqu-mousekey",
+    "youqu-button-center",
     "pdocr-rpc",
     # "wdotool",
 ]
@@ -41,6 +43,10 @@ http = [
 ]
 dbus = [
     "youqu-dbus",
+]
+remote = [
+    "fabric",
+    "zerorpc",
 ]
 
 [project.scripts]
