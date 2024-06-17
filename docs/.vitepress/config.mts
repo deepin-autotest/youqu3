@@ -1,7 +1,6 @@
 import {defineConfig} from 'vitepress'
 import {withMermaid} from "vitepress-plugin-mermaid";
 import timeline from "vitepress-markdown-timeline";
-import {version} from "../../package.json"
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid(

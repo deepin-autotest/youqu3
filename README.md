@@ -10,7 +10,7 @@
 
 --------------
 
-**文档：https://funny-dream.github.io/youqu3/**
+文档：https://youqu.uniontech.com/v3/
 
 --------------
 
