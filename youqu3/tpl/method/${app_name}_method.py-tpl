@@ -5,14 +5,14 @@
 :Date  :${DATE} ${TIME}
 """
 
-##from method.base_method import BaseMethod
-##from youqu3 import log
+from method.base_method import BaseMethod
+from youqu3 import log
 
 
-##@log
-##class ${AppName}Method(BaseMethod):
-##    """应用方法主类"""
+@log
+class ${AppName}Method(BaseMethod):
+    """应用方法主类"""
 
-##    def click_xxx_by_attr(self):
-##        """click xxx button by attribute"""
-##        self.dog.find_element_by_attr("xxx").click()
+    def click_xxx_by_attr(self):
+        """click xxx button by attribute"""
+        self.dog.find_element_by_attr("xxx").click()

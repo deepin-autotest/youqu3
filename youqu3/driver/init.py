@@ -80,10 +80,8 @@ class Init:
                             codes = f.readlines()
                         new_codes = []
                         for code in codes:
-                            if "##" in code:
-                                code = code.replace("##", "")
                             if "${APP_NAME}" in code:
-                                code = re.sub(r"\${APP_NAME}", app_name, code)
+                                code = re.sub(r"\${APP_NAME}", app_name.upper(), code)
                             if "${app_name}" in code:
                                 code = re.sub(r"\${app_name}", app_name, code)
                             if "${AppName}" in code:
@@ -104,7 +102,7 @@ class Init:
                         with open(f"{root}/{file}", "w") as f:
                             f.writelines([i for i in new_codes])
 
-                    shutil.move(f"{root}/{file}", f"{root}/{file[:-4]}")
+                    shutil.move(f"{root}/{file}", f"{root}/{file}".rstrip("-tpl"))
 
         tree = Tree(
             f":open_file_folder: [link file://{dirname}]{dirname}",

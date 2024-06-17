@@ -5,6 +5,7 @@
 from contextlib import contextmanager
 from typing import Union
 
+from youqu3.exception import YouQuPluginInstalledError
 
 try:
     from playwright.sync_api import sync_playwright
@@ -16,7 +17,7 @@ try:
     from playwright.sync_api import PageAssertions
     from playwright.sync_api import APIResponseAssertions
 except ImportError:
-    raise ImportError("playwright module is required, try 'pip install playwright'")
+    raise YouQuPluginInstalledError("playwright")
 
 
 class WebUI:

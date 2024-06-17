@@ -5,13 +5,13 @@
 :Date  :${DATE} ${TIME}
 """
 
-##from youqu3.setting._setting._setting import _Setting
+from youqu3.setting._setting._setting import _Setting
 
 
-##class _Config(_Setting):
-##    """
-##    Application library configuration
-##    """
+class _Config(_Setting):
+    """
+    Application library configuration
+    """
 
 
-##config = _Config()
+config = _Config()

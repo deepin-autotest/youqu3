@@ -5,8 +5,8 @@
 :Date  :${DATE} ${TIME}
 """
 
-##from youqu3.assert import Assert
+from youqu3.assert import Assert
 
 
-##class ${AppName}Assert(Assert):
-##    """${AppName}Assert"""
+class ${AppName}Assert(Assert):
+    """${AppName}Assert"""

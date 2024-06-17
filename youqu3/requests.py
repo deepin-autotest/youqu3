@@ -1,3 +1,4 @@
+from youqu3.exception import YouQuPluginInstalledError
 
 try:
     import requests
@@ -7,4 +8,4 @@ except ImportError:
     HAS_REQUESTS = False
 
 if HAS_REQUESTS is False:
-    raise ImportError("requests module is required, try 'pip install requests'")
+    raise YouQuPluginInstalledError("requests")

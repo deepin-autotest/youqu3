@@ -1,4 +1,7 @@
 import random
+
+from youqu3.exception import YouQuPluginInstalledError
+
 try:
     from pdocr_rpc import OCR as _OCR
     from pdocr_rpc import setting as ocr_setting
@@ -10,7 +13,7 @@ except ImportError:
     HAS_OCR = False
 
 if HAS_OCR is False:
-    raise ImportError("pdocr-rpc module is required, try 'pip install pdocr-rpc'")
+    raise YouQuPluginInstalledError("pdocr-rpc")
 
 
 class OCR:

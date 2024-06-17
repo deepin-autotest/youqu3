@@ -1,4 +1,7 @@
 import random
+
+from youqu3.exception import YouQuPluginInstalledError
+
 try:
     from youqu_imagecenter_rpc import ImageCenter as _ImageCenter
     from youqu_imagecenter_rpc import setting as image_setting
@@ -10,7 +13,7 @@ except ImportError:
     HAS_IMAGECENTER = False
 
 if HAS_IMAGECENTER is False:
-    raise ImportError("youqu-imagecenter-rpc module is required, try 'pip install youqu-imagecenter-rpc'")
+    raise YouQuPluginInstalledError("youqu-imagecenter-rpc")
 
 
 class ImageCenter:
