@@ -10,7 +10,7 @@ export default withMermaid(
         title: "YouQu3 | 下一代Linux自动化测试框架",
         description: "使用简单且功能强大的自动化测试框架",
         head: [
-            ['meta', {name: 'referrer', content: 'no-referrer-when-downgrade'}],
+            // ['meta', {name: 'referrer', content: 'no-referrer-when-downgrade'}],
             ['link', {rel: 'icon', href: `${process.env.VITE_BASE || '/'}favicon.ico`}],
         ],
         vite: {

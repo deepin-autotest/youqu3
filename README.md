@@ -67,16 +67,15 @@ pip install youqu3[http]
 | 4 | [youqu-dbus](https://github.com/funny-dream/youqu-dbus) | D-Bus 操控插件 | ✔️ |
 | 5 | youqu-pms-driver | PMS 测试单驱动插件 | - |
 | 6 | [youqu-button-center](https://github.com/funny-dream/youqu-button-center) | 相对位移定位插件 | ✔️ |
-| 7 | youqu-remote-control | 远程交互式控制插件 | - |
-| 8 | [pytest-mark-manage](https://github.com/funny-dream/pytest-mark-manage) | 用例标签化管理插件 | ✔️ |
-| 9 | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 | ✔️ |
-| 10 | pytest-record-video | 用例失败录屏插件 | - |
-| 11 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       | ✔️ |
-| 12 | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         | ✔️ |
-| 13 | [allure-custom](https://github.com/funny-dream/allure-custom) | 基于 Allure 定制的测试报告 | ✔️ |
-| 14 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
-| 15 | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS系统自动化测试操作方法套件 | 🔥 |
-| 16 | [youqu3-boom](https://github.com/funny-dream/youqu3-boom) | 用于用例工程引导安装 YouQu3 环境 | ✔️ |
+| 7 | [pytest-mark-manage](https://github.com/funny-dream/pytest-mark-manage) | 用例标签化管理插件 | ✔️ |
+| 8 | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 | ✔️ |
+| 9 | pytest-record-video | 用例失败录屏插件 | - |
+| 10 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       | ✔️ |
+| 11 | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         | ✔️ |
+| 12 | [allure-custom](https://github.com/funny-dream/allure-custom) | 基于 Allure 定制的测试报告 | ✔️ |
+| 13 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
+| 14 | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS系统自动化测试操作方法套件 | 🔥 |
+| 15 | [youqu3-boom](https://github.com/funny-dream/youqu3-boom) | 用于用例工程引导安装 YouQu3 环境 | ✔️ |
 
 ## [用例示例]()
 
