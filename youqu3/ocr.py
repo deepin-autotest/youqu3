@@ -15,8 +15,10 @@ except ImportError:
 if HAS_OCR is False:
     raise YouQuPluginInstalledError("pdocr-rpc")
 
+from youqu3.mkmixin import MouseKeyChainMixin
 
-class OCR:
+
+class OCR(MouseKeyChainMixin):
 
     ocr_setting.NETWORK_RETRY = int(setting.OCR_NETWORK_RETRY)
     ocr_setting.PAUSE = float(setting.OCR_PAUSE)
@@ -24,9 +26,6 @@ class OCR:
     ocr_setting.MAX_MATCH_NUMBER = int(setting.OCR_MAX_MATCH_NUMBER)
     ocr_setting.PORT = setting.OCR_PORT
     _ocr_servers = [i.strip() for i in setting.OCR_SERVER_HOST.split("/") if i]
-    x = None
-    y = None
-    result = None
 
     @classmethod
     def ocr(cls, *args, **kwargs):
@@ -41,8 +40,13 @@ class OCR:
                 break
         if ocr_setting.SERVER_IP is None:
             raise EnvironmentError(f"所有OCR服务器不可用: {cls._ocr_servers}")
-        result = _OCR.ocr(*args, **kwargs)
-        return result
+        cls.result = _OCR.ocr(*args, **kwargs)
+
+        if isinstance(cls.result, tuple):
+            cls.x, cls.y = cls.result
+
+        return cls
+
 
 if __name__ == '__main__':
-    OCR.ocr()
+    OCR.ocr("所有").center()

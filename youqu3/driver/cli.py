@@ -29,9 +29,20 @@ def run(
 
 
 @cli.command()
-def remote():
+@click.option("-k", "--keywords", default=None, type=click.STRING, help="keywords driver")
+@click.option("-t", "--tags", default=None, type=click.STRING, help="tags driver")
+def remote(
+        keywords,
+        tags,
+):
     """REMOTE模式"""
-    console.print("Remote Running YouQu3")
+    args = {
+        "keywords": keywords,
+        "tags": tags,
+    }
+    from youqu3.driver.run import Run
+    cmd = Run(**args).generate_cmd()
+    from youqu3.driver.remote import Remote
 
 @cli.command()
 def init():

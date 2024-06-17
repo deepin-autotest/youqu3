@@ -36,7 +36,7 @@ class ElementNotFound(Exception):
         未找到元素
         :param name: 命令
         """
-        err = f"====未找到“{name}”元素！===="
+        err = f"未找到“{name}”元素！"
         logger.error(err)
         Exception.__init__(self, err)
 
@@ -179,3 +179,7 @@ class YouQuPluginInstalledError(Exception):
         err = f"YouQu插件未安装 <{msg}>"
         logger.error(err)
         Exception.__init__(self, err)
+
+
+if __name__ == '__main__':
+    raise ElementNotFound

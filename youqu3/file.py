@@ -2,7 +2,6 @@
 # _*_ coding:utf-8 _*_
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 # SPDX-License-Identifier: GPL-2.0-only
-# pylint: disable=C0114
 import os
 from copy import deepcopy
 
@@ -17,7 +16,6 @@ class File:
     and query of documents.
     """
 
-    # pylint: disable=too-many-arguments,too-many-branches,too-many-nested-blocks
     __author__ = "mikigo <huangmingqiang@uniontech.com>"
 
     @staticmethod

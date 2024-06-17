@@ -15,8 +15,10 @@ except ImportError:
 if HAS_IMAGECENTER is False:
     raise YouQuPluginInstalledError("youqu-imagecenter-rpc")
 
+from youqu3.mkmixin import MouseKeyChainMixin
 
-class ImageCenter:
+
+class ImageCenter(MouseKeyChainMixin):
     image_setting.NETWORK_RETRY = int(setting.IMAGE_NETWORK_RETRY)
     image_setting.PAUSE = float(setting.IMAGE_PAUSE)
     image_setting.TIMEOUT = float(setting.IMAGE_TIMEOUT)
@@ -39,5 +41,9 @@ class ImageCenter:
                 break
         if image_setting.SERVER_IP is None:
             raise EnvironmentError(f"所有IMAGE服务器不可用: {cls._image_servers}")
-        result = _ImageCenter.find_image(*args, **kwargs)
-        return result
+        cls.result = _ImageCenter.find_image(*args, **kwargs)
+
+        if isinstance(cls.result, tuple):
+            cls.x, cls.y = cls.result
+
+        return cls

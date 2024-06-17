@@ -13,6 +13,8 @@ from concurrent.futures import wait
 from itertools import cycle
 
 from allure_custom import AllureCustom
+from fabric import Connection
+from fabric import SerialGroup as Group
 
 from youqu3 import logger
 from youqu3 import setting
@@ -20,7 +22,7 @@ from youqu3 import sleep
 from youqu3.cmd import Cmd
 
 
-class RemoteRunner:
+class Remote:
     """
     远程执行器：控制多台测试机远程执行用例。
     """
@@ -68,11 +70,8 @@ class RemoteRunner:
 
         self.strf_time = time.strftime("%m%d%p%I%M%S")
         self.client_list = list(self.clients.keys())
-        _pty = "t"
-        if len(self.client_list) >= 2:
-            _pty = "T"
-        self.ssh = f"sshpass -p '%s' ssh -{_pty}"
-        self.scp = "sshpass -p '%s' scp -r"
+        self.connects = Group()
+
         self.rsync = "sshpass -p '%s' rsync -av -e ssh"
         self.empty = "> /dev/null 2>&1"
 
@@ -81,36 +80,16 @@ class RemoteRunner:
         self.pms_user = None
         self.pms_password = None
 
-    def pre_env(self):
-        # rm hosts
-        Cmd.run_cmd(f"rm -rf ~/.ssh/known_hosts {self.empty}")
-        # rm client report
-        if not self.send_code:
-            for client in self.clients:
-                user, _ip, password = self.clients.get(client)
-                Cmd.run_cmd(
-                    f"""{self.ssh % password} {user}@{_ip} "rm -rf {self.client_report_path(user)}/*" {self.empty}"""
-                )
-        # delete ssh ask
-        sudo = f"echo '{setting.PASSWORD}' | sudo -S"
-        if "StrictHostKeyChecking no" not in Cmd.run_cmd("cat /etc/ssh/ssh_config").stdout:
-            Cmd.run_cmd(
-                f"""{sudo} sed -i "s/#   StrictHostKeyChecking ask/ StrictHostKeyChecking no/g" /etc/ssh/ssh_config {self.empty}"""
-            )
-        # install sshpass
-        if "(C)" not in Cmd.run_cmd("sshpass -V").stdout:
-            Cmd.run_cmd(f"{sudo} apt update {self.empty}")
-            Cmd.run_cmd(f"{sudo} apt install sshpass {self.empty}")
+
+    def connect(self, user, _ip, password) -> Connection:
+        conn = Connection(host=_ip, user=user, connect_kwargs={'password': password})
+        return conn
 
     def send_code_to_client(self, user, _ip, password):
         logger.info(f"开始发送代码到测试机 - < {user}@{_ip} >")
-        Cmd.run_cmd(
-            f"{self.ssh % password} {user}@{_ip} "
-            f""""echo '{password}' | sudo -S rm -rf ~/{self.server_project_path}" {self.empty}"""
-        )
-        Cmd.run_cmd(
-            f'{self.ssh % password} {user}@{_ip} "mkdir -p ~/{self.server_project_path}" {self.empty}'
-        )
+        conn = self.connect(user, _ip, password)
+        conn.sudo(f"rm -rf ~/{self.client_project_path}")
+        conn.run(f"mkdir -p ~/{self.client_project_path}")
         # 过滤目录
         exclude = ""
         for i in [
@@ -124,11 +103,11 @@ class RemoteRunner:
             ".gitignore",
         ]:
             exclude += f"--exclude='{i}' "
-        _, return_code = Cmd.run_cmd(
-            f"{self.rsync % (password,)} {exclude} ./* {user}@{_ip}:~/{self.dirname}/ {self.empty}",
+        _, return_code = Cmd.run(
+            f"{self.rsync % (password,)} {exclude} ./* {user}@{_ip}:{self.client_project_path}/ {self.empty}",
             return_code=True
         )
-        _, return_code = Cmd.run_cmd(
+        _, return_code = Cmd.run(
             f"{self.rsync % (password,)} {exclude} ./.env {user}@{_ip}:~/{self.dirname}/ {self.empty}",
             return_code=True
         )
@@ -136,15 +115,9 @@ class RemoteRunner:
 
     def build_client_env(self, user, _ip, password):
         logger.info(f"开始安装环境 - < {user}@{_ip} >")
-        # TODO
-        _, return_code = Cmd.run_cmd(
-            cmd=(
-                f"{self.ssh % password} {user}@{_ip} "
-                f'"cd ~/{self.server_project_path}/ && bash env.sh"'
-            ),
-            return_code=True
-        )
-        logger.info(f"环境安装{'成功' if return_code == 0 else '失败'} - < {user}@{_ip} >")
+        conn = self.connect(user, _ip, password)
+        result = conn.run(f"cd {self.client_project_path}/ && youqu3-boom && echo 0 || echo 1")
+        logger.info(f"环境安装{'成功' if result.stdout == 0 else '失败'} - < {user}@{_ip} >")
 
     def send_code_and_env(self, user, _ip, password):
         self.send_code_to_client(user, _ip, password)
@@ -166,68 +139,31 @@ class RemoteRunner:
             func_obj(user, _ip, password)
 
     def get_client_test_status(self, user, _ip, password):
-        status_test = Cmd.run_cmd(
-            f'{self.ssh % password} {user}@{_ip} "ps -aux | grep pytest | grep -v grep"'
-        )
-        return bool(status_test)
+        conn = self.connect(user, _ip, password)
+        result = conn.run("ps -aux | grep pytest | grep -v grep")
+        return bool(result.stdout)
 
     @staticmethod
     def makedirs(dirs):
         pathlib.Path(dirs).mkdir(parents=True, exist_ok=True)
 
-    def generate_cmd(self, user, _ip, password):
-        cmd = [
-            self.ssh % password,
-            f"{user}@{_ip}",
-            '"',
-            "cd",
-        ]
+    def run_test(self):
 
-        l_args = list(self.local_kwargs.items())
-        real_app_name = ""
-        _tmp_args = []
-        for i in l_args:
-            if i[1] is None:
-                continue
-            i = list(i)
-            i[0] = f"--{i[0]}"
-            i[1] = f"'{i[1]}'"
+        conn = self.connect(user=self)
 
-            _tmp_args.extend(i)
-        cmd.extend(
-            [
-                f"~/{self.server_project_path}/{real_app_name}",
-                "&&",
-                "pipenv",
-                "run",
-            ]
-        )
-        from youqu3.driver.run import Run
-
-        lr = Run(debug=True)
-        lr_args = {k: v for k, v in lr.export_default.items() if v}
-        rr_args = {k: v for k, v in self.local_kwargs.items() if v}
-        lr_args.update(rr_args)
-        pytest_cmd = lr.generate_cmd()
-
-        cmd.extend(pytest_cmd)
-        cmd.append('"')
-        cmd_str = " ".join(cmd)
-        logger.info(f"\n{cmd_str}\n")
-        Cmd.run_cmd(cmd_str)
 
     def scp_report(self, user, _ip, password):
         html_dir_endswith = f"_{self.dirname}"
         if not self.parallel:
             self.nginx_server_allure_path = f"./report/allure/{self.strf_time}{html_dir_endswith}"
             self.makedirs(self.nginx_server_allure_path)
-            Cmd.run_cmd(
+            Cmd.run(
                 f"{self.scp % password} {user}@{_ip}:{self.client_allure_report_path(user)}/* {self.nginx_server_allure_path}/ {self.empty}"
             )
         else:
             server_allure_path = f"./report/allure/{self.strf_time}_ip{_ip}{html_dir_endswith}"
             self.makedirs(server_allure_path)
-            Cmd.run_cmd(
+            Cmd.run(
                 f"{self.scp % password} {user}@{_ip}:{self.client_allure_report_path(user)}/* {server_allure_path}/ {self.empty}"
             )
             generate_allure_html = f"{server_allure_path}/html"

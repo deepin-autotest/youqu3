@@ -9,3 +9,4 @@ except ImportError:
 
 if HAS_DOGTAIL is False:
     raise YouQuPluginInstalledError("youqu-dogtail")
+

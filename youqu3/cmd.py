@@ -23,6 +23,7 @@ class Cmd:
         return cls.run(f"echo '{setting.PASSWORD}' | sudo -S {cmd}", return_code=return_code)
 
 
+
 if __name__ == '__main__':
     stdout, return_code = Cmd.run("ls", return_code=True)
     # stdout = Cmd.run("ls")

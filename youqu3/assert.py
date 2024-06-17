@@ -31,7 +31,7 @@ class Assert:
     ):
         """
          期望界面存在模板图片
-        :param widget: 图片路径 例：apps/autotest_app/assert_res/1.png
+        :param widget: 图片路径 例：assert_res/1.png
         :param rate: 匹配相似度
         """
         logger.info(f"屏幕上匹配图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >")
@@ -90,7 +90,7 @@ class Assert:
     ):
         """
          期望界面不存在模板图片
-        :param widget: 图片路径 apps/autotest_app/assert_res/1.png
+        :param widget: 图片路径 assert_res/1.png
         :param rate: 匹配相似度
         """
         logger.info(
@@ -250,7 +250,7 @@ class Assert:
          断言存在共享文件夹 filename
         :param filename: 共享文件夹名称
         """
-        share_folder = Cmd.run_cmd(
+        share_folder = Cmd.run(
             "net usershare list",
         )
         if share_folder:
@@ -265,7 +265,7 @@ class Assert:
          断言不存在共享文件夹 filename
         :param filename: 共享文件夹名称
         """
-        share_folder = Cmd.run_cmd(
+        share_folder = Cmd.run(
             "net usershare list",
         )
         if share_folder:
