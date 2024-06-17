@@ -46,7 +46,7 @@ export default defineConfig({
         },
         ignoreDeadLinks: true,
         // =========================================================
-        logo: {src: '/logo.png', width: 26, height: 30},
+        logo: {src: '/logo.png', width: 22, height: 30},
         socialLinks: [
             {icon: 'github', link: 'https://github.com/funny-dream/youqu3'}
         ],
