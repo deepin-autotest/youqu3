@@ -10,6 +10,9 @@ hero:
     - theme: brand
       text: GitHub
       link: "https://github.com/funny-dream/youqu3"
+    - theme: brand
+      text: Docs
+      link: "https://youqu.uniontech.com/v3"
   image:
     src: /logo.png
     alt: YouQu3
@@ -38,7 +41,7 @@ features:
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #28C76F 30%, #28C76F);
 
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #00E4FF 50%, #F8D800 50%);
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #90F7EC 50%, #90F7EC 50%);
   --vp-home-hero-image-filter: blur(44px);
 }
 

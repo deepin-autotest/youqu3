@@ -8,5 +8,5 @@
 from youqu3.assert import Assert
 
 
-class ${AppName}Assert(Assert):
-    """${AppName}Assert"""
+class AssertMethod(Assert):
+    """AssertMethod"""
