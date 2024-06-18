@@ -30,9 +30,10 @@ class Run:
         self.tags = tags
         self.cwd = pathlib.Path(".").absolute()
         self.report_path = self.cwd / "report"
-        self.allure_path = self.report_path / "allure"
-        self.allure_html_path = self.report_path / "allure_html"
-        self.allure_json_path = self.report_path / "json"
+        self.html_report_path = self.report_path / "html"
+        self.allure_data_path = self.html_report_path / "_data"
+        self.allure_html_path = self.html_report_path / "html"
+        self.json_report_path = self.report_path / "json"
 
     @staticmethod
     def makedirs(dirs):
@@ -55,14 +56,14 @@ class Run:
             cmd.extend(["-m", f"'{self.tags}'"])
 
         cmd.extend([
-            f"--max_fail={setting.MAX_FAIL}",
+            f"--maxfail={setting.MAX_FAIL}",
             f"--reruns={setting.RERUNS}",
             f"--timeout={setting.TIMEOUT}",
-            f"--log_level={setting.LOG_LEVEL}",
             "--json-report",
             "--json-report-indent=2",
-            f"--json-report-file={self.allure_json_path / f'report_{setting.TIME_STRING}.json'}",
-            f"--alluredir={self.allure_path}",
+            f"--json-report-file={self.json_report_path / f'report_{setting.TIME_STRING}.json'}",
+            f"--alluredir={self.allure_data_path}",
+            "--clean-alluredir",
         ])
 
         return cmd
@@ -73,7 +74,7 @@ class Run:
         )
 
         from allure_custom import AllureCustom
-        AllureCustom.gen(str(self.allure_path), str(self.allure_html_path))
+        AllureCustom.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
 
 
 if __name__ == "__main__":

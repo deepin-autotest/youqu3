@@ -4,13 +4,7 @@
 :Author:${USER}
 :Date  :${DATE} ${TIME}
 """
-from config import config
-from youqu3.dogtail import Dogtail
-from youqu3 import logger
-
 
 class BaseMethod:
     """应用的方法基类"""
-
-    APP_NAME = ""
 

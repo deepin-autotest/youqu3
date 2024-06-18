@@ -25,7 +25,7 @@ export default defineConfig({
         siteTitle: "YouQu3",
         nav: [
             {text: '首页', link: '/index'},
-            {text: '简介', link: '/快速开始'},
+            {text: '简介', link: '/简介'},
             {text: '设计', link: '/设计/YouQu3架构设计规划'},
         ],
 

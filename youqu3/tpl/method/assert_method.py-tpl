@@ -5,7 +5,7 @@
 :Date  :${DATE} ${TIME}
 """
 
-from youqu3.assert import Assert
+from youqu3.assertx import Assert
 
 
 class AssertMethod(Assert):

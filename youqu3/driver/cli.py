@@ -19,7 +19,7 @@ def run(
         keywords,
         tags,
 ):
-    """RUN模式"""
+    """RUN驱动"""
     args = {
         "keywords": keywords,
         "tags": tags,
@@ -31,18 +31,30 @@ def run(
 @cli.command()
 @click.option("-k", "--keywords", default=None, type=click.STRING, help="keywords driver")
 @click.option("-t", "--tags", default=None, type=click.STRING, help="tags driver")
+@click.option("-c", "--clients", default=None, type=click.STRING, help="clients")
+@click.option("-s", "--send", default=None, type=click.STRING, help="send code")
+@click.option("-e", "--build-env", default=None, type=click.STRING, help="buildenv")
+@click.option("-m", "--mode", default="parallel", type=click.Choice(["parallel", "nginx"]), help="mode")
 def remote(
         keywords,
         tags,
+        clients,
+        send,
+        build_env,
+        mode,
 ):
-    """REMOTE模式"""
+    """REMOTE驱动"""
     args = {
         "keywords": keywords,
         "tags": tags,
+        "clients": clients,
+        "send": send,
+        "build_env": build_env,
+        "mode": mode,
     }
-    from youqu3.driver.run import Run
-    cmd = Run(**args).generate_cmd()
     from youqu3.driver.remote import Remote
+    Remote(**args).run()
+
 
 @cli.command()
 def init():

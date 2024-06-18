@@ -7,7 +7,7 @@ from youqu3._setting._dynamic import _DynamicSetting
 class _Setting(_DynamicSetting):
     """Global Config"""
 
-    PASSWORD = 1
+    PASSWORD: str = "1"
 
     MAX_FAIL = 1
     TIMEOUT = 300
@@ -32,9 +32,9 @@ class _Setting(_DynamicSetting):
     IMAGE_SERVER_HOST = "10.8.11.139"
 
     # REMOTE
-    PARALLEL = True
+    MODE = "parallel"
     BUILD_ENV = True
-    SEND_CODE = True
+    SEND = True
 
     @dataclasses.dataclass
     class Sleepx:
