@@ -14,14 +14,18 @@ def cli_cmd_creator(cmd_name, cmd_txt):
         Cmd.run(f"chmod +x {cmd_path}")
 
 
-def envx(python_version):
+def envx(python_version=None):
+    if python_version is None:
+        python_version = "3"
     rootdir = pathlib.Path(".").absolute()
     logger.info(rootdir)
     # pip
-    try:
-        Cmd.run("pip3 --version", interrupt=True)
-    except exception.ShellExecutionFailed:
-        Cmd.run('curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py')
+    _, return_code = Cmd.run("pip3 --version", return_code=True)
+    if return_code != 0:
+        Cmd.run(
+            'curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && && python3 get-pip.py',
+            timeout=600
+        )
     # youqu3
     Cmd.run(f'pip3 install youqu3 -i {setting.PYPI_MIRROR}')
     # youqu3-cargo

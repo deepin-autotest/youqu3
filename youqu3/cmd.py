@@ -51,27 +51,15 @@ class Cmd:
         return exitcode, data
 
     @classmethod
-    def sudo_run(
+    def run(
             cls,
-            command,
-            interrupt=False,
-            timeout=25,
-            print_log=True,
-            command_log=True,
-            password=None,
+            command: str,
+            interrupt: bool = False,
+            timeout: int = 25,
+            print_log: bool = True,
+            command_log: bool = True,
+            return_code: bool = False
     ):
-        if password is None:
-            password = setting.PASSWORD
-        return cls.run(
-            f"echo '{password}' | sudo -S {command}",
-            interrupt=interrupt,
-            timeout=timeout,
-            print_log=print_log,
-            command_log=command_log,
-        )
-
-    @classmethod
-    def run(cls, command, interrupt=False, timeout=25, print_log=True, command_log=True):
         """
          执行shell命令
         :param command: shell 命令
@@ -81,14 +69,50 @@ class Cmd:
         :param command_log: 执行的命令字符串日志
         :return: 返回终端输出
         """
-        status, out = cls._getstatusoutput(command, timeout=timeout)
+        exitcode, stdout = cls._getstatusoutput(command, timeout=timeout)
         if command_log:
             logger.debug(command)
-        if status != 0 and interrupt:
-            raise exception.ShellExecutionFailed(out)
-        if print_log and out:
-            logger.debug(out)
-        return out
+        if exitcode != 0 and interrupt:
+            raise exception.ShellExecutionFailed(stdout)
+        if print_log and stdout:
+            logger.debug(stdout)
+        if return_code:
+            return stdout, exitcode
+        return stdout
+
+    @staticmethod
+    def expect_run(cmd: str, events: dict, return_code=False, timeout: int = 30):
+        """
+        expect_run(
+            "ssh username@machine.example.com 'ls -l'",
+            events={'(?i)password':'secret\\n'}
+        )
+        如果 return_code=True，返回 (stdout, return_code)
+        """
+        import pexpect
+        return pexpect.run(cmd, events=events, withexitstatus=return_code, timeout=timeout)
+
+    @classmethod
+    def sudo_run(
+            cls,
+            command,
+            password: str = None,
+            interrupt: bool = False,
+            timeout: int = 25,
+            print_log: bool = True,
+            command_log: bool = True,
+            return_code: bool = False
+    ):
+        if password is None:
+            password = setting.PASSWORD
+        return cls.run(
+            f"echo '{password}' | sudo -S {command}",
+            interrupt=interrupt,
+            timeout=timeout,
+            print_log=print_log,
+            command_log=command_log,
+            return_code=return_code
+        )
 
 
 class RemoteCmd:
@@ -98,16 +122,18 @@ class RemoteCmd:
         self.ip = ip
         self.password = password
 
-    def remote_run(self, cmd: str):
+    def remote_run(self, cmd: str, return_code: bool = False):
         try:
             from fabric import Connection
         except ImportError:
             raise exception.YouQuPluginInstalledError("fabric")
         c = Connection(host=self.ip, user=self.user, connect_kwargs={'password': self.password})
         res = c.run(cmd)
+        if return_code:
+            return res.stdout, res.return_code
         return res.stdout
 
-    def remote_sudo_run(self, cmd: str):
+    def remote_sudo_run(self, cmd: str, return_code: bool = False):
         try:
             from fabric import Connection, Config
         except ImportError:
@@ -117,6 +143,8 @@ class RemoteCmd:
             config=Config(overrides={'sudo': {'password': self.password}})
         )
         res = c.sudo(cmd)
+        if return_code:
+            return res.stdout, res.return_code
         return res.stdout
 
 

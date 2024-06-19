@@ -9,8 +9,6 @@ from concurrent.futures import ALL_COMPLETED
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 
-from allure_custom import AllureCustom
-
 from youqu3 import logger
 from youqu3 import setting
 from youqu3 import sleep
@@ -66,13 +64,17 @@ class Remote:
         self.client_json_report_path = lambda x: f"{self.client_report_path(x)}/json"
 
         self.strf_time = time.strftime("%m%d%p%I%M%S")
-        self.rsync = "sshpass -p '%s' rsync -av -e ssh"
+        self.rsync = "rsync -av -e ssh -o StrictHostKeyChecking=no"
         self.empty = "> /dev/null 2>&1"
 
         self.collection_json = False
         self.server_json_dir_id = None
         self.pms_user = None
         self.pms_password = None
+
+        from funnylog.conf import setting as log_setting
+
+        log_setting.LOG_FILE_PATH = self.server_rootdir
 
     def send_code(self, user, _ip, password):
         logger.info(f"开始发送代码到测试机 - < {user}@{_ip} >")
@@ -95,24 +97,28 @@ class Remote:
             "README.md",
         ]:
             exclude += f"--exclude='{i}' "
-        stdout = Cmd.run(
-            f"{self.rsync % (password,)} {exclude} {self.server_rootdir}/* {user}@{_ip}:{self.client_rootdir(user)}/ && echo 0 || echo 1",
+        _, return_code = Cmd.expect_run(
+            f"{self.rsync} {exclude} {self.server_rootdir}/* {user}@{_ip}:{self.client_rootdir(user)}/",
+            events={'(?i)password':f'{password}\\n'}
         )
-        stdout = Cmd.run(
-            f"{self.rsync % (password,)} {exclude} {self.server_rootdir}/.env {user}@{_ip}:{self.client_rootdir(user)}/ && echo 0 || echo 1",
+        _, return_code = Cmd.expect_run(
+            f"{self.rsync} {exclude} {self.server_rootdir}/.env {user}@{_ip}:{self.client_rootdir(user)}/",
+            events={'(?i)password': f'{password}\\n'}
         )
-        logger.info(f"代码发送{'成功' if stdout == 0 else '失败'} - < {user}@{_ip} >")
+        logger.info(f"代码发送{'成功' if return_code == 0 else '失败'} - < {user}@{_ip} >")
 
     def install_client_env(self, user, _ip, password):
         logger.info(f"开始安装环境 - < {user}@{_ip} >")
 
-        def _env(cmd):
-            return RemoteCmd(user, _ip, password).remote_run(cmd)
+        def _remote_run(cmd):
+            return RemoteCmd(user, _ip, password).remote_run(cmd, return_code=True)
 
-        _env(f"pip3 install -U youqu3 -i {setting.PYPI_MIRROR}")
-        print(f"export PATH=$PATH:$HOME/.local/bin;cd {self.client_rootdir(user)} && youqu3 env && echo 0 || echo 1")
-        result = _env(f"cd {self.client_rootdir(user)} && youqu3 env && echo 0 || echo 1")
-        logger.info(f"环境安装{'成功' if result == 0 else '失败'} - < {user}@{_ip} >")
+        _, return_code = _remote_run("pip3 --version")
+        if return_code != 0:
+            _remote_run("curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py")
+        _remote_run(f"pip3 install -U youqu3 -i {setting.PYPI_MIRROR}")
+        _, return_code = _remote_run(f"export PATH=$PATH:$HOME/.local/bin;cd {self.client_rootdir(user)} && youqu3 envx")
+        logger.info(f"环境安装{'成功' if return_code == 0 else '失败'} - < {user}@{_ip} >")
 
     def send_code_and_env(self, user, _ip, password):
         self.send_code(user, _ip, password)
@@ -145,7 +151,7 @@ class Remote:
             get_back(user, _ip, password)
 
     def generate_remote_cmd(self, user):
-        cmd = ["cd", f"{self.client_rootdir(user)}/", "&&", "pipenv", "run", "youqu3", "run"]
+        cmd = ["cd", f"{self.client_rootdir(user)}/", "&&", "youqu3-cargo", "run"]
 
         if self.filepath:
             cmd.append(self.filepath)
@@ -201,9 +207,14 @@ class Remote:
     def run(self):
         client_list = list(self.clients.keys())
 
+        print("-" * 51)
+        print(f"|{'CLIENTS'.center(11)}|{'USER'.center(10)}|{'IP'.center(15)}|{'PASSWORD'.center(10)}|")
+        print("-" * 51)
         for c, (user, _ip, password) in self.clients.items():
-            print("{0:<5}".format(c, user, _ip, password))
+            print(f"|{c.center(11)}|{user.center(10)}|{_ip.center(15)}|{password.center(10)}|")
+        print("-" * 51)
 
+        Cmd.run(f"rm -rf ~/.ssh/known_hosts {self.empty}")
         if self.build_env:
             self.mul_do(self.send_code_and_env, client_list)
         else:
