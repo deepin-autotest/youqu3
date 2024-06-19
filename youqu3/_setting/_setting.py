@@ -36,6 +36,9 @@ class _Setting(_DynamicSetting):
     BUILD_ENV = True
     SEND = True
 
+    #
+    PYPI_MIRROR = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
     @dataclasses.dataclass
     class Sleepx:
         x86_64: [float, int] = 1

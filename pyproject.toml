@@ -14,8 +14,6 @@ dependencies = [
     "funnylog",
     "click",
     "rich",
-    "easyprocess",
-    "pexpect",
     "allure-custom",
 ]
 dynamic = [

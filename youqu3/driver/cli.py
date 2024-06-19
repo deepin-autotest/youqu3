@@ -4,12 +4,17 @@ from rich.console import Console
 console = Console()
 
 
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    from youqu3 import version
+    click.echo(version)
+    ctx.exit()
+
+
 @click.group()
-@click.option("-v", "--version", is_flag=True, default=False, help="veesion")
-def cli(version):
-    if version:
-        from youqu3.__version__ import __version__
-        print(__version__)
+def cli():
+    ...
 
 
 @cli.command()
@@ -61,6 +66,13 @@ def init():
     """创建用例工程"""
     from youqu3.driver.init import Init
     Init().init()
+
+
+@cli.command()
+def env():
+    """安装YouQu环境"""
+    from youqu3.driver.env import env
+    env()
 
 
 if __name__ == '__main__':

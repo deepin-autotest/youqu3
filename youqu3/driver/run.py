@@ -28,8 +28,8 @@ class Run:
 
         self.keywords = keywords
         self.tags = tags
-        self.cwd = pathlib.Path(".").absolute()
-        self.report_path = self.cwd / "report"
+        self.rootdir = pathlib.Path(".").absolute()
+        self.report_path = self.rootdir / "report"
         self.html_report_path = self.report_path / "html"
         self.allure_data_path = self.html_report_path / "_data"
         self.allure_html_path = self.html_report_path / "html"
