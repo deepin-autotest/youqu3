@@ -10,9 +10,9 @@ from youqu3 import setting
 
 def sleep(second: [float, int]):
     """
-     重写sleep方法
-     1、增加等待时间的日志
-     2、根据不同CPU架构进行放大
+    重写sleep方法
+    1. 增加等待时间的日志
+    2. 根据不同CPU架构进行放大
     :param second: 等待时间
     :return:
     """
