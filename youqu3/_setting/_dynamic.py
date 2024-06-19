@@ -1,8 +1,8 @@
-import os
-import time
 import getpass
+import os
 import pathlib
 import platform
+import time
 
 
 class ArchName:
@@ -25,12 +25,15 @@ class _DynamicSetting:
 
     TPL_PATH = pathlib.Path(__file__).parent.parent / "tpl"
 
-    DISPLAY_SERVER = (
-                         os.popen("cat ~/.xsession-errors | grep XDG_SESSION_TYPE | head -n 1")
-                         .read()
-                         .split("=")[-1]
-                         .strip("\n")
-                     ) or ("x11" if os.popen("ps -ef | grep -v grep | grep kwin_x11").read() else "wayland")
+    if os.path.exists(os.path.expanduser("~/.xsession-errors")):
+        DISPLAY_SERVER = (
+            os.popen("cat ~/.xsession-errors | grep XDG_SESSION_TYPE | head -n 1")
+            .read()
+            .split("=")[-1]
+            .strip("\n")
+        )
+    else:
+        DISPLAY_SERVER = "x11" if os.popen("ps -ef | grep -v grep | grep kwin_x11").read() else "wayland"
 
     IS_X11: bool = DISPLAY_SERVER == DisplayServer.x11
     IS_WAYLAND: bool = DISPLAY_SERVER == DisplayServer.wayland

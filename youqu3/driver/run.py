@@ -12,22 +12,21 @@ from youqu3 import logger, setting
 
 
 class Run:
-    """
-    本地执行器
-    """
-
     __author__ = "mikigo <huangmingqiang@uniontech.com>"
 
     def __init__(
             self,
+            filepath=None,
             keywords=None,
             tags=None,
             **kwargs,
     ):
         logger("INFO")
 
+        self.filepath = filepath
         self.keywords = keywords
         self.tags = tags
+
         self.rootdir = pathlib.Path(".").absolute()
         self.report_path = self.rootdir / "report"
         self.html_report_path = self.report_path / "html"
@@ -48,6 +47,8 @@ class Run:
     def generate_cmd(self):
         cmd = ["pytest"]
 
+        if self.filepath:
+            cmd.append(self.filepath)
         if self.keywords:
             self.set_recursion_limit(self.keywords)
             cmd.extend(["-k", f"'{self.keywords}'"])

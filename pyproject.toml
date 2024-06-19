@@ -13,7 +13,6 @@ dependencies = [
     "pytest-json-report",
     "funnylog",
     "click",
-    "rich",
     "allure-custom",
 ]
 dynamic = [

@@ -22,15 +22,18 @@ class Remote:
 
     def __init__(
             self,
-            keywords=None,
-            tags=None,
             clients=None,
             send=None,
             build_env=None,
             mode=None,
+            filepath=None,
+            keywords=None,
+            tags=None,
             **kwargs
     ):
         logger("INFO")
+
+        self.filepath = filepath
         self.keywords = keywords
         self.tags = tags
         self.clients = clients
@@ -73,8 +76,8 @@ class Remote:
 
     def send_code(self, user, _ip, password):
         logger.info(f"开始发送代码到测试机 - < {user}@{_ip} >")
-        RemoteCmd(user, _ip, password).remote_sudo_run(f"rm -rf {self.client_rootdir(user)} {self.empty}")
-        RemoteCmd(user, _ip, password).remote_run(f"mkdir -p {self.client_rootdir(user)} {self.empty}")
+        RemoteCmd(user, _ip, password).remote_sudo_run(f"rm -rf {self.client_rootdir(user)}")
+        RemoteCmd(user, _ip, password).remote_run(f"mkdir -p {self.client_rootdir(user)}")
         exclude = ""
         for i in [
             "__pycache__",
@@ -95,6 +98,9 @@ class Remote:
         stdout = Cmd.run(
             f"{self.rsync % (password,)} {exclude} {self.server_rootdir}/* {user}@{_ip}:{self.client_rootdir(user)}/ && echo 0 || echo 1",
         )
+        stdout = Cmd.run(
+            f"{self.rsync % (password,)} {exclude} {self.server_rootdir}/.env {user}@{_ip}:{self.client_rootdir(user)}/ && echo 0 || echo 1",
+        )
         logger.info(f"代码发送{'成功' if stdout == 0 else '失败'} - < {user}@{_ip} >")
 
     def install_client_env(self, user, _ip, password):
@@ -103,8 +109,9 @@ class Remote:
         def _env(cmd):
             return RemoteCmd(user, _ip, password).remote_run(cmd)
 
-        _env(f"pip3 install youqu3 -i {setting.PYPI_MIRROR}")
-        result = _env(f"export PATH=$PATH:$HOME/.local/bin;cd {self.client_rootdir(user)} && youqu3 env && echo 0 || echo 1")
+        _env(f"pip3 install -U youqu3 -i {setting.PYPI_MIRROR}")
+        print(f"export PATH=$PATH:$HOME/.local/bin;cd {self.client_rootdir(user)} && youqu3 env && echo 0 || echo 1")
+        result = _env(f"cd {self.client_rootdir(user)} && youqu3 env && echo 0 || echo 1")
         logger.info(f"环境安装{'成功' if result == 0 else '失败'} - < {user}@{_ip} >")
 
     def send_code_and_env(self, user, _ip, password):
@@ -138,8 +145,10 @@ class Remote:
             get_back(user, _ip, password)
 
     def generate_remote_cmd(self, user):
-        cmd = ["cd", f"{self.client_rootdir(user)}/", "&&", "youqu3", "run"]
+        cmd = ["cd", f"{self.client_rootdir(user)}/", "&&", "pipenv", "run", "youqu3", "run"]
 
+        if self.filepath:
+            cmd.append(self.filepath)
         if self.keywords:
             cmd.extend(["-k", f"'{self.keywords}'"])
         if self.tags:
@@ -153,6 +162,7 @@ class Remote:
             "--json-report-indent=2",
             f"--json-report-file={self.client_json_report_path(user)}/report_{setting.TIME_STRING}.json",
             f"--alluredir={self.client_html_report_path(user)}",
+            "--clean-alluredir",
         ])
 
         return cmd
@@ -190,24 +200,10 @@ class Remote:
 
     def run(self):
         client_list = list(self.clients.keys())
-        from rich.console import Console
-        from rich.table import Table
 
-        console = Console()
-        table = Table(
-            title="远程测试机列表",
-            title_style="strike",
-            show_header=True,
-            header_style="bold magenta",
-            highlight=True,
-        )
-        table.add_column("CLIENTS", justify="center")
-        table.add_column("USER", justify="center")
-        table.add_column("IP", justify="center")
-        table.add_column("PASSWORD", justify="center")
         for c, (user, _ip, password) in self.clients.items():
-            table.add_row(c, user, _ip, password)
-        console.print(table)
+            print("{0:<5}".format(c, user, _ip, password))
+
         if self.build_env:
             self.mul_do(self.send_code_and_env, client_list)
         else:

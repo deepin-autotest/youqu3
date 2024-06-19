@@ -14,7 +14,14 @@
 
 --------------
 
-**YouQu3** 旨在成为下一代 Linux 自动化测试框架，全新的插件化及模块化功能，带来全新的使用效果。
+**YouQu3** 是下一代 Linux 自动化测试框架，在继承 YouQu2 诸多亮点功能的同时解决其遇到的问题，同时对各功能进行插件化、模块化改造，全面优化框架接口调用机制。
+
+- 以 Python 包的形式提供框架能力，方便安装、更新。
+- 支持离线部署，用例整体打包交付之后，可以在无网络环境下直接运行。
+- 极致轻量化、可定制化依赖，可以根据测试项目类型安装对应的依赖。
+- 功能可插拔，以插件的形式提供功能，不安装插件的情况下框架也能正常运行。
+- 可视化配置，在浏览器中输入一些配置后即可驱动测试用例执行，搭配远程执行功能，可实现群控测试机执行。
+- 支持非开发者下运行，简化系统环境部署。
 
 ## [特性]()
 
@@ -69,14 +76,14 @@ pip install youqu3[http]
 | 6 | [youqu-button-center](https://github.com/funny-dream/youqu-button-center) | 相对位移定位插件 | ✔️ |
 | 7 | [pytest-mark-manage](https://github.com/funny-dream/pytest-mark-manage) | 用例标签化管理插件 | ✔️ |
 | 8 | [pytest-youqu-playwright](https://github.com/funny-dream/pytest-youqu-playwright) | 基于 Playwright 的 Web UI 自动化插件 | ✔️ |
-| 9 | pytest-record-video | 用例失败录屏插件 | - |
-| 10 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       | ✔️ |
-| 11 | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         | ✔️ |
-| 12 | [allure-custom](https://github.com/funny-dream/allure-custom) | 基于 Allure 定制的测试报告 | ✔️ |
-| 13 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
-| 14 | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS系统自动化测试操作方法套件 | 🔥 |
-| 15 | [youqu3-boom](https://github.com/funny-dream/youqu3-boom) | 用于用例工程引导安装 YouQu3 环境 | ✔️ |
+| 9 | [youqu-html](https://github.com/funny-dream/youqu-html) | YouQu html report | ✔️ |
+| 10 | pytest-record-video | 用例失败录屏插件 | - |
+| 11 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       | ✔️ |
+| 12 | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         | ✔️ |
+| 13 | [allure-custom](https://github.com/funny-dream/allure-custom) | 基于 Allure 定制的测试报告 | ✔️ |
+| 14 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
+| 15 | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS系统自动化测试操作方法套件 | 🔥 |
 
-## [用例示例]()
+## [用例工程]()
 
 https://github.com/funny-dream/youqu3-testcase
