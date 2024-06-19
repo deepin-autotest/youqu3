@@ -4,7 +4,7 @@ from youqu3 import version
 
 @click.group()
 @click.help_option("-h", "--help", help="查看帮助信息")
-@click.version_option(prog_name="YouQu3", version=version, help="查看版本号")
+@click.version_option(version, "-v", "--version", prog_name="YouQu3", help="查看版本号")
 def cli(): ...
 
 
