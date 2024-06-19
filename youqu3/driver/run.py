@@ -74,8 +74,8 @@ class Run:
             [i.strip("'") for i in self.generate_cmd()[1:]]
         )
 
-        from allure_custom import AllureCustom
-        AllureCustom.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
+        from youqu_html import YouQuHtml
+        YouQuHtml.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
 
 
 if __name__ == "__main__":

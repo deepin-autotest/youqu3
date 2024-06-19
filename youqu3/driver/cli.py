@@ -66,10 +66,11 @@ def init():
 
 
 @cli.command()
-def env():
-    """安装YouQu环境"""
-    from youqu3.driver.env import env
-    env()
+@click.option("--python", default="3", type=click.STRING, help="指定虚拟环境的Python版本")
+def envx(python):
+    """超级环境管理器"""
+    from youqu3.driver.envx import envx as env
+    env(python_version=python)
 
 
 if __name__ == '__main__':
