@@ -1,4 +1,5 @@
 import click
+
 from youqu3 import version
 
 
@@ -16,16 +17,19 @@ def cli(): ...
               help="指定用例关键词执行，支持 'and/or/not' 逻辑表达式")
 @click.option("-t", "--tags", default=None, type=click.STRING,
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
+@click.option("--setup-plan", is_flag=True, default=False, help="")
 def run(
         filepath,
         keywords,
         tags,
+        setup_plan,
 ):
     """本地执行"""
     args = {
         "filepath": filepath,
         "keywords": keywords,
         "tags": tags,
+        "setup_plan": setup_plan,
     }
     from youqu3.driver.run import Run
     Run(**args).run()
@@ -35,12 +39,6 @@ def run(
 @click.help_option("-h", "--help", help="查看帮助信息")
 @click.option("-c", "--clients", default=None, type=click.STRING,
               help="远程机器信息:user@ip:password，多个机器之间用 '/' 连接")
-@click.option("-s", "--send", default=None, type=click.STRING,
-              help="发送代码到远程机器")
-@click.option("-e", "--build-env", default=None, type=click.STRING,
-              help="远程机器安装环境")
-@click.option("-m", "--mode", default="parallel", type=click.Choice(["parallel", "nginx"]),
-              help="远程控制驱动模式 (parallel or nginx)")
 @click.option("-f", "--filepath", default=None, type=click.STRING,
               help="指定用例文件路径执行")
 @click.option("-k", "--keywords", default=None, type=click.STRING,
@@ -49,9 +47,6 @@ def run(
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
 def remote(
         clients,
-        send,
-        build_env,
-        mode,
         filepath,
         keywords,
         tags,
@@ -59,9 +54,6 @@ def remote(
     """远程控制执行"""
     args = {
         "clients": clients,
-        "send": send,
-        "build_env": build_env,
-        "mode": mode,
         "filepath": filepath,
         "keywords": keywords,
         "tags": tags,

@@ -19,6 +19,7 @@ class Run:
             filepath=None,
             keywords=None,
             tags=None,
+            setup_plan=None,
             **kwargs,
     ):
         logger("INFO")
@@ -26,6 +27,7 @@ class Run:
         self.filepath = filepath
         self.keywords = keywords
         self.tags = tags
+        self.setup_plan = setup_plan
 
         self.rootdir = pathlib.Path(".").absolute()
         self.report_path = self.rootdir / "report"
@@ -60,15 +62,21 @@ class Run:
             self.set_recursion_limit(self.tags)
             cmd.extend(["-m", f"'{self.tags}'"])
 
-        cmd.extend([
-            f"--maxfail={setting.MAX_FAIL}",
-            f"--reruns={setting.RERUNS}",
-            f"--timeout={setting.TIMEOUT}",
+        if self.setup_plan:
+            cmd.append("--setup-plan")
+        else:
+            cmd.extend([
             "--json-report",
             "--json-report-indent=2",
             f"--json-report-file={self.json_report_path / f'report_{setting.TIME_STRING}.json'}",
             f"--alluredir={self.allure_data_path}",
             "--clean-alluredir",
+            ])
+
+        cmd.extend([
+            f"--maxfail={setting.MAX_FAIL}",
+            f"--reruns={setting.RERUNS}",
+            f"--timeout={setting.TIMEOUT}",
         ])
 
         return cmd
@@ -77,7 +85,8 @@ class Run:
         pytest.main(
             [i.strip("'") for i in self.generate_cmd()[1:]]
         )
-
+        if self.setup_plan:
+            return
         from youqu_html import YouQuHtml
         YouQuHtml.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
 

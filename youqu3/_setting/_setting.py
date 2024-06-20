@@ -32,9 +32,6 @@ class _Setting(_DynamicSetting):
     IMAGE_SERVER_HOST = "10.8.11.139"
 
     # REMOTE
-    MODE = "parallel"
-    BUILD_ENV = True
-    SEND = True
 
     #
     PYPI_MIRROR = "https://pypi.tuna.tsinghua.edu.cn/simple"

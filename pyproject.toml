@@ -14,7 +14,6 @@ dependencies = [
     "funnylog",
     "click",
     "pexpect",
-    "youqu-html",
 ]
 dynamic = [
     "version",
@@ -31,6 +30,7 @@ desktop-ui = [
     "youqu-mousekey",
     "youqu-button-center",
     "pdocr-rpc",
+    "youqu-html",
     # "wdotool",
 ]
 webui = [
