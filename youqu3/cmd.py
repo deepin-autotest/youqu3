@@ -13,7 +13,7 @@ class Cmd:
         with subprocess.Popen(command, **kwargs) as process:
             try:
                 stdout, stderr = process.communicate(_input, timeout=timeout)
-            except:  # Including KeyboardInterrupt, communicate handled that.
+            except:
                 process.kill()
                 raise
             retcode = process.poll()
@@ -43,7 +43,6 @@ class Cmd:
             data = ex.output
             exitcode = ex.returncode
         except subprocess.TimeoutExpired as ex:
-            # pylint: disable=unnecessary-dunder-call
             data = ex.__str__()
             exitcode = -1
         if data[-1:] == "\n":
@@ -81,7 +80,12 @@ class Cmd:
         return stdout
 
     @staticmethod
-    def expect_run(cmd: str, events: dict, return_code=False, timeout: int = 30):
+    def expect_run(
+            cmd: str,
+            events: dict,
+            return_code=False,
+            timeout: int = 30
+    ):
         """
         expect_run(
             "ssh username@machine.example.com 'ls -l'",
@@ -90,7 +94,12 @@ class Cmd:
         如果 return_code=True，返回 (stdout, return_code)
         """
         import pexpect
-        return pexpect.run(cmd, events=events, withexitstatus=return_code, timeout=timeout)
+        return pexpect.run(
+            cmd,
+            events=events,
+            withexitstatus=return_code,
+            timeout=timeout
+        )
 
     @classmethod
     def sudo_run(
@@ -147,10 +156,14 @@ class RemoteCmd:
             return res.stdout, res.return_code
         return res.stdout
 
+    def remote_expect_run(self):
+        # TODO
+        ...
+
 
 if __name__ == '__main__':
     stdout = Cmd.run(
-        "sshpass -p '1' rsync -av -e ssh --exclude='__pycache__' --exclude='.pytest_cache' --exclude='.vscode' --exclude='.idea' --exclude='.git' --exclude='.github' --exclude='.venv' --exclude='report' --exclude='.gitignore'  /home/mikigo/github/youqu3-testcase/* uos@10.8.7.55:/home/uos/youqu3-testcase/",
+        "ls",
         interrupt=True,
         print_log=False,
     )
