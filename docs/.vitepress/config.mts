@@ -36,7 +36,8 @@ export default defineConfig({
                     collapsed: false,
                     items: [
                         {text: "YouQu3架构设计规划", link: "/设计/YouQu3架构设计规划"},
-                        {text: "UOS系统测试套件", link: "/设计/UOS系统测试套件"},
+                        {text: "UOS自动化测试方法套件", link: "/设计/UOS自动化测试方法套件"},
+                        {text: "UOS自动化测试用例", link: "/设计/UOS自动化测试用例"},
                     ]
                 },
             ],

@@ -57,7 +57,7 @@ HTTP 接口自动化测试：
 pip install youqu3[http]
 ```
 
-## [YouQu3 插件生态]()
+## [YouQu3插件生态]()
 
 | 序号                                  | 插件名称                                              | 说明                                 | 可用                             |
 | :----------------------------------------------------------: | ------------------------------------ | ------------------------------------ | :----------------------------------: |
@@ -74,8 +74,11 @@ pip install youqu3[http]
 | 11 | [funnylog](https://linuxdeepin.github.io/funnylog/)          | 全自动日志插件                       | ✔️ |
 | 12 | [pdocr-rpc](https://linuxdeepin.github.io/pdocr-rpc/)        | 基于 RPC 服务的 OCR 识别插件         | ✔️ |
 | 13 | [wdotool](https://github.com/funny-dream/wdotool) | Wayland 下完美的键鼠工具 | - |
-| 14 | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS系统自动化测试操作方法套件 | 🔥 |
 
-## [用例工程]()
+## [UOS测试套件]()
 
-https://github.com/funny-dream/youqu3-testcase
+| 序号 | 套件名称                                                     | 说明                       | 状态 |
+| :--: | ------------------------------------------------------------ | -------------------------- | :--: |
+|  1   | [uos-method-toolkit](https://github.com/funny-dream/uos-method-toolkit)（UMTK ） | UOS 自动化测试操作方法套件 |  🔥   |
+|  2   | [uos-case-toolkit](https://github.com/funny-dream/uos-case-toolkit)（UCTK ） | UOS 自动化测试操作用例套件 |  🔥   |
+
