@@ -88,8 +88,8 @@ class Cmd:
     ):
         """
         expect_run(
-            "ssh username@machine.example.com 'ls -l'",
-            events={'(?i)password':'secret\\n'}
+            "ssh username@machine_ip 'ls -l'",
+            events={'password':'secret\n'}
         )
         如果 return_code=True，返回 (stdout, return_code)
         """
@@ -126,17 +126,23 @@ class Cmd:
 
 class RemoteCmd:
 
-    def __init__(self, user: str, ip: str, password: str):
+    def __init__(self, user: str, ip: str, password: str, connect_timeout: int = None):
         self.user = user
         self.ip = ip
         self.password = password
+        self.connect_timeout = connect_timeout
 
     def remote_run(self, cmd: str, return_code: bool = False):
         try:
             from fabric import Connection
         except ImportError:
             raise exception.YouQuPluginInstalledError("fabric")
-        c = Connection(host=self.ip, user=self.user, connect_kwargs={'password': self.password})
+        c = Connection(
+            host=self.ip,
+            user=self.user,
+            connect_timeout=self.connect_timeout,
+            connect_kwargs={'password': self.password},
+        )
         res = c.run(cmd)
         if return_code:
             return res.stdout, res.return_code
@@ -148,8 +154,11 @@ class RemoteCmd:
         except ImportError:
             raise exception.YouQuPluginInstalledError("fabric")
         c = Connection(
-            host=self.ip, user=self.user, connect_kwargs={'password': self.password},
-            config=Config(overrides={'sudo': {'password': self.password}})
+            host=self.ip,
+            user=self.user,
+            config=Config(overrides={'sudo': {'password': self.password}}),
+            connect_timeout=self.connect_timeout,
+            connect_kwargs={'password': self.password},
         )
         res = c.sudo(cmd)
         if return_code:
@@ -159,12 +168,3 @@ class RemoteCmd:
     def remote_expect_run(self):
         # TODO
         ...
-
-
-if __name__ == '__main__':
-    stdout = Cmd.run(
-        "ls",
-        interrupt=True,
-        print_log=False,
-    )
-    print(stdout)
