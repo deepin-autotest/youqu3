@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as a}from"./chunks/framework.07oE_XNQ.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"指南/可选功能/DBus操控.md","filePath":"指南/可选功能/DBus操控.md","lastUpdated":1719230861000}'),s={name:"指南/可选功能/DBus操控.md"};function r(o,c,n,_,d,p){return a(),t("div")}const f=e(s,[["render",r]]);export{m as __pageData,f as default};
