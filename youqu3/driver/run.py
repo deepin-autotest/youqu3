@@ -20,6 +20,7 @@ class Run:
             keywords=None,
             tags=None,
             setup_plan=None,
+            slaves=None,
             **kwargs,
     ):
         logger("INFO")
@@ -28,6 +29,24 @@ class Run:
         self.keywords = keywords
         self.tags = tags
         self.setup_plan = setup_plan
+
+        if slaves is not None:
+            s = []
+            for slave in slaves.split("/"):
+                slave_info = re.findall(r"^(.+?)@(\d+\.\d+\.\d+\.\d+):{0,1}(.*?)$", slave)
+                if not slave_info:
+                    continue
+                user, ip, password = slave_info[0]
+                s.append(
+                    {
+                        "user": user,
+                        "ip": ip,
+                        "password": password or setting.PASSWORD,
+                    }
+                )
+            if not s:
+                raise EnvironmentError("No slaves found, check -s/--slaves value")
+            setting.SLAVES = s
 
         self.rootdir = pathlib.Path(".").absolute()
         self.report_path = self.rootdir / "report"
@@ -66,11 +85,13 @@ class Run:
             cmd.append("--setup-plan")
         else:
             cmd.extend([
-            "--json-report",
-            "--json-report-indent=2",
-            f"--json-report-file={self.json_report_path / f'report_{setting.TIME_STRING}.json'}",
-            f"--alluredir={self.allure_data_path}",
-            "--clean-alluredir",
+                "--json-report",
+                "--json-report-indent=2",
+                f"--json-report-file={self.json_report_path / f'report_{setting.TIME_STRING}.json'}",
+                f"--alluredir={self.allure_data_path}",
+                "--clean-alluredir",
+                "-s",
+                "--no-header",
             ])
 
         cmd.extend([

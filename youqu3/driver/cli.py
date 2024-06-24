@@ -1,6 +1,7 @@
 import click
 
 from youqu3 import version
+from youqu3.rpc._str import slaves_help
 
 
 @click.group()
@@ -18,11 +19,13 @@ def cli(): ...
 @click.option("-t", "--tags", default=None, type=click.STRING,
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
 @click.option("--setup-plan", is_flag=True, default=False, help="")
+@click.option("-s", "--slaves", default=None, type=click.STRING, help=slaves_help)
 def run(
         filepath,
         keywords,
         tags,
         setup_plan,
+        slaves,
 ):
     """本地执行"""
     args = {
@@ -30,6 +33,7 @@ def run(
         "keywords": keywords,
         "tags": tags,
         "setup_plan": setup_plan,
+        "slaves": slaves,
     }
     from youqu3.driver.run import Run
     Run(**args).run()
@@ -45,11 +49,13 @@ def run(
               help="指定用例关键词执行，支持 'and/or/not' 逻辑表达式")
 @click.option("-t", "--tags", default=None, type=click.STRING,
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
+@click.option("-s", "--slaves", default=None, type=click.STRING, help=slaves_help)
 def remote(
         clients,
         filepath,
         keywords,
         tags,
+        slaves,
 ):
     """远程控制执行"""
     args = {
@@ -57,6 +63,7 @@ def remote(
         "filepath": filepath,
         "keywords": keywords,
         "tags": tags,
+        "slaves": slaves,
     }
     from youqu3.driver.remote import Remote
     Remote(**args).run()
@@ -66,7 +73,9 @@ def remote(
 def init():
     """创建用例工程"""
     from youqu3.driver.init import Init
+    from youqu3.driver.init import print_tree
     Init().init()
+    print_tree()
 
 
 @cli.command()

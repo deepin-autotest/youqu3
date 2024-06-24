@@ -25,6 +25,7 @@ class Remote:
             filepath=None,
             keywords=None,
             tags=None,
+            slaves=None,
             **kwargs
     ):
         logger("INFO")
@@ -33,6 +34,7 @@ class Remote:
         self.keywords = keywords
         self.tags = tags
         self.clients = clients
+        self.slaves = slaves
 
         if not self.clients:
             raise ValueError("REMOTE驱动模式, 未传入远程客户端信息：-c/--clients user@ip:pwd")
@@ -115,7 +117,7 @@ class Remote:
         ]:
             exclude += f"--exclude='{i}' "
         _, return_code = Cmd.expect_run(
-            f"/bin/bash -c '{self.rsync} --include='.env' {exclude} {self.server_rootdir}/* {user}@{_ip}:{self.client_rootdir(user)}/'",
+            f"/bin/bash -c '{self.rsync} {exclude} {self.server_rootdir}/* {user}@{_ip}:{self.client_rootdir(user)}/'",
             events={'password': f'{password}\n'},
             return_code=True
         )
@@ -193,13 +195,12 @@ class Remote:
             cmd.extend(["-k", f"'{self.keywords}'"])
         if self.tags:
             cmd.extend(["-m", f"'{self.tags}'"])
+        if self.slaves:
+            cmd.extend(["-s", f"'{self.slaves}'"])
 
         return cmd
 
     def run_test(self, user, _ip, password):
-        a = " ".join(
-                self.changdir_remote_cmd(user) + self.generate_cmd
-            )
         RemoteCmd(user, _ip, password).remote_run(
             " ".join(
                 self.changdir_remote_cmd(user) + self.generate_cmd

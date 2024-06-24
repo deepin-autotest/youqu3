@@ -23,7 +23,9 @@ class _DynamicSetting:
     HOME = str(pathlib.Path.home())
     USERNAME = getpass.getuser()
 
-    TPL_PATH = pathlib.Path(__file__).parent.parent / "tpl"
+    YOUQU_HOME = pathlib.Path(__file__).parent.parent
+    TPL_PATH = YOUQU_HOME / "tpl"
+    RPC_PATH = YOUQU_HOME / "rpc"
 
     if os.path.exists(os.path.expanduser("~/.xsession-errors")):
         DISPLAY_SERVER = (
