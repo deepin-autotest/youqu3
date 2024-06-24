@@ -33,6 +33,8 @@
 pip install youqu3
 ```
 
+![](docs/assets/instalk.gif)
+
 桌面 UI 自动化测试：
 
 ```shell
@@ -56,3 +58,13 @@ HTTP 接口自动化测试：
 ```shell
 pip install youqu3[http]
 ```
+
+## 创建用例工程
+
+```shell
+mkdir my_autotest
+cd my_autotest/
+youqu3 init
+```
+
+![](docs/assets/init.gif)
