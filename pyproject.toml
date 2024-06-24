@@ -31,7 +31,6 @@ desktop-ui = [
     "youqu-button-center",
     "pdocr-rpc",
     "youqu-html",
-    # "wdotool",
 ]
 webui = [
     "pytest-youqu-playwright",

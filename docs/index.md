@@ -10,7 +10,7 @@ hero:
     - theme: brand
       text: GitHub
       link: "https://github.com/funny-dream/youqu3"
-    - theme: brand
+    - theme: alt
       text: Docs
       link: "https://youqu.uniontech.com/v3"
   image:
@@ -18,20 +18,61 @@ hero:
     alt: YouQu3
 
 features:
-  - icon: 💻
-    title: Linux 桌面 UI 自动化测试
-    details: 提升Linux桌面应用品质，确保用户体验的一致性，选择我们的UI自动化测试服务。
-  - icon: 🌏
-    title: Web UI 自动化测试
-    details: Web UI自动化测试，优化用户体验，提升Web应用的稳定性和可靠性。
-  - icon: 🚌
-    title: Linux DBus 接口自动化测试
-    details: 专业自动化测试D-Bus接口，为Linux桌面应用的稳定性和可靠性保驾护航。
-  - icon: 🚀
-    title: 命令行自动化测试
-    details: 高效命令行自动化测试，让Linux软件开发和维护更加轻松便捷。
-  - icon: ️🕷️
-    title: HTTP 接口自动化测试
-    details: 保障HTTP接口的响应速度和数据传输安全，我们的自动化测试是您的明智之选。
+  - icon: 💪
+    title: 新架构
+    details: 全新的架构设计，插件化、模块化改造，底层全面重写，优化框架接口调用机制。
+  - icon: 💥
+    title: 新玩法
+    details: 继承YouQu2诸多亮点功能的同时解决其遇到的问题，各方面全面优化，更多玩法姿势等你来解锁。
+  - icon: 🛀
+    title: 新体验
+    details: 更加简单易用、更加纯粹、扩展性和兼容性更好，一秒入魂。
 
 ---
+
+<script setup>
+import {
+  VPTeamPage,
+  VPTeamPageTitle,
+  VPTeamMembers
+} from 'vitepress/theme'
+
+const members = [
+  {
+    avatar: 'https://www.github.com/mikigo.png',
+    name: 'mikigo',
+    title: 'Creator',
+    org: 'YouQu3',
+    orgLink: 'https://github.com/funny-dream/youqu3',
+    links: [
+      { icon: 'github', link: 'https://github.com/mikigo' },
+      { icon: 'x', link: 'https://twitter.com/mikigo_' },
+    ]
+  },
+  // {
+  //   avatar: 'https://www.github.com/DarkLii.png',
+  //   name: 'DarkLii',
+  //   title: 'Developer',
+  //   links: [
+  //     { icon: 'github', link: 'https://github.com/DarkLii' },
+  //   ]
+  // },
+]
+
+</script>
+
+
+<VPTeamPage>
+  <VPTeamPageTitle>
+    <template #title>
+      Contributors
+    </template>
+    <template #lead>
+      感谢以下所有人的贡献与参与
+    </template>
+  </VPTeamPageTitle>
+  <VPTeamMembers
+    size="small"
+    :members="members"
+  />
+</VPTeamPage>
