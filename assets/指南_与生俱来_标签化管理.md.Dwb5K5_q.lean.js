@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.07oE_XNQ.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"指南/与生俱来/标签化管理.md","filePath":"指南/与生俱来/标签化管理.md","lastUpdated":1719285594000}'),r={name:"指南/与生俱来/标签化管理.md"};function o(s,_,c,n,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
