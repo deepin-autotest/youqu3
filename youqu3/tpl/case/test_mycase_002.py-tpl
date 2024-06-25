@@ -4,8 +4,8 @@
 :Author:${USER}
 :Date  :${DATE} ${TIME}
 """
-from case import BaseCase
-from method import ${AppName}Method
+from case.base_case import BaseCase
+from method.${app_name}_method import ${AppName}Method
 from youqu3 import sleep
 
 class TestMyCase(BaseCase):

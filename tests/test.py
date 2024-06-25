@@ -1,10 +1,8 @@
 import pytest
 
-from rich import print
-
 def test_dogtail():
     from youqu3.dogtail import Dogtail
-    dock = Dogtail().element_center("Btn_文件管理器")
+    dock = Dogtail().ele("Btn_文件管理器").click()
     print(dock)
     assert dock
 

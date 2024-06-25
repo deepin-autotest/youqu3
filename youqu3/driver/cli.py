@@ -20,12 +20,19 @@ def cli(): ...
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
 @click.option("--setup-plan", is_flag=True, default=False, help="")
 @click.option("-s", "--slaves", default=None, type=click.STRING, help=slaves_help)
+@click.option("--txt", is_flag=True, default=False, type=click.BOOL,
+              help="基于txt文件执行用例：youqu-tags.txt or youqu-keywords.txt")
+@click.option("--job-start", default=None, type=click.STRING, help="测试结束之前执行")
+@click.option("--job-end", default=None, type=click.STRING, help="测试结束之后执行")
 def run(
         filepath,
         keywords,
         tags,
         setup_plan,
         slaves,
+        txt,
+        job_start,
+        job_end,
 ):
     """本地执行"""
     args = {
@@ -34,6 +41,9 @@ def run(
         "tags": tags,
         "setup_plan": setup_plan,
         "slaves": slaves,
+        "txt": txt,
+        "job_start": job_start,
+        "job_end": job_end,
     }
     from youqu3.driver.run import Run
     Run(**args).run()

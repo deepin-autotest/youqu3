@@ -2,6 +2,7 @@
 # _*_ coding:utf-8 _*_
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 # SPDX-License-Identifier: GPL-2.0-only
+import os.path
 import pathlib
 import re
 import sys
@@ -21,6 +22,9 @@ class Run:
             tags=None,
             setup_plan=None,
             slaves=None,
+            txt=None,
+            job_start=None,
+            job_end=None,
             **kwargs,
     ):
         logger("INFO")
@@ -29,6 +33,9 @@ class Run:
         self.keywords = keywords
         self.tags = tags
         self.setup_plan = setup_plan
+        self.txt = txt
+        self.job_start = job_start
+        self.job_end = job_end
 
         if slaves is not None:
             s = []
@@ -69,17 +76,51 @@ class Run:
         if len_tags >= 999:
             sys.setrecursionlimit(len_tags + 100)
 
+    def read_tags_txt(self):
+        youqu_tags_file = os.path.join(self.rootdir, "youqu-tags.txt")
+        if os.path.exists(youqu_tags_file):
+            with open(youqu_tags_file, "r", encoding="utf-8") as f:
+                tags_txt = f.readlines()[0]
+                return tags_txt
+        return None
+
+    def read_keywords_txt(self):
+        youqu_keywords_file = os.path.join(self.rootdir, "youqu-keywords.txt")
+        if os.path.exists(youqu_keywords_file):
+            with open(youqu_keywords_file, "r", encoding="utf-8") as f:
+                keywords_txt = f.readlines()[0]
+                return keywords_txt
+        return None
+
     def generate_cmd(self):
         cmd = ["pytest"]
 
         if self.filepath:
             cmd.append(self.filepath)
-        if self.keywords:
-            self.set_recursion_limit(self.keywords)
-            cmd.extend(["-k", f"'{self.keywords}'"])
-        if self.tags:
-            self.set_recursion_limit(self.tags)
-            cmd.extend(["-m", f"'{self.tags}'"])
+
+        if self.txt:
+            keywords_txt = self.read_keywords_txt()
+            if self.keywords:
+                self.set_recursion_limit(self.keywords)
+                cmd.extend(["-k", f"'{self.keywords}'"])
+            elif keywords_txt is not None:
+                self.set_recursion_limit(keywords_txt)
+                cmd.extend(["-k", f"'{keywords_txt}'"])
+
+            tags_txt = self.read_tags_txt()
+            if self.tags:
+                self.set_recursion_limit(self.tags)
+                cmd.extend(["-m", f"'{self.tags}'"])
+            elif tags_txt is not None:
+                self.set_recursion_limit(tags_txt)
+                cmd.extend(["-m", f"'{tags_txt}'"])
+        else:
+            if self.keywords:
+                self.set_recursion_limit(self.keywords)
+                cmd.extend(["-k", f"'{self.keywords}'"])
+            if self.tags:
+                self.set_recursion_limit(self.tags)
+                cmd.extend(["-m", f"'{self.tags}'"])
 
         if self.setup_plan:
             cmd.append("--setup-plan")
@@ -102,7 +143,18 @@ class Run:
 
         return cmd
 
+    def job_start_driver(self):
+        if self.job_start:
+            from youqu3.cmd import Cmd
+            Cmd.run(self.job_start, timeout=600)
+
+    def job_end_driver(self):
+        if self.job_end:
+            from youqu3.cmd import Cmd
+            Cmd.run(self.job_end, timeout=600)
+
     def run(self):
+        self.job_start_driver()
         pytest.main(
             [i.strip("'") for i in self.generate_cmd()[1:]]
         )
@@ -110,6 +162,7 @@ class Run:
             return
         from youqu_html import YouQuHtml
         YouQuHtml.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
+        self.job_end_driver()
 
 
 if __name__ == "__main__":

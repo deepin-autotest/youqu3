@@ -6,10 +6,12 @@
 """
 
 from funnylog.conf import setting as log_setting
+log_setting.CLASS_NAME_ENDSWITH = "Method"
+
 from youqu3 import log
 from youqu3.dogtail import Dogtail
 
-log_setting.CLASS_NAME_ENDSWITH = "Method"
+from method.base_method import BaseMethod
 
 
 @log

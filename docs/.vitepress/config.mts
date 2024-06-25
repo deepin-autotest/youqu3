@@ -66,6 +66,7 @@ export default defineConfig({
                             {text: "文件操控", link: "/指南/与生俱来/文件操控"},
                             {text: "动态等待", link: "/指南/与生俱来/动态等待"},
                             {text: "JSON报告", link: "/指南/与生俱来/文件操控"},
+                            {text: "前后钩子", link: "/指南/与生俱来/前后钩子"},
                         ]
                     },
                     {
