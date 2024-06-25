@@ -43,7 +43,7 @@ dbus = [
 ]
 remote = [
     "fabric",
-    "zerorpc",
+#    "zerorpc",
 ]
 
 [project.scripts]

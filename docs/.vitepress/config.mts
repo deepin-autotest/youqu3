@@ -28,6 +28,7 @@ export default defineConfig({
             {text: '指南', link: '/指南/简介/YouQu3是什么'},
             {text: '插件', link: '/插件/插件列表'},
             {text: '设计', link: '/设计/YouQu3架构设计规划'},
+            {text: '问题', link: 'https://github.com/funny-dream/youqu3/issues'},
         ],
 
         sidebar: {

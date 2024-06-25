@@ -1,3 +1,7 @@
+---
+outline: false
+---
+
 <p align="center">
   <a href="https://github.com/funny-dream/youqu3">
     <img src="/logo.png" width="100" alt="YouQu3">
@@ -30,3 +34,5 @@ YouQu3 旨在成为下一代 Linux 自动化测试框架，在继承 YouQu2 诸�
 ☑ 🚀 命令行自动化测试
 
 ☑ 🕷️ HTTP 接口自动化测试
+
+☑ 🤙️ 无限可能

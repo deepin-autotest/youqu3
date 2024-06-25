@@ -88,7 +88,7 @@ class Remote:
     def check_remote_connected(self, user, _ip, password):
         logger.info(f"Checking remote: {user, _ip, password}")
         try:
-            _, return_code = RemoteCmd(user, _ip, password, connect_timeout=1).remote_run("who", return_code=True)
+            _, return_code = RemoteCmd(user, _ip, password, connect_timeout=1).remote_run("hostname -I", return_code=True)
             if return_code == 0:
                 return True
             return False
