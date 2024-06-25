@@ -5,7 +5,6 @@ import { useData, useRoute, inBrowser } from 'vitepress';
 import mediumZoom from 'medium-zoom';
 import vitepressBackToTop from 'vitepress-plugin-back-to-top';
 import 'vitepress-plugin-back-to-top/dist/style.css';
-import "vitepress-markdown-timeline/dist/theme/index.css";
 import busuanzi from 'busuanzi.pure.js';
 
 import './style/index.css';
