@@ -28,6 +28,4 @@ pnpm add -D vitepress
 pnpm i vitepress-plugin-comment-with-giscus
 pnpm i vitepress-plugin-back-to-top
 pnpm add -D busuanzi.pure.js
-pnpm add -D markdown-it-mathjax3
 pnpm i medium-zoom
-pnpm add -D vitepress-markdown-timeline

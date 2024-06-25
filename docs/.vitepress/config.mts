@@ -1,5 +1,4 @@
 import {defineConfig} from 'vitepress'
-import timeline from "vitepress-markdown-timeline";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -14,11 +13,6 @@ export default defineConfig({
     vite: {
         publicDir: "assets",
     },
-    markdown: {
-        config: (md) => {
-            md.use(timeline)
-        }
-    },
 
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
@@ -28,7 +22,6 @@ export default defineConfig({
             {text: '指南', link: '/指南/简介/YouQu3是什么'},
             {text: '插件', link: '/插件/插件列表'},
             {text: '设计', link: '/设计/YouQu3架构设计规划'},
-            {text: '问题', link: 'https://github.com/funny-dream/youqu3/issues'},
         ],
 
         sidebar: {
@@ -64,6 +57,7 @@ export default defineConfig({
                     {
                         text: "与生俱来",
                         items: [
+                            {text: "脚手架工具", link: "/指南/与生俱来/脚手架工具"},
                             {text: "全自动日志", link: "/指南/与生俱来/全自动日志"},
                             {text: "标签化管理", link: "/指南/与生俱来/标签化管理"},
                             {text: "远程交互控制", link: "/指南/与生俱来/远程交互控制"},
@@ -71,7 +65,7 @@ export default defineConfig({
                             {text: "断言语句", link: "/指南/与生俱来/断言语句"},
                             {text: "文件操控", link: "/指南/与生俱来/文件操控"},
                             {text: "动态等待", link: "/指南/与生俱来/动态等待"},
-                            {text: "JSON报告", link: "/指南/默认携带功能/文件操控"},
+                            {text: "JSON报告", link: "/指南/与生俱来/文件操控"},
                         ]
                     },
                     {

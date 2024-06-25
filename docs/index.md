@@ -11,8 +11,8 @@ hero:
       text: GitHub
       link: "https://github.com/funny-dream/youqu3"
     - theme: alt
-      text: Docs
-      link: "https://youqu.uniontech.com/v3"
+      text: issue
+      link: "https://github.com/funny-dream/youqu3/issues"
   image:
     src: /logo.png
     alt: YouQu3
