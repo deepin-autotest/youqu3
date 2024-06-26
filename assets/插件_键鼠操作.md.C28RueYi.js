@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as a}from"./chunks/framework.07oE_XNQ.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/键鼠操作.md","filePath":"插件/键鼠操作.md","lastUpdated":1719396200000}'),r={name:"插件/键鼠操作.md"};function o(s,c,n,_,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
