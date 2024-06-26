@@ -50,7 +50,3 @@ class UI(MouseKeyChainMixin):
             MouseKeyChainMixin.x, MouseKeyChainMixin.y = MouseKeyChainMixin.result
         return self
 
-if __name__ == '__main__':
-    a = UI(app_name="dde-file-manager", config_path="/home/mikigo/github/youqu3/ui.ini").ui("播放按钮").center()
-    print(a)
-
