@@ -1,4 +1,4 @@
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from youqu_dogtail import DogtailUtils as Dogtail
@@ -8,4 +8,4 @@ except ImportError:
     HAS_DOGTAIL = False
 
 if HAS_DOGTAIL is False:
-    raise YouQuPluginInstalledError("youqu-dogtail")
+    raise YouQuPluginDependencyError("youqu-dogtail")

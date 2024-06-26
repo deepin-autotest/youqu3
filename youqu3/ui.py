@@ -1,10 +1,10 @@
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from youqu_button_center import ButtonCenter as _ButtonCenter
 
 except ImportError:
-    raise YouQuPluginInstalledError("youqu-button-center")
+    raise YouQuPluginDependencyError("youqu-button-center")
 
 from youqu3.mkmixin import MouseKeyChainMixin
 

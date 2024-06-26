@@ -1,6 +1,6 @@
 import random
 
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from youqu_imagecenter_rpc import ImageCenter as _ImageCenter
@@ -13,7 +13,7 @@ except ImportError:
     HAS_IMAGECENTER = False
 
 if HAS_IMAGECENTER is False:
-    raise YouQuPluginInstalledError("youqu-imagecenter-rpc")
+    raise YouQuPluginDependencyError("youqu-imagecenter-rpc")
 
 from youqu3.mkmixin import MouseKeyChainMixin
 

@@ -1,6 +1,6 @@
 import random
 
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from pdocr_rpc import OCR as _OCR
@@ -13,7 +13,7 @@ except ImportError:
     HAS_OCR = False
 
 if HAS_OCR is False:
-    raise YouQuPluginInstalledError("pdocr-rpc")
+    raise YouQuPluginDependencyError("pdocr-rpc")
 
 from youqu3.mkmixin import MouseKeyChainMixin
 

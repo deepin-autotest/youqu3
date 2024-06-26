@@ -1,7 +1,7 @@
 from funnylog.conf import setting as log_setting
 
 from youqu3 import log
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     import requests
@@ -11,7 +11,7 @@ except ImportError:
     HAS_REQUESTS = False
 
 if HAS_REQUESTS is False:
-    raise YouQuPluginInstalledError("requests")
+    raise YouQuPluginDependencyError("requests")
 
 log_setting.CLASS_NAME_ENDSWITH = "Requests"
 

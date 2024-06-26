@@ -1,4 +1,4 @@
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from youqu_mousekey import MouseKey as MouseKey
@@ -8,4 +8,4 @@ except ImportError:
     HAS_MOUSEKEY = False
 
 if HAS_MOUSEKEY is False:
-    raise YouQuPluginInstalledError("youqu-mousekey")
+    raise YouQuPluginDependencyError("youqu-mousekey")

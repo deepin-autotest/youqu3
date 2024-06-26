@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from typing import Union
 
 from youqu3 import setting
-from youqu3.exception import YouQuPluginInstalledError
+from youqu3.exception import YouQuPluginDependencyError
 
 try:
     from playwright.sync_api import sync_playwright
@@ -18,7 +18,7 @@ try:
     from playwright.sync_api import PageAssertions
     from playwright.sync_api import APIResponseAssertions
 except ImportError:
-    raise YouQuPluginInstalledError("playwright")
+    raise YouQuPluginDependencyError("playwright")
 
 
 class WebUI:

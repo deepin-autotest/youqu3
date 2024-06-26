@@ -173,7 +173,7 @@ class OcrTextRecognitionError(Exception):
         logger.error(err)
         Exception.__init__(self, err)
 
-class YouQuPluginInstalledError(Exception):
+class YouQuPluginDependencyError(Exception):
 
     def __init__(self, msg):
         err = f"YouQu插件未安装 <{msg}>, 请尝试安装：pip install {msg}"

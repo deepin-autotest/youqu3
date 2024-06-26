@@ -136,7 +136,7 @@ class RemoteCmd:
         try:
             from fabric import Connection
         except ImportError:
-            raise exception.YouQuPluginInstalledError("fabric")
+            raise exception.YouQuPluginDependencyError("fabric")
         c = Connection(
             host=self.ip,
             user=self.user,
@@ -152,7 +152,7 @@ class RemoteCmd:
         try:
             from fabric import Connection, Config
         except ImportError:
-            raise exception.YouQuPluginInstalledError("fabric")
+            raise exception.YouQuPluginDependencyError("fabric")
         c = Connection(
             host=self.ip,
             user=self.user,
