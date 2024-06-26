@@ -6,6 +6,7 @@ import functools
 import os.path
 import pathlib
 import shutil
+import time
 
 from youqu3 import logger
 from youqu3 import setting
@@ -35,8 +36,7 @@ def server_rootdir(project_abspath: str = None):
 
 
 def client_rootdir(user, project_abspath):
-    client_rootdir_path = f"/home/{user}/_rpc_{server_rootdir(project_abspath).name}"
-    return client_rootdir_path
+    return f"/home/{user}/_rpc_{server_rootdir(project_abspath).name}"
 
 
 def transfer_to_client(ip, password, user, project_abspath):
@@ -56,7 +56,8 @@ def transfer_to_client(ip, password, user, project_abspath):
     )
     from invoke.exceptions import UnexpectedExit
     try:
-        stdout, return_code = remote_cmd.remote_run(f"cd {client_rootdir(user, project_abspath)}/ && ls env_ok", return_code=True)
+        stdout, return_code = remote_cmd.remote_run(f"cd {client_rootdir(user, project_abspath)}/ && ls env_ok",
+                                                    return_code=True)
     except UnexpectedExit:
         _, return_code = remote_cmd.remote_run(
             "export PATH=$PATH:$HOME/.local/bin;"
@@ -69,14 +70,21 @@ def transfer_to_client(ip, password, user, project_abspath):
 def start_client_service(ip, password, user, filename, project_abspath):
     service_name = f"{filename}.service"
     remote_cmd = RemoteCmd(user, ip, password)
-    remote_cmd.remote_sudo_run(f"cp {os.path.join(client_rootdir(user, project_abspath), service_name)} /lib/systemd/system/")
-    remote_cmd.remote_sudo_run(f"chmod 644 /lib/systemd/system/{service_name}")
-    remote_cmd.remote_sudo_run(f"systemctl daemon-reload")
-    remote_cmd.remote_sudo_run(f"systemctl restart {service_name}")
+    from invoke.exceptions import UnexpectedExit
+    try:
+        remote_cmd.remote_run(f"ls /lib/systemd/system/{service_name}")
+    except UnexpectedExit:
+        remote_cmd.remote_sudo_run(
+            f"cp {os.path.join(client_rootdir(user, project_abspath), service_name)} /lib/systemd/system/")
+        remote_cmd.remote_sudo_run(f"chmod 644 /lib/systemd/system/{service_name}")
+        remote_cmd.remote_sudo_run(f"systemctl daemon-reload")
+        remote_cmd.remote_sudo_run(f"systemctl restart {service_name}")
+        time.sleep(1)
 
 
 def restart_client_service(ip, password, user, filename):
     RemoteCmd(user, ip, password).remote_sudo_run(f"sudo systemctl restart {filename}.service")
+    time.sleep(1)
 
 
 def gen_service_file(user, filename, project_abspath):
@@ -126,6 +134,9 @@ def guard_rpc(filename):
                 gen_service_file(user, filename, project_abspath)
                 transfer_to_client(ip, password, user, project_abspath)
                 start_client_service(ip, password, user, filename, project_abspath)
+            else:
+                Cmd.run(f"rm -f {project_abspath}/{filename}.py")
+                Cmd.run(f"rm -f {project_abspath}/{filename}.service")
             if auto_restart:
                 restart_client_service(ip, password, user, filename)
             res = func(*args, **kwargs)

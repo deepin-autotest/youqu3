@@ -35,7 +35,13 @@ class _Setting(_DynamicSetting):
     # REMOTE
 
     # SLAVES
-    SLAVES = None
+    SLAVES = os.environ.get("SLAVES")
+
+    # WEBUI
+    EXECUTABLE_PATH = f"{_DynamicSetting.HOME}/.config/browser"
+    USER_DATE_DIR = "/usr/bin/browser"
+    HEADLESS = True if os.environ.get("HEADLESS") is None else False
+
     #
     PYPI_MIRROR = "https://pypi.tuna.tsinghua.edu.cn/simple"
 

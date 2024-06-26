@@ -33,27 +33,10 @@ class Run:
         self.keywords = keywords
         self.tags = tags
         self.setup_plan = setup_plan
+        self.slaves = slaves
         self.txt = txt
         self.job_start = job_start
         self.job_end = job_end
-
-        if slaves is not None:
-            s = []
-            for slave in slaves.split("/"):
-                slave_info = re.findall(r"^(.+?)@(\d+\.\d+\.\d+\.\d+):{0,1}(.*?)$", slave)
-                if not slave_info:
-                    continue
-                user, ip, password = slave_info[0]
-                s.append(
-                    {
-                        "user": user,
-                        "ip": ip,
-                        "password": password or setting.PASSWORD,
-                    }
-                )
-            if not s:
-                raise EnvironmentError("No slaves found, check -s/--slaves value")
-            setting.SLAVES = s
 
         self.rootdir = pathlib.Path(".").absolute()
         self.report_path = self.rootdir / "report"
@@ -98,29 +81,24 @@ class Run:
         if self.filepath:
             cmd.append(self.filepath)
 
-        if self.txt:
-            keywords_txt = self.read_keywords_txt()
-            if self.keywords:
-                self.set_recursion_limit(self.keywords)
-                cmd.extend(["-k", f"'{self.keywords}'"])
-            elif keywords_txt is not None:
-                self.set_recursion_limit(keywords_txt)
-                cmd.extend(["-k", f"'{keywords_txt}'"])
+        keywords_txt = self.read_keywords_txt()
+        if self.keywords:
+            self.set_recursion_limit(self.keywords)
+            cmd.extend(["-k", f"'{self.keywords}'"])
+        elif self.txt and keywords_txt is not None:
+            self.set_recursion_limit(keywords_txt)
+            cmd.extend(["-k", f"'{keywords_txt}'"])
 
-            tags_txt = self.read_tags_txt()
-            if self.tags:
-                self.set_recursion_limit(self.tags)
-                cmd.extend(["-m", f"'{self.tags}'"])
-            elif tags_txt is not None:
-                self.set_recursion_limit(tags_txt)
-                cmd.extend(["-m", f"'{tags_txt}'"])
-        else:
-            if self.keywords:
-                self.set_recursion_limit(self.keywords)
-                cmd.extend(["-k", f"'{self.keywords}'"])
-            if self.tags:
-                self.set_recursion_limit(self.tags)
-                cmd.extend(["-m", f"'{self.tags}'"])
+        tags_txt = self.read_tags_txt()
+        if self.tags:
+            self.set_recursion_limit(self.tags)
+            cmd.extend(["-m", f"'{self.tags}'"])
+        elif self.txt and tags_txt is not None:
+            self.set_recursion_limit(tags_txt)
+            cmd.extend(["-m", f"'{tags_txt}'"])
+
+        if self.slaves:
+            cmd.extend(["--slaves", f"'{self.slaves}'"])
 
         if self.setup_plan:
             cmd.append("--setup-plan")
@@ -144,24 +122,34 @@ class Run:
         return cmd
 
     def job_start_driver(self):
+        from youqu3.cmd import Cmd
         if self.job_start:
-            from youqu3.cmd import Cmd
-            Cmd.run(self.job_start, timeout=600)
+            Cmd.run(self.job_start, timeout=3600)
+        for file in os.listdir(self.rootdir):
+            if file == "job_start.py":
+                Cmd.run(f"cd {self.rootdir} && {sys.executable} {file}")
 
     def job_end_driver(self):
+        from youqu3.cmd import Cmd
         if self.job_end:
-            from youqu3.cmd import Cmd
-            Cmd.run(self.job_end, timeout=600)
+            Cmd.run(self.job_end, timeout=3600)
+        for file in os.listdir(self.rootdir):
+            if file == "job_end.py":
+                Cmd.run(f"cd {self.rootdir} && {sys.executable} {file}")
 
     def run(self):
-        self.job_start_driver()
+        if not self.setup_plan:
+            self.job_start_driver()
         pytest.main(
             [i.strip("'") for i in self.generate_cmd()[1:]]
         )
         if self.setup_plan:
             return
-        from youqu_html import YouQuHtml
-        YouQuHtml.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
+        try:
+            from youqu_html import YouQuHtml
+            YouQuHtml.gen(str(self.allure_data_path), str(self.allure_html_path), clean=True)
+        except ImportError:
+            ...
         self.job_end_driver()
 
 

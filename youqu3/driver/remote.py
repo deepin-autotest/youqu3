@@ -2,6 +2,7 @@
 # _*_ coding:utf-8 _*_
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 # SPDX-License-Identifier: GPL-2.0-only
+import os
 import pathlib
 import re
 import socket
@@ -26,6 +27,9 @@ class Remote:
             keywords=None,
             tags=None,
             slaves=None,
+            txt=None,
+            job_start=None,
+            job_end=None,
             **kwargs
     ):
         logger("INFO")
@@ -35,6 +39,9 @@ class Remote:
         self.tags = tags
         self.clients = clients
         self.slaves = slaves
+        self.txt = txt
+        self.job_start = job_start
+        self.job_end = job_end
 
         if not self.clients:
             raise ValueError("REMOTE驱动模式, 未传入远程客户端信息：-c/--clients user@ip:pwd")
@@ -176,6 +183,22 @@ class Remote:
             user, _ip, password = clients.get(client_list[0])
             self.get_back_report(user, _ip, password)
 
+    def read_tags_txt(self):
+        youqu_tags_file = os.path.join(self.server_rootdir, "youqu-tags.txt")
+        if os.path.exists(youqu_tags_file):
+            with open(youqu_tags_file, "r", encoding="utf-8") as f:
+                tags_txt = f.readlines()[0]
+                return tags_txt
+        return None
+
+    def read_keywords_txt(self):
+        youqu_keywords_file = os.path.join(self.server_rootdir, "youqu-keywords.txt")
+        if os.path.exists(youqu_keywords_file):
+            with open(youqu_keywords_file, "r", encoding="utf-8") as f:
+                keywords_txt = f.readlines()[0]
+                return keywords_txt
+        return None
+
     def changdir_remote_cmd(self, user):
         return [
             "export PATH=$PATH:$HOME/.local/bin;",
@@ -191,12 +214,26 @@ class Remote:
             cmd.append(f"'{self.filepath}'")
         if self.inside_filepath:
             cmd.append(f"'{self.inside_filepath}'")
+
+        keywords_txt = self.read_keywords_txt()
         if self.keywords:
             cmd.extend(["-k", f"'{self.keywords}'"])
+        elif self.txt and keywords_txt is not None:
+            cmd.extend(["-k", f"'{keywords_txt}'"])
+
+        tags_txt = self.read_tags_txt()
         if self.tags:
             cmd.extend(["-m", f"'{self.tags}'"])
+        elif self.txt and tags_txt is not None:
+            cmd.extend(["-m", f"'{tags_txt}'"])
+
         if self.slaves:
-            cmd.extend(["-s", f"'{self.slaves}'"])
+            cmd.extend(["--slaves", f"'{self.slaves}'"])
+
+        if self.job_start:
+            cmd.extend(["--job-start",f"'{self.job_start}'"])
+        if self.job_end:
+            cmd.extend(["--job-end",f"'{self.job_end}"])
 
         return cmd
 

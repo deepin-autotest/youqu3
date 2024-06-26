@@ -5,6 +5,7 @@
 from contextlib import contextmanager
 from typing import Union
 
+from youqu3 import setting
 from youqu3.exception import YouQuPluginInstalledError
 
 try:
@@ -44,15 +45,14 @@ class WebAssert:
 
 @contextmanager
 def debug_page():
-    from pytest_youqu_playwright.conf import conf
     driver = sync_playwright().start()
     browser = driver.chromium.launch_persistent_context(
-        user_data_dir=conf.USER_DATE_DIR,
-        executable_path=conf.EXECUTABLE_PATH,
+        user_data_dir=setting.USER_DATE_DIR,
+        executable_path=setting.EXECUTABLE_PATH,
         ignore_https_errors=True,
         no_viewport=True,
         slow_mo=500,
-        headless=False,
+        headless=setting.HEADLESS,
         bypass_csp=True,
         args=[
             "--disable-blink-features=AutomationControlled",

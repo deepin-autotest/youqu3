@@ -15,9 +15,7 @@ dependencies = [
     "click",
     "pexpect",
 ]
-dynamic = [
-    "version",
-]
+dynamic = ["version"]
 
 requires-python = ">=3.7"
 readme = "README.md"
@@ -33,7 +31,7 @@ desktop-ui = [
     "youqu-html",
 ]
 webui = [
-    "pytest-youqu-playwright",
+    "playwright",
 ]
 http = [
     "requests",
@@ -43,11 +41,13 @@ dbus = [
 ]
 remote = [
     "fabric",
-#    "zerorpc",
 ]
 
 [project.scripts]
 youqu3 = "youqu3.driver.cli:cli"
+
+[project.entry-points.pytest11]
+pytest-youqu-plugin = "youqu3.plugin"
 
 [build-system]
 requires = ["hatchling"]
