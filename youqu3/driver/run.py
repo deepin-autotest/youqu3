@@ -106,6 +106,10 @@ class Run:
             cmd.extend([
                 "--json-report",
                 "--json-report-indent=2",
+                "--json-report-omit",
+                "collectors",
+                "log",
+                "keywords",
                 f"--json-report-file={self.json_report_path / f'report_{setting.TIME_STRING}.json'}",
                 f"--alluredir={self.allure_data_path}",
                 "--clean-alluredir",
@@ -140,6 +144,7 @@ class Run:
     def run(self):
         if not self.setup_plan:
             self.job_start_driver()
+        print(" ".join(self.generate_cmd()))
         pytest.main(
             [i.strip("'") for i in self.generate_cmd()[1:]]
         )

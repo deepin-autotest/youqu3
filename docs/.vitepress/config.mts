@@ -52,6 +52,7 @@ export default defineConfig({
                         items: [
                             {text: "本地执行", link: "/指南/驱动执行/本地执行"},
                             {text: "远程执行", link: "/指南/驱动执行/远程执行"},
+                            {text: "自定义用例集驱动", link: "/指南/驱动执行/自定义用例集驱动"},
                         ]
                     },
                     {
@@ -107,6 +108,7 @@ export default defineConfig({
                             {text: "用例录屏", link: "/插件/用例录屏"},
                             {text: "WebUI自动化", link: "/插件/WebUI自动化"},
                             {text: "Html测试报告", link: "/插件/Html测试报告"},
+                            {text: "PMS测试单驱动", link: "/插件/PMS测试单驱动"},
                         ]
                     },
                  ],

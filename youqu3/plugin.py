@@ -10,6 +10,15 @@ def pytest_addoption(parser):
     parser.addoption("--slaves", action="store", default="", help="")
 
 
+def pytest_sessionstart(session):
+    from youqu3 import logger
+    logger("INFO")
+
+
+def pytest_runtest_setup(item):
+    print("-")
+
+
 @pytest.fixture(scope='module')
 def page():
     try:
