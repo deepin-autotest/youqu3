@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as a}from"./chunks/framework.07oE_XNQ.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"指南/可选功能/用例录屏.md","filePath":"指南/可选功能/用例录屏.md","lastUpdated":1719386256000}'),r={name:"指南/可选功能/用例录屏.md"};function o(s,c,n,_,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
