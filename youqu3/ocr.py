@@ -29,7 +29,6 @@ class OCR(MouseKeyChainMixin):
 
     @classmethod
     def ocr(cls, *args, **kwargs):
-        """ocr load balance"""
         servers = cls._ocr_servers
         while servers:
             ocr_setting.SERVER_IP = random.choice(servers)

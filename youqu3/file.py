@@ -277,4 +277,4 @@ class File:
 
 
 if __name__ == "__main__":
-    FileCtl.delete_files("Desktop", includes=("新建",))
+    File.delete_files("Desktop", includes=("新建",))

@@ -179,7 +179,3 @@ class YouQuPluginDependencyError(Exception):
         err = f"YouQu插件未安装 <{msg}>, 请尝试安装：pip install {msg}"
         logger.error(err)
         Exception.__init__(self, err)
-
-
-if __name__ == '__main__':
-    raise ElementNotFound

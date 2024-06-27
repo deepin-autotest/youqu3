@@ -212,67 +212,23 @@ class Assert:
             raise AssertionError(f"元素个数{len(result)} 与期望个数 {number} 不符!")
 
     @staticmethod
-    def assert_window_size(expect, real):
+    def assert_process_exist(app):
         """
-         断言窗口大小与期望一致
-        :param expect: 窗口的期望大小 （1920, 400）
-        :param real: 窗口的实际大小（1920, 400）
-        """
-        logger.info(f"断言实际窗口大小{real}与期望{expect}是否相同")
-        if expect != real:
-            raise AssertionError(f"实际窗口大小{real}与期望{expect}不相同")
-
-    @staticmethod
-    def assert_process_status(expect, app):
-        """
-         断言应用进程是否存在
-        :param expect: 进程期望结果 True /False
+         断言应用进程存在
         :param app: 应用名字
         """
-        logger.info(f"断言应用进程状态{app}与期望{expect}是否相同")
-        if expect != Cmd.get_process_status(app):
-            raise AssertionError(f"断言应用进程状态{app}与期望{expect}不相同")
-
+        logger.info(f"断言应用进程状态{app}存在")
+        if True != Cmd.get_process_status(app):
+            raise AssertionError(f"断言应用进程状态{app}不存在")
     @staticmethod
-    def assert_process_num(num, app):
+    def assert_process_not_exist(app):
         """
-         断言应用进程的数量
-        :param num: 期望的进程数量
+         断言应用进程不存在
         :param app: 应用名字
         """
-        logger.info(f"断言 {app} 应用进程数量是否为 {num}")
-        if num != Cmd.get_daemon_process_num(app):
-            raise AssertionError(f"断言 {app} 应用进程数量与期望{num}不相同")
-
-    @staticmethod
-    def assert_share_folder(filename):
-        """
-         断言存在共享文件夹 filename
-        :param filename: 共享文件夹名称
-        """
-        share_folder = Cmd.run(
-            "net usershare list",
-        )
-        if share_folder:
-            share_folder = share_folder.split("\n")
-        logger.info(f"断言共享目录中是否存在{filename}文件夹")
-        if filename not in share_folder:
-            raise AssertionError(f"断言共享目录中不存在{filename}文件夹")
-
-    @staticmethod
-    def assert_not_share_folder(filename):
-        """
-         断言不存在共享文件夹 filename
-        :param filename: 共享文件夹名称
-        """
-        share_folder = Cmd.run(
-            "net usershare list",
-        )
-        if share_folder:
-            share_folder = share_folder.split("\n")
-        logger.info(f"断言共享目录中是否存在{filename}文件夹")
-        if filename in share_folder:
-            raise AssertionError(f"断言共享目录中存在{filename}文件夹")
+        logger.info(f"断言应用进程状态{app}不存在")
+        if False != Cmd.get_process_status(app):
+            raise AssertionError(f"断言应用进程状态{app}存在")
 
     @staticmethod
     def assert_equal(expect, actual):
@@ -315,7 +271,7 @@ class Assert:
             raise AssertionError(f"<{expect}>不为假")
 
     @classmethod
-    def assert_pic_px(cls, file, size=(0, 0)):
+    def assert_pic_size_equal(cls, file, size=(0, 0)):
         """
          断言图片尺寸
         :param file: 结果
@@ -327,11 +283,11 @@ class Assert:
             raise AssertionError(f"实际尺寸<{really}>与期望尺寸<{size}>不符")
 
     @classmethod
-    def assert_file_endwith_exist(cls, path, endwith):
+    def assert_file_endswith_exist(cls, path, endwith):
         """
-         断言路径下是否存在以 endwith 结果的文件
+         断言路径下是否存在以 endswith 结果的文件
         :param path: 路径
-        :param endwith: 文件后缀， txt，rar 等
+        :param endswith: 文件后缀， txt，rar 等
         """
         if not File.find_files(path, endwith=endwith):
             raise AssertionError(f"路径 {path} 下，不存在以 {endwith} 结尾的文件")
