@@ -75,7 +75,7 @@ export default defineConfig({
                         items: [
                             {text: "属性识别", link: "/指南/可选功能/属性识别"},
                             {text: "图像识别", link: "/指南/可选功能/图像识别"},
-                            {text: "OCR识别", link: "/指南/可选功能/图像识别"},
+                            {text: "OCR识别", link: "/指南/可选功能/OCR识别"},
                             {text: "相对位移定位", link: "/指南/可选功能/相对位移定位"},
                             {text: "键鼠操控", link: "/指南/可选功能/键鼠操控"},
                             {text: "DBus操控", link: "/指南/可选功能/DBus操控"},
