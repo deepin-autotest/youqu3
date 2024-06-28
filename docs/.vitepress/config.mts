@@ -18,10 +18,10 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         siteTitle: "YouQu3",
         nav: [
-            {text: '首页', link: '/index'},
-            {text: '指南', link: '/指南/简介/YouQu3是什么'},
-            {text: '插件', link: '/插件/插件列表'},
-            {text: '设计', link: '/设计/YouQu3架构设计规划'},
+            {text: '🏠 首页', link: '/index'},
+            {text: '🧭 指南', link: '/指南/简介/YouQu3是什么'},
+            {text: '🔌 插件', link: '/插件/插件列表'},
+            {text: '🎵 设计', link: '/设计/YouQu3架构设计规划'},
         ],
 
         sidebar: {
@@ -66,7 +66,7 @@ export default defineConfig({
                             {text: "断言语句", link: "/指南/与生俱来/断言语句"},
                             {text: "文件操控", link: "/指南/与生俱来/文件操控"},
                             {text: "动态等待", link: "/指南/与生俱来/动态等待"},
-                            {text: "JSON报告", link: "/指南/与生俱来/文件操控"},
+                            {text: "JSON报告", link: "/指南/与生俱来/JSON报告"},
                             {text: "前后钩子", link: "/指南/与生俱来/前后钩子"},
                         ]
                     },
