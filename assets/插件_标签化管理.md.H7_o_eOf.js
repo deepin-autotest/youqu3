@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.CeWJ1GBg.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/标签化管理.md","filePath":"插件/标签化管理.md","lastUpdated":1719827610000}'),r={name:"插件/标签化管理.md"};function o(s,_,c,n,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
