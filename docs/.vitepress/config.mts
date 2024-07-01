@@ -64,7 +64,6 @@ export default defineConfig({
                             {text: "远程交互控制", link: "/指南/与生俱来/远程交互控制"},
                             {text: "命令行交互", link: "/指南/与生俱来/命令行交互"},
                             {text: "断言语句", link: "/指南/与生俱来/断言语句"},
-                            {text: "文件操控", link: "/指南/与生俱来/文件操控"},
                             {text: "动态等待", link: "/指南/与生俱来/动态等待"},
                             {text: "JSON报告", link: "/指南/与生俱来/JSON报告"},
                             {text: "前后钩子", link: "/指南/与生俱来/前后钩子"},
@@ -73,13 +72,9 @@ export default defineConfig({
                     {
                         text: "可选功能",
                         items: [
-                            {text: "属性识别", link: "/指南/可选功能/属性识别"},
-                            {text: "图像识别", link: "/指南/可选功能/图像识别"},
-                            {text: "OCR识别", link: "/指南/可选功能/OCR识别"},
-                            {text: "相对位移定位", link: "/指南/可选功能/相对位移定位"},
-                            {text: "键鼠操控", link: "/指南/可选功能/键鼠操控"},
-                            {text: "DBus操控", link: "/指南/可选功能/DBus操控"},
+                            {text: "桌面UI自动化", link: "/指南/可选功能/桌面UI自动化"},
                             {text: "WebUI自动化", link: "/指南/可选功能/WebUI自动化"},
+                            {text: "DBus操控", link: "/指南/可选功能/DBus操控"},
                             {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
                             {text: "HTML报告", link: "/指南/可选功能/HTML报告"},
                             {text: "其他", link: "/指南/可选功能/其他"},

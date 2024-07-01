@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from youqu3 import exception
+from youqu3 import exceptions
 from youqu3 import setting
 
 

@@ -23,12 +23,7 @@ license = { text = "GPL2.0" }
 
 [project.optional-dependencies]
 desktop-ui = [
-    "youqu-dogtail",
-    "youqu-imagecenter-rpc",
-    "youqu-mousekey",
-    "youqu-button-center",
-    "pdocr-rpc",
-    "youqu-html",
+    "pylinuxauto",
 ]
 webui = [
     "playwright",

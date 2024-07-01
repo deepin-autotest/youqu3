@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from typing import Union
 
 from youqu3 import setting
-from youqu3.exception import YouQuPluginDependencyError
+from youqu3.exceptions import YouQuPluginDependencyError
 
 try:
     from playwright.sync_api import sync_playwright

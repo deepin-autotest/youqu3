@@ -3,13 +3,11 @@
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 # SPDX-License-Identifier: GPL-2.0-only
 import os
-from time import sleep
 from typing import Union
 
-from youqu3 import exception
+from youqu3 import exceptions
 from youqu3 import log, logger, setting
 from youqu3.cmd import Cmd
-from youqu3.file import File
 
 
 @log
@@ -30,14 +28,14 @@ class Assert:
             match_number: int = None,
     ):
         """
-         期望界面存在模板图片
+        期望界面存在模板图片
         :param widget: 图片路径 例：assert_res/1.png
         :param rate: 匹配相似度
         """
         logger.info(f"屏幕上匹配图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >")
-        from youqu_imagecenter_rpc import ImageCenter
+        from youqu3.gui import pylinuxauto
         try:
-            ImageCenter.find_image(
+            pylinuxauto.find_element_by_image(
                 widget,
                 rate=rate,
                 multiple=multiple,
@@ -47,10 +45,10 @@ class Assert:
                 timeout=timeout,
                 max_match_number=match_number,
             )
-        except exception.TemplateElementNotFound as exc:
-            raise AssertionError(exc) from exception.TemplateElementNotFound
+        except exceptions.TemplateElementNotFound as exc:
+            raise AssertionError(exc) from exceptions.TemplateElementNotFound
         except Exception as exc:
-            raise exception.AssertOptionError(exc) from Exception
+            raise exceptions.AssertOptionError(exc) from Exception
 
     @classmethod
     def assert_image_exist_during_time(
@@ -69,13 +67,13 @@ class Assert:
         :param pause: 截取屏幕图片的间隔时间，默认不间隔；
         """
         logger.info(f"屏幕上匹配图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >")
-        from youqu_imagecenter_rpc import ImageCenter
+        from youqu3.gui import pylinuxauto
         try:
-            ImageCenter.get_during(widget, screen_time, rate, pause)
-        except exception.TemplateElementNotFound as exc:
-            raise AssertionError(exc) from exception.TemplateElementNotFound
+            pylinuxauto.get_during(widget, screen_time, rate, pause)
+        except exceptions.TemplateElementNotFound as exc:
+            raise AssertionError(exc) from exceptions.TemplateElementNotFound
         except Exception as exc:
-            raise exception.AssertOptionError(exc) from Exception
+            raise exceptions.AssertOptionError(exc) from Exception
 
     @staticmethod
     def assert_image_not_exist(
@@ -89,7 +87,7 @@ class Assert:
             match_number: int = None,
     ):
         """
-         期望界面不存在模板图片
+        期望界面不存在模板图片
         :param widget: 图片路径 assert_res/1.png
         :param rate: 匹配相似度
         """
@@ -97,8 +95,8 @@ class Assert:
             f"屏幕上匹配不存在图片< {f'***{widget[-40:]}' if len(widget) >= 40 else widget} >"
         )
         try:
-            from youqu3.image import ImageUtils
-            ImageUtils.find_image(
+            from youqu3.gui import pylinuxauto
+            pylinuxauto.find_element_by_image(
                 widget,
                 rate=rate,
                 multiple=multiple,
@@ -108,78 +106,46 @@ class Assert:
                 timeout=timeout,
                 max_match_number=match_number,
             )
-            raise exception.TemplateElementFound(widget)
-        except exception.TemplateElementNotFound:
+            raise exceptions.TemplateElementFound(widget)
+        except exceptions.TemplateElementNotFound:
             pass
-        except exception.TemplateElementFound as exc:
-            raise AssertionError(exc) from exception.TemplateElementFound
+        except exceptions.TemplateElementFound as exc:
+            raise AssertionError(exc) from exceptions.TemplateElementFound
         except Exception as exc:
-            raise exception.AssertOptionError(exc) from Exception
+            raise exceptions.AssertOptionError(exc) from Exception
 
     @staticmethod
-    def assert_file_exist(widget, file=None, recursive=False):
+    def assert_file_exist(file_path):
         """
-         期望存在文件路径
-        :param widget: 文件全路径或目录 例：~/Desktop/1.txt
-        :param file: 文件名
-        :param recursive: 是否递归查找
+        期望存在文件路径
+        :param file_path: 文件全路径或目录 例：~/Desktop/1.txt
         """
-        sleep(1)
-        if recursive:
-            if file:
-                for _, _, files in os.walk(widget):
-                    for filename in files:
-                        if file == filename:
-                            return True
-                raise AssertionError(f"目录 {widget}及子目录无 {file} 文件")
-            if not os.path.exists(os.path.expanduser(widget)):
-                raise AssertionError(f"文件不存在！ 路径 {widget}")
-            return True
-        if file:
-            _path = f"{widget}/{file}"
-        else:
-            _path = widget
-        logger.info(f"断言文件是否存在<{_path}>")
-        if not os.path.exists(os.path.expanduser(_path)):
-            raise AssertionError(f"文件不存在！ 路径 {_path}")
+        logger.info(f"断言文件存在 <{file_path}>")
+        if not os.path.exists(os.path.expanduser(file_path)):
+            raise AssertionError(f"文件不存在！ 路径 {file_path}")
         return True
 
     @staticmethod
-    def assert_file_not_exist(widget, file=None, recursive=False):
+    def assert_file_not_exist(file_path):
         """
-         期望不存在文件路径
-        :param widget: 文件全路径 例：~/Desktop/1.txt
+        期望不存在文件路径
+        :param file_path: 文件全路径 例：~/Desktop/1.txt
         :param file: 文件名
         :param recursive: 是否递归查找
         """
-        sleep(1)
-        logger.info(f"断言文件是否不存在<{widget}>")
-        if recursive:
-            if file:
-                for _, _, files in os.walk(widget):
-                    for filename in files:
-                        if file == filename:
-                            raise AssertionError(f"目录 {widget}或子目录存在 {file} 文件")
-            else:
-                if os.path.exists(os.path.expanduser(widget)):
-                    raise AssertionError(f"文件存在！ 路径 {widget}")
-        else:
-            if file:
-                widget = f"{widget}/{file}"
-            logger.info(f"断言文件是否存在<{widget}>")
-            if os.path.exists(os.path.expanduser(widget)):
-                raise AssertionError(f"文件存在！ 路径 {widget}")
+        logger.info(f"断言文件不存在 <{file_path}>")
+        if os.path.exists(os.path.expanduser(file_path)):
+            raise AssertionError(f"文件存在！ 路径 {file_path}")
 
     @staticmethod
     def assert_element_exist(expr):
         """
          期望元素存在
-        :param expr: 匹配元素的格式, 例如： $//dde-file-manager//1.txt
+        :param expr: 匹配元素的格式, 例如： /dde-file-manager/1.txt
         """
-        sleep(0.5)
         logger.info(f"断言元素存在<{expr}>")
-        from youqu3.dogtail import Dogtail
-        if not Dogtail().find_element_by_attr(expr):
+        from youqu3.gui import pylinuxauto
+        if not pylinuxauto.find_element_by_attr_path(expr):
             raise AssertionError(f"元素不存在！！！expr= <{expr}>")
 
     @staticmethod
@@ -189,27 +155,12 @@ class Assert:
         :param expr: 匹配元素的格式
         """
         logger.info(f"断言元素不存在<{expr}>")
-        from youqu3.dogtail import Dogtail
+        from youqu3.gui import pylinuxauto
         try:
-            Dogtail().find_element_by_attr(expr)
+            pylinuxauto.find_element_by_attr_path(expr)
             raise AssertionError(f"元素不应存在！！！expr= <{expr}>")
-        except exception.ElementNotFound:
+        except exceptions.ElementNotFound:
             pass
-
-    @staticmethod
-    def assert_element_numbers(expr, number):
-        """
-         查找元素的个数与期望一致
-        :param expr: 匹配元素的格式
-        :param number: 匹配元素个数
-        """
-        logger.info(f"断言元素出现的个数 <{expr}, {number}>")
-        from youqu3.dogtail import Dogtail
-        result = Dogtail().find_elements_by_attr(expr)
-        if isinstance(result, bool):
-            raise exception.ElementExpressionError(expr)
-        if len(result) != number:
-            raise AssertionError(f"元素个数{len(result)} 与期望个数 {number} 不符!")
 
     @staticmethod
     def assert_process_exist(app):
@@ -220,6 +171,7 @@ class Assert:
         logger.info(f"断言应用进程状态{app}存在")
         if True != Cmd.get_process_status(app):
             raise AssertionError(f"断言应用进程状态{app}不存在")
+
     @staticmethod
     def assert_process_not_exist(app):
         """
@@ -270,28 +222,6 @@ class Assert:
         if expect:
             raise AssertionError(f"<{expect}>不为假")
 
-    @classmethod
-    def assert_pic_size_equal(cls, file, size=(0, 0)):
-        """
-         断言图片尺寸
-        :param file: 结果
-        :param size: 期望尺寸 例如（120, 400）
-        """
-        from youqu_imagecenter_rpc import ImageCenter
-        really = ImageCenter.get_pic_px(file)
-        if size != really:
-            raise AssertionError(f"实际尺寸<{really}>与期望尺寸<{size}>不符")
-
-    @classmethod
-    def assert_file_endswith_exist(cls, path, endwith):
-        """
-         断言路径下是否存在以 endswith 结果的文件
-        :param path: 路径
-        :param endswith: 文件后缀， txt，rar 等
-        """
-        if not File.find_files(path, endwith=endwith):
-            raise AssertionError(f"路径 {path} 下，不存在以 {endwith} 结尾的文件")
-
     @staticmethod
     def assert_ocr_exist(
             *args,
@@ -324,9 +254,9 @@ class Assert:
         if picture_abspath is not None:
             pic = picture_abspath + ".png"
 
-        from youqu3.ocr import OCR
+        from youqu3.gui import pylinuxauto
 
-        res = OCR.ocr(
+        res = pylinuxauto.find_element_by_ocr(
             *args,
             picture_abspath=pic,
             similarity=similarity,
@@ -377,9 +307,9 @@ class Assert:
         pic = None
         if picture_abspath is not None:
             pic = picture_abspath + ".png"
-        from youqu3.ocr import OCR
+        from youqu3.gui import pylinuxauto
 
-        res = OCR.ocr(
+        res = pylinuxauto.find_element_by_ocr(
             *args,
             picture_abspath=pic,
             similarity=similarity,

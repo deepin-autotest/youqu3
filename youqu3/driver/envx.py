@@ -1,7 +1,7 @@
 import os.path
 import pathlib
 
-from youqu3 import exception
+from youqu3 import exceptions
 from youqu3 import logger
 from youqu3 import setting
 from youqu3.cmd import Cmd

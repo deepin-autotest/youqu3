@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-from youqu3 import exception
+from youqu3 import exceptions
 from youqu3 import logger
 from youqu3 import setting
 

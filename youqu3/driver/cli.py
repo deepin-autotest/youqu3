@@ -1,7 +1,7 @@
 import click
 
 from youqu3 import version
-from youqu3.rpc._str import slaves_help
+from youqu3.gui._rpc._str import slaves_help
 
 
 @click.group()

@@ -1,7 +1,7 @@
 from funnylog.conf import setting as log_setting
 
 from youqu3 import log
-from youqu3.exception import YouQuPluginDependencyError
+from youqu3.exceptions import YouQuPluginDependencyError
 
 try:
     import requests

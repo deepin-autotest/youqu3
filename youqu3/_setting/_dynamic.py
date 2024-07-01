@@ -25,7 +25,7 @@ class _DynamicSetting:
 
     YOUQU_HOME = pathlib.Path(__file__).parent.parent
     TPL_PATH = YOUQU_HOME / "tpl"
-    RPC_PATH = YOUQU_HOME / "rpc"
+    RPC_PATH = YOUQU_HOME / "gui" / "_rpc"
 
     if os.path.exists(os.path.expanduser("~/.xsession-errors")):
         DISPLAY_SERVER = (
