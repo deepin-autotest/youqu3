@@ -49,14 +49,14 @@ const members = [
       { icon: 'x', link: 'https://twitter.com/mikigo_' },
     ]
   },
-  // {
-  //   avatar: 'https://www.github.com/DarkLii.png',
-  //   name: 'DarkLii',
-  //   title: 'Developer',
-  //   links: [
-  //     { icon: 'github', link: 'https://github.com/DarkLii' },
-  //   ]
-  // },
+  {
+    avatar: 'https://www.github.com/DarkLii.png',
+    name: 'DarkLii',
+    title: 'Developer',
+    links: [
+      { icon: 'github', link: 'https://github.com/DarkLii' },
+    ]
+  },
 ]
 
 </script>

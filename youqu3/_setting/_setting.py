@@ -22,7 +22,7 @@ class _Setting(_DynamicSetting):
     OCR_TIMEOUT = 5
     OCR_MAX_MATCH_NUMBER = 100
     OCR_PORT = 8890
-    OCR_SERVER_HOST = "10.8.13.7/10.8.13.66/10.8.13.55/10.8.13.100"
+    OCR_SERVER_IP = "10.8.13.7/10.8.13.66/10.8.13.55/10.8.13.100"
 
     # IMAGE
     IMAGE_NETWORK_RETRY = 1
@@ -30,7 +30,7 @@ class _Setting(_DynamicSetting):
     IMAGE_TIMEOUT = 5
     IMAGE_MAX_MATCH_NUMBER = 100
     IMAGE_PORT = 8889
-    IMAGE_SERVER_HOST = "10.8.11.139"
+    IMAGE_SERVER_IP = "10.8.11.139"
 
     # REMOTE
 
