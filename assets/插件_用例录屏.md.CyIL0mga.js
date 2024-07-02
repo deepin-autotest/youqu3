@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.DLC3mPHA.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/用例录屏.md","filePath":"插件/用例录屏.md","lastUpdated":1719829616000}'),r={name:"插件/用例录屏.md"};function o(s,c,n,_,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
