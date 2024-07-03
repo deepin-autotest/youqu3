@@ -24,15 +24,19 @@ license = { text = "GPL2.0" }
 [project.optional-dependencies]
 desktop-ui = [
     "pylinuxauto",
+    "youqu-html",
 ]
 webui = [
     "playwright",
+    "youqu-html",
 ]
 http = [
     "requests",
+    "youqu-html",
 ]
 dbus = [
     "youqu-dbus",
+    "youqu-html",
 ]
 remote = [
     "fabric",
