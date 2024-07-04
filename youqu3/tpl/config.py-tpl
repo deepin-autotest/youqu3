@@ -5,13 +5,18 @@
 :Date  :${DATE} ${TIME}
 """
 
-from youqu3._setting._setting import _Setting
+import pathlib
 
 
-class _Config(_Setting):
+class _Config:
     """
     Application library configuration
     """
+
+    ROOTDIR = pathlib.Path(__file__).parent
+    ASSERT_RES = ROOTDIR / "case/assert_res"
+    IMAGE_RES = ROOTDIR / "method/image_res"
+    STATIC_RES = ROOTDIR / "method/static_res"
 
 
 config = _Config()
