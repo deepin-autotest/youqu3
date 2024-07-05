@@ -8,6 +8,14 @@
     <em>YouQu3, Next generation Linux automation testing framework.</em>
 </p>
 
+
+![Python](https://img.shields.io/badge/Python-007CFF?style=for-the-badge&logo=Python&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-007CFF?style=for-the-badge&logo=linux&logoColor=white)
+
+![PyPI](https://img.shields.io/pypi/v/youqu3?style=flat&logo=github&link=https%3A%2F%2Fpypi.org%2Fproject%2Fyouqu3%2F&color=%23F79431)
+![Downloads](https://static.pepy.tech/badge/youqu3)
+![Hits](https://hits.sh/github.com/funny-dream/youqu3.svg?style=flat&label=visitors&color=blue)
+
 --------------
 
 文档：https://youqu.uniontech.com/v3/

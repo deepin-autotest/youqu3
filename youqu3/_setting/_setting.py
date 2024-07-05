@@ -30,7 +30,7 @@ class _Setting(_DynamicSetting):
     IMAGE_TIMEOUT = 5
     IMAGE_MAX_MATCH_NUMBER = 100
     IMAGE_PORT = 8889
-    IMAGE_SERVER_IP = "10.8.11.139"
+    IMAGE_SERVER_IP = "10.8.11.121/10.8.12.130"
 
     # REMOTE
 
