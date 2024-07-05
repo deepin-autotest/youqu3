@@ -18,13 +18,10 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         siteTitle: "YouQu3",
         nav: [
-            {text: '🏠 YouQu3', link: '/index'},
+            {text: '🏠 首页', link: '/index'},
             {text: '🧭 指南', link: '/指南/简介/YouQu3是什么'},
             {text: '🔌 插件', link: '/插件/插件列表'},
             {text: '🎵 设计', link: '/设计/YouQu3架构设计规划'},
-            {text: '|', link: '/'},
-            {text: '🏠 PyLinuxAuto', link: '/pylinuxauto/index'},
-            {text: '🧭 指南', link: '/pylinuxauto/简介'},
         ],
 
         sidebar: {
@@ -81,23 +78,6 @@ export default defineConfig({
                             {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
                             {text: "HTML报告", link: "/指南/可选功能/HTML报告"},
                             {text: "其他", link: "/指南/可选功能/其他"},
-                        ]
-                    },
-                 ],
-             "/pylinuxauto/": [
-                    {
-                        text: "PyLinuxAuto",
-                        items: [
-                            {text: "简介", link: "/pylinuxauto/简介"},
-                        ]
-                    },
-                    {
-                        text: "定位方法",
-                        items: [
-                            {text: "属性定位", link: "/pylinuxauto/属性定位"},
-                            {text: "图像识别", link: "/pylinuxauto/图像识别"},
-                            {text: "OCR识别", link: "/pylinuxauto/OCR识别"},
-                            {text: "相对位移定位", link: "/pylinuxauto/相对位移定位"},
                         ]
                     },
                  ],
