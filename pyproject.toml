@@ -11,7 +11,7 @@ dependencies = [
     "pytest-mark-manage",
     "allure-pytest",
     "pytest-json-report",
-    "funnylog",
+    "funnylog2",
     "click",
     "pexpect",
 ]

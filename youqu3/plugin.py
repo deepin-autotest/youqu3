@@ -24,7 +24,7 @@ def page():
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        raise exception.YouQuPluginDependencyError("playwright")
+        raise exceptions.YouQuPluginDependencyError("playwright")
     driver = sync_playwright().start()
     browser = driver.chromium.launch_persistent_context(
         user_data_dir=setting.USER_DATE_DIR,
