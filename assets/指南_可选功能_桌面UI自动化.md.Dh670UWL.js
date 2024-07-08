@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.DLC3mPHA.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"指南/可选功能/桌面UI自动化.md","filePath":"指南/可选功能/桌面UI自动化.md","lastUpdated":1720174303000}'),r={name:"指南/可选功能/桌面UI自动化.md"};function o(s,_,c,n,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
