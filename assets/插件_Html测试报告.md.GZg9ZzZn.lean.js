@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a}from"./chunks/framework.DLC3mPHA.js";const p=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/Html测试报告.md","filePath":"插件/Html测试报告.md","lastUpdated":1720415758000}'),r={name:"插件/Html测试报告.md"};function o(s,c,n,_,m,d){return a(),e("div")}const i=t(r,[["render",o]]);export{p as __pageData,i as default};
