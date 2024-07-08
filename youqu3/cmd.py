@@ -72,7 +72,7 @@ class Cmd:
         if command_log:
             logger.debug(command)
         if exitcode != 0 and interrupt:
-            raise exception.ShellExecutionFailed(stdout)
+            raise exceptions.ShellExecutionFailed(stdout)
         if print_log and stdout:
             logger.debug(stdout)
         if return_code:
@@ -191,7 +191,7 @@ class RemoteCmd:
         try:
             from fabric import Connection
         except ImportError:
-            raise exception.YouQuPluginDependencyError("fabric")
+            raise exceptions.YouQuPluginDependencyError("fabric")
         c = Connection(
             host=self.ip,
             user=self.user,
@@ -207,7 +207,7 @@ class RemoteCmd:
         try:
             from fabric import Connection, Config
         except ImportError:
-            raise exception.YouQuPluginDependencyError("fabric")
+            raise exceptions.YouQuPluginDependencyError("fabric")
         c = Connection(
             host=self.ip,
             user=self.user,
