@@ -1,7 +1,15 @@
 import click
 
 from youqu3 import version
-from youqu3.gui._rpc._str import slaves_help
+
+_slaves_help = """\
+附属的测试机，用例步骤中与其他机器进行交互
+       ┌─ slave ${user}@${ip}:${password}
+master ┼─ slave mikigo@192.168.8.11:admin123
+       └─ slave ${user}@${ip}
+如果${password}和前面配置项PASSWORD一样，可以不传：${user}@${ip}
+多个机器之间用斜线分割：${user}@${ip}:${password}/${user}@${ip}
+"""
 
 
 @click.group()
@@ -19,7 +27,7 @@ def cli(): ...
 @click.option("-t", "--tags", default=None, type=click.STRING,
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
 @click.option("--setup-plan", is_flag=True, default=False, help="")
-@click.option("-s", "--slaves", default=None, type=click.STRING, help=slaves_help)
+@click.option("-s", "--slaves", default=None, type=click.STRING, help=_slaves_help)
 @click.option("--txt", is_flag=True, default=False, type=click.BOOL,
               help="基于txt文件执行用例：youqu-tags.txt or youqu-keywords.txt")
 @click.option("--job-start", default=None, type=click.STRING, help="测试结束之前执行")
@@ -59,7 +67,7 @@ def run(
               help="指定用例关键词执行，支持 'and/or/not' 逻辑表达式")
 @click.option("-t", "--tags", default=None, type=click.STRING,
               help="指定用例标签执行，支持 'and/or/not' 逻辑表达式")
-@click.option("-s", "--slaves", default=None, type=click.STRING, help=slaves_help)
+@click.option("-s", "--slaves", default=None, type=click.STRING, help=_slaves_help)
 @click.option("--txt", is_flag=True, default=False, type=click.BOOL,
               help="基于txt文件执行用例：youqu-tags.txt or youqu-keywords.txt")
 @click.option("--job-start", default=None, type=click.STRING, help="测试结束之前执行")
