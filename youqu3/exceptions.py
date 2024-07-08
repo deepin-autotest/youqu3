@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 # SPDX-License-Identifier: GPL-2.0-only
 
-from funnylog import logger
+from youqu3 import logger
 
 
 class ApplicationStartError(Exception):

@@ -5,7 +5,6 @@ authors = [
     { name = "mikigo", email = "huangmingqiang@uniontech.com" },
 ]
 dependencies = [
-    "pytest",
     "pytest-timeout",
     "pytest-rerunfailures",
     "pytest-mark-manage",
