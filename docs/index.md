@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: YouQu3
-  text: "下一代 Linux 自动化测试框架"
+  text: Next-Gen Linux Autotest Framework
   tagline: 让 Linux 自动化测试变得更简单
   actions:
     - theme: brand
