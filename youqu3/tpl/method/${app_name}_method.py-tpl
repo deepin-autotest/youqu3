@@ -5,7 +5,7 @@
 :Date  :${DATE} ${TIME}
 """
 
-from funnylog.conf import setting as log_setting
+from funnylog2.conf import setting as log_setting
 log_setting.CLASS_NAME_ENDSWITH = "Method"
 
 from youqu3 import log

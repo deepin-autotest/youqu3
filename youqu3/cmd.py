@@ -54,7 +54,7 @@ class Cmd:
             cls,
             command: str,
             interrupt: bool = False,
-            timeout: int = 25,
+            timeout: [None, int] = 25,
             print_log: bool = True,
             command_log: bool = True,
             return_code: bool = False

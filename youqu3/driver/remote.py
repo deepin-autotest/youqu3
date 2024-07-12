@@ -89,7 +89,7 @@ class Remote:
         self.server_json_dir_id = None
         self.inside_filepath = None
 
-        from funnylog.conf import setting as log_setting
+        from funnylog2.conf import setting as log_setting
         log_setting.LOG_FILE_PATH = self.server_rootdir
 
     def check_remote_connected(self, user, _ip, password):

@@ -45,7 +45,7 @@ class Run:
         self.allure_html_path = self.html_report_path / "html"
         self.json_report_path = self.report_path / "json"
 
-        from funnylog.conf import setting as log_setting
+        from funnylog2.conf import setting as log_setting
 
         log_setting.LOG_FILE_PATH = self.report_path
 
