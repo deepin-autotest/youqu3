@@ -34,7 +34,7 @@ http = [
     "youqu-html",
 ]
 dbus = [
-    "youqu-dbus",
+    "pydbussend",
     "youqu-html",
 ]
 remote = [

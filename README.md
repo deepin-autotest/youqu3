@@ -35,7 +35,7 @@
 
 ## [安装]()
 
-基础环境（默认支持命令行自动化测试）：
+基础环境：
 
 ```shell
 pip install youqu3
@@ -43,36 +43,23 @@ pip install youqu3
 
 ![](docs/assets/instalk.gif)
 
-桌面 UI 自动化测试：
-
-```shell
-pip install youqu3[desktop-ui]
-```
-
-Web UI 自动化测试：
-
-```shell
-pip install youqu3[webui]
-```
-
-D-Bus 接口自动化测试：
-
-```shell
-pip install youqu3[dbus]
-```
-
-HTTP 接口自动化测试：
-
-```shell
-pip install youqu3[http]
-```
-
 ## 创建用例工程
 
-```shell
+创建一个目录
+
+```bash
 mkdir my_autotest
+```
+
+使用脚手架功能创建用例工程
+
+```shell
 cd my_autotest/
 youqu3 init
 ```
 
 ![](docs/assets/init.gif)
+
+## 开源许可证
+
+YouQu3 在 [GPL-2.0](https://github.com/funny-dream/youqu3/blob/main/LICENSE) 下发布

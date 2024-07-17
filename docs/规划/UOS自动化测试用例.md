@@ -48,5 +48,6 @@ uos-case
 
   ```python
   from umtk.dde_file_manager import DdeFileManagerMethod
+  from youqu3.gui import pylinuxauto
   ```
 
