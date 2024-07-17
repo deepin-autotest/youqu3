@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.DLC3mPHA.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/属性识别.md","filePath":"插件/属性识别.md","lastUpdated":1720776232000}'),r={name:"插件/属性识别.md"};function o(s,c,n,_,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
