@@ -9,6 +9,7 @@ try:
     pylinuxauto_config.IMAGE_SERVER_IP = setting.IMAGE_SERVER_IP
 
     import pylinuxauto as pylinuxauto
+    from youqu3.gui.rpc_gui import RpcGui
 
 except ImportError:
     raise YouQuPluginDependencyError("pylinuxauto")

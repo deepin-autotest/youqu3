@@ -20,6 +20,7 @@ export default defineConfig({
         nav: [
             {text: '🏠 首页', link: '/index'},
             {text: '🧭 指南', link: '/指南/简介/YouQu3是什么'},
+            {text: '🏃‍ 实践', link: '/实践/方法开发'},
             {text: '🎵 规划', link: '/规划/YouQu3架构设计规划'},
             {text: '🔌 插件', link: '/插件/插件列表'},
         ],
@@ -41,18 +42,11 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: "开发实践",
-                    items: [
-                        {text: "方法编写", link: "/指南/开发实践/方法编写"},
-                        {text: "用例编写", link: "/指南/开发实践/用例编写"},
-                    ]
-                },
-                {
                     text: "驱动执行",
                     items: [
                         {text: "本地执行", link: "/指南/驱动执行/本地执行"},
                         {text: "远程执行", link: "/指南/驱动执行/远程执行"},
-                        {text: "自定义用例集驱动", link: "/指南/驱动执行/自定义用例集驱动"},
+                        {text: "自定义驱动", link: "/指南/驱动执行/自定义驱动"},
                     ]
                 },
                 {
@@ -77,9 +71,14 @@ export default defineConfig({
                         {text: "DBus自动化", link: "/指南/可选功能/DBus自动化"},
                         {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
                         {text: "HTML报告", link: "/指南/可选功能/HTML报告"},
-                        {text: "其他", link: "/指南/可选功能/其他"},
+                        {text: "其他插件", link: "/指南/可选功能/其他插件"},
                     ]
                 },
+
+            ],
+            "/实践/": [
+                {text: "方法开发", link: "/实践/方法开发"},
+                {text: "用例开发", link: "/实践/用例开发"},
             ],
             "/规划/": [
                 {

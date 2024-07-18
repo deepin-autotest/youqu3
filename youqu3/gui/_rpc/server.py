@@ -16,7 +16,3 @@ def server(obj, port):
         if not func_name.startswith("_"):
             server.register_function(getattr(obj, func_name), func_name)
     server.serve_forever()
-
-if __name__ == '__main__':
-    from youqu3.gui.rpc_gui import _RpcGuiServer
-    server(_RpcGuiServer, 1234)
