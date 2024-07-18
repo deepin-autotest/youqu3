@@ -1,11 +1,11 @@
 from youqu3.exceptions import YouQuPluginDependencyError
 
 try:
-    from youqu_dbus import DbusUtils as Dbus
+    from pydbussend import PyDBusSend as Dbus
 
-    HAS_YOUQU_DBUS = True
+    HAS_PYDBUSSEND = True
 except ImportError:
-    HAS_YOUQU_DBUS = False
+    HAS_PYDBUSSEND = False
 
-if HAS_YOUQU_DBUS is False:
-    raise YouQuPluginDependencyError("youqu-dbus")
+if HAS_PYDBUSSEND is False:
+    raise YouQuPluginDependencyError("pydbussend")

@@ -16,7 +16,7 @@ def pytest_sessionstart(session):
 
 
 def pytest_runtest_setup(item):
-    print("-")
+    print()
 
 
 @pytest.fixture(scope='module')
@@ -65,3 +65,21 @@ def slaves(pytestconfig):
     if not s:
         raise EnvironmentError("No slaves found, check -s/--slaves value")
     return s
+
+
+@pytest.fixture(scope="session")
+def gui():
+    from youqu3.gui import pylinuxauto
+    return pylinuxauto
+
+
+@pytest.fixture(scope="session")
+def sleep():
+    from youqu3.sleepx import sleep as slp
+    return slp
+
+
+@pytest.fixture(scope="session")
+def cmd():
+    from youqu3.cmd import Cmd
+    return Cmd
