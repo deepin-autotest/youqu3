@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.DLC3mPHA.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"插件/相对位移定位.md","filePath":"插件/相对位移定位.md","lastUpdated":1721195864000}'),r={name:"插件/相对位移定位.md"};function o(s,_,c,n,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
