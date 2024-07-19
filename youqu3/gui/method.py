@@ -1,7 +1,7 @@
 from youqu3.gui import pylinuxauto
 
 
-class RpcGuiMethods:
+class RpcMethods:
 
     # attr
     def click_element_by_attr_path(self, attr_path):
