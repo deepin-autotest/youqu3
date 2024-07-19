@@ -21,7 +21,7 @@ readme = "README.md"
 license = { text = "GPL2.0" }
 
 [project.optional-dependencies]
-desktop-ui = [
+gui = [
     "pylinuxauto",
     "youqu-html",
 ]

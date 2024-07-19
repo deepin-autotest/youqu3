@@ -46,7 +46,7 @@ export default defineConfig({
                     items: [
                         {text: "本地执行", link: "/指南/驱动执行/本地执行"},
                         {text: "远程执行", link: "/指南/驱动执行/远程执行"},
-                        {text: "自定义驱动", link: "/指南/驱动执行/自定义驱动"},
+                        {text: "自定义执行", link: "/指南/驱动执行/自定义执行"},
                     ]
                 },
                 {
@@ -66,9 +66,10 @@ export default defineConfig({
                 {
                     text: "可选功能",
                     items: [
-                        {text: "桌面UI自动化", link: "/指南/可选功能/桌面UI自动化"},
+                        {text: "GUI自动化", link: "/指南/可选功能/GUI自动化"},
                         {text: "WebUI自动化", link: "/指南/可选功能/WebUI自动化"},
                         {text: "DBus自动化", link: "/指南/可选功能/DBus自动化"},
+                        {text: "HTTP自动化", link: "/指南/可选功能/HTTP自动化"},
                         {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
                         {text: "HTML报告", link: "/指南/可选功能/HTML报告"},
                         {text: "其他插件", link: "/指南/可选功能/其他插件"},
