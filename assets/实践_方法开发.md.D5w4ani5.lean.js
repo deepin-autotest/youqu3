@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./chunks/framework.CoRJFuj9.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"实践/方法开发.md","filePath":"实践/方法开发.md","lastUpdated":1721408535000}'),r={name:"实践/方法开发.md"};function o(s,c,n,_,d,p){return a(),t("div")}const f=e(r,[["render",o]]);export{m as __pageData,f as default};
