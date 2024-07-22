@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">YouQu3</h1>
 <p align="center">
-    <em>YouQu3, Next generation Linux automation testing framework.</em>
+    <em>YouQu3, Next-Gen Linux Autotest Framework.</em>
 </p>
 
 
@@ -41,7 +41,7 @@
 pip install youqu3
 ```
 
-![](docs/assets/instalk.gif)
+![](docs/assets/install.gif)
 
 ## 创建用例工程
 

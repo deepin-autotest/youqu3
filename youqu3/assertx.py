@@ -47,8 +47,6 @@ class Assert:
             )
         except exceptions.TemplateElementNotFound as exc:
             raise AssertionError(exc) from exceptions.TemplateElementNotFound
-        except Exception as exc:
-            raise exceptions.AssertOptionError(exc) from Exception
 
     @classmethod
     def assert_image_exist_during_time(
@@ -72,8 +70,6 @@ class Assert:
             pylinuxauto.get_during(widget, screen_time, rate, pause)
         except exceptions.TemplateElementNotFound as exc:
             raise AssertionError(exc) from exceptions.TemplateElementNotFound
-        except Exception as exc:
-            raise exceptions.AssertOptionError(exc) from Exception
 
     @staticmethod
     def assert_image_not_exist(
@@ -111,8 +107,6 @@ class Assert:
             pass
         except exceptions.TemplateElementFound as exc:
             raise AssertionError(exc) from exceptions.TemplateElementFound
-        except Exception as exc:
-            raise exceptions.AssertOptionError(exc) from Exception
 
     @staticmethod
     def assert_file_exist(file_path):
@@ -122,7 +116,7 @@ class Assert:
         """
         logger.info(f"断言文件存在 <{file_path}>")
         if not os.path.exists(os.path.expanduser(file_path)):
-            raise AssertionError(f"文件不存在！ 路径 {file_path}")
+            raise AssertionError(f"文件不存在:{file_path}")
         return True
 
     @staticmethod
@@ -135,7 +129,7 @@ class Assert:
         """
         logger.info(f"断言文件不存在 <{file_path}>")
         if os.path.exists(os.path.expanduser(file_path)):
-            raise AssertionError(f"文件存在！ 路径 {file_path}")
+            raise AssertionError(f"文件存在:{file_path}")
 
     @staticmethod
     def assert_element_exist(expr):
@@ -146,7 +140,7 @@ class Assert:
         logger.info(f"断言元素存在<{expr}>")
         from youqu3.gui import pylinuxauto
         if not pylinuxauto.find_element_by_attr_path(expr):
-            raise AssertionError(f"元素不存在！！！expr= <{expr}>")
+            raise AssertionError(f"元素不存在:{expr}")
 
     @staticmethod
     def assert_element_not_exist(expr):
@@ -158,7 +152,7 @@ class Assert:
         from youqu3.gui import pylinuxauto
         try:
             pylinuxauto.find_element_by_attr_path(expr)
-            raise AssertionError(f"元素不应存在！！！expr= <{expr}>")
+            raise AssertionError(f"元素不应该存在:{expr}")
         except exceptions.ElementNotFound:
             pass
 
