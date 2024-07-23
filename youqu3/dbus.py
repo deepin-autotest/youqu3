@@ -7,10 +7,20 @@ class DBus:
 
     def __init__(
             self,
+            *,
             service_name: str,
             path: str = None,
             interface: str = None,
     ):
+        """
+        eg:
+        info = {
+            "service_name": "org.kde.KWin",
+            "path": "/Screenshot",
+            "interface": "org.kde.kwin.Screenshot",
+        }
+        DBus(**info).session.method("screenshotFullscreen").send()
+        """
         self.cmd = ["dbus-send"]
         self.cmd.append(f"--dest={service_name}")
         self.cmd.append(f"/{service_name.replace('.', '/')}" if path is None else path)
@@ -51,16 +61,18 @@ class DBus:
 
     def send(self):
         from youqu3.cmd import Cmd
-        return Cmd.run(" ".join(self.cmd))
+        return Cmd.run(" ".join(self.cmd)).strip()
 
     def sudo_send(self, password=None):
         from youqu3.cmd import Cmd
-        return Cmd.sudo_run(" ".join(self.cmd), password=password)
+        return Cmd.sudo_run(" ".join(self.cmd), password=password).strip()
 
 
 if __name__ == "__main__":
-    DBus(
-        service_name="org.kde.KWin",
-        path="/Screenshot",
-        interface="screenshotFullscreen",
-    ).session.send()
+    info = {
+        "service_name": "org.kde.KWin",
+        "path": "/Screenshot",
+        "interface": "org.kde.kwin.Screenshot",
+    }
+    res = DBus(**info).session.method("screenshotFullscreen").send()
+    print(res)

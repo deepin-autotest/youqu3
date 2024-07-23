@@ -16,10 +16,9 @@ def sleep(second: [float, int]):
     :param second: 等待时间
     :return:
     """
-    sys_arch = setting.SYS_ARCH
-    multiple = getattr(setting.Sleepx, sys_arch)
+    multiple = getattr(setting.Sleepx, setting.SYS_ARCH)
     mult_sec = second * multiple
-    logger.debug(f"sleep {second} s [{sys_arch} * {multiple} = {mult_sec}]")
+    logger.debug(f"sleep {second} s [{setting.SYS_ARCH} * {multiple} = {mult_sec}]")
     slp(mult_sec)
 
 if __name__ == '__main__':
