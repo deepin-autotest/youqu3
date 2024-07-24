@@ -94,23 +94,6 @@ export default defineConfig({
             ],
             "/插件/": [
                 {text: "插件汇总", link: "/插件/插件列表"},
-                {
-                    text: "插件生态明细",
-                    items: [
-                        {text: "标签化管理", link: "/插件/标签化管理"},
-                        {text: "全自动日志", link: "/插件/全自动日志"},
-                        {text: "属性识别", link: "/插件/属性识别"},
-                        {text: "图像识别", link: "/插件/图像识别"},
-                        {text: "OCR识别", link: "/插件/OCR识别"},
-                        {text: "键鼠操作", link: "/插件/键鼠操作"},
-                        {text: "DBus操控", link: "/插件/DBus操控"},
-                        {text: "相对位移定位", link: "/插件/相对位移定位"},
-                        {text: "用例录屏", link: "/插件/用例录屏"},
-                        {text: "WebUI自动化", link: "/插件/WebUI自动化"},
-                        {text: "Html测试报告", link: "/插件/Html测试报告"},
-                        {text: "PMS测试单驱动", link: "/插件/PMS测试单驱动"},
-                    ]
-                },
             ],
         },
         search: {

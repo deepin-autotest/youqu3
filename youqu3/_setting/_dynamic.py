@@ -41,3 +41,4 @@ class _DynamicSetting:
     IS_WAYLAND: bool = DISPLAY_SERVER == DisplayServer.wayland
 
     TIME_STRING = time.strftime("%Y%m%d%H%M%S")
+    HOST_IP = str(os.popen("hostname -I |awk '{print $1}'").read()).strip("\n").strip()

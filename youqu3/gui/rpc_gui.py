@@ -7,7 +7,7 @@ import pathlib
 
 from youqu3.gui._rpc.client import client
 from youqu3.gui._rpc.guard import guard_rpc
-from youqu3.gui.rpc_gui_methods import RpcGuiMethods
+from youqu3.gui.method import RpcMethods
 
 port = 4242
 
@@ -40,7 +40,7 @@ class RpcGui:
         self.auto_restart = auto_restart
 
     @property
-    def gui(self) -> RpcGuiMethods:
+    def gui(self) -> RpcMethods:
         return _rpc_gui_client(
             user=self.user,
             ip=self.ip,
@@ -53,4 +53,4 @@ class RpcGui:
 if __name__ == '__main__':
     from youqu3.gui._rpc.server import server
 
-    server(RpcGuiMethods, port)
+    server(RpcMethods, port)
