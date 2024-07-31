@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 
@@ -106,6 +107,7 @@ class Cmd:
             cls,
             command,
             password: str = None,
+            workdir: str = None,
             interrupt: bool = False,
             timeout: int = 25,
             print_log: bool = True,
@@ -114,8 +116,13 @@ class Cmd:
     ):
         if password is None:
             password = setting.PASSWORD
+        wd = ""
+        if workdir:
+            if not os.path.exists(workdir):
+                raise FileNotFoundError
+            wd = f"cd {workdir} && "
         return cls.run(
-            f"echo '{password}' | sudo -S {command}",
+            f"{wd}echo '{password}' | sudo -S {command}",
             interrupt=interrupt,
             timeout=timeout,
             print_log=print_log,
@@ -127,7 +134,6 @@ class Cmd:
         "grep",
         "pytest",
         "python",
-        "tee",
         "ffmpeg",
         "youqu",
     )
