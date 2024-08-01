@@ -84,9 +84,9 @@ export default defineConfig({
                     items: [
                         {text: "简介", link: "/实践/简介"},
                         {text: "工程创建", link: "/实践/工程创建"},
-                        {text: "配置模块", link: "/实践/配置模块"},
                         {text: "方法开发", link: "/实践/方法开发"},
                         {text: "用例开发", link: "/实践/用例开发"},
+                        {text: "配置模块", link: "/实践/配置模块"},
                         {text: "依赖管理", link: "/实践/依赖管理"},
                     ]
                 }

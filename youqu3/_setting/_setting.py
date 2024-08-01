@@ -6,7 +6,7 @@ from youqu3._setting._dynamic import _DynamicSetting
 
 
 class _Setting(_DynamicSetting):
-    """Global Config"""
+    """YouQu Config"""
 
     PASSWORD: str = os.environ.get("PASSWORD") or "1"
 
@@ -49,7 +49,6 @@ class _Setting(_DynamicSetting):
     USER_DATE_DIR = "/usr/bin/browser"
     HEADLESS = True if os.environ.get("HEADLESS") is None else False
 
-    #
     PYPI_MIRROR = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
     @dataclasses.dataclass

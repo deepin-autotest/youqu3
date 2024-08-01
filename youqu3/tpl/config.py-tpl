@@ -9,9 +9,6 @@ import pathlib
 
 
 class _Config:
-    """
-    Application library configuration
-    """
 
     ROOTDIR = pathlib.Path(__file__).parent
     ASSERT_RES = ROOTDIR / "case/assert_res"
