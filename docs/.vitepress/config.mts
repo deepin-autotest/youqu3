@@ -18,7 +18,7 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         siteTitle: "YouQu3",
         nav: [
-            {text: '🏠 首页', link: '/index'},
+                {text: '🏠 首页', link: '/index'},
             {text: '🧭 指南', link: '/指南/简介/YouQu3是什么'},
             {text: '🏃‍ 实践', link: '/实践/简介'},
             {text: '🎵 规划', link: '/规划/YouQu3架构设计规划'},
