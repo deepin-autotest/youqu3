@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">YouQu3</h1>
 <p align="center">
-    <em>YouQu3, Next-Gen Linux Autotest Framework.</em>
+    <em>Next-Gen Linux Autotest Framework.</em>
 </p>
 
 
