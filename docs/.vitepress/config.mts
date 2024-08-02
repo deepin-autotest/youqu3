@@ -57,6 +57,7 @@ export default defineConfig({
                         {text: "标签化管理", link: "/指南/与生俱来/标签化管理"},
                         {text: "远程交互控制", link: "/指南/与生俱来/远程交互控制"},
                         {text: "命令行交互", link: "/指南/与生俱来/命令行交互"},
+                        {text: "DBus交互", link: "/指南/与生俱来/DBus交互"},
                         {text: "断言语句", link: "/指南/与生俱来/断言语句"},
                         {text: "动态等待", link: "/指南/与生俱来/动态等待"},
                         {text: "JSON报告", link: "/指南/与生俱来/JSON报告"},
@@ -66,13 +67,11 @@ export default defineConfig({
                 {
                     text: "可选功能",
                     items: [
-                        {text: "GUI自动化", link: "/指南/可选功能/GUI自动化"},
-                        {text: "WebUI自动化", link: "/指南/可选功能/WebUI自动化"},
-                        {text: "DBus自动化", link: "/指南/可选功能/DBus自动化"},
-                        {text: "HTTP自动化", link: "/指南/可选功能/HTTP自动化"},
-                        {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
+                        {text: "LinuxGUI", link: "/指南/可选功能/LinuxGUI"},
+                        {text: "WebUI", link: "/指南/可选功能/WebUI"},
+                        {text: "网络访问", link: "/指南/可选功能/网络访问"},
                         {text: "HTML报告", link: "/指南/可选功能/HTML报告"},
-                        {text: "其他插件", link: "/指南/可选功能/其他插件"},
+                        {text: "用例录屏", link: "/指南/可选功能/用例录屏"},
                     ]
                 },
 

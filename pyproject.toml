@@ -24,10 +24,12 @@ license = { text = "GPL2.0" }
 gui = [
     "pylinuxauto",
     "youqu-html-rpc",
+    "pytest-record-video",
 ]
 webui = [
     "playwright",
     "youqu-html-rpc",
+    "pytest-record-video",
 ]
 http = [
     "requests",
